@@ -1,0 +1,14 @@
+archivesBaseName = "unibuild"
+
+dependencies {
+    implementation(project(":base"))
+}
+
+gradlePlugin {
+    plugins {
+        create("unibuild") {
+            id = "xyz.unifycraft.gradle.unibuild"
+            implementationClass = "xyz.unifycraft.gradle.unibuild.UniBuildPlugin"
+        }
+    }
+}

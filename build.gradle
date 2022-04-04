@@ -1,0 +1,25 @@
+plugins {
+    id("org.jetbrains.kotlin.jvm") version("1.6.20")
+    id("java-gradle-plugin")
+    id("maven-publish")
+}
+
+allprojects {
+    apply plugin: "org.jetbrains.kotlin.jvm"
+    apply plugin: "java-gradle-plugin"
+    apply plugin: "maven-publish"
+
+    group = "xyz.unifycraft.gradle"
+    version = "1.0.0"
+
+    sourceCompatibility = targetCompatibility = 1.8
+    compileJava.options.encoding = "UTF-8"
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    }
+}
