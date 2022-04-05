@@ -1,4 +1,4 @@
-package xyz.unifycraft.gradle.multiversion
+package xyz.unifycraft.gradle.loomconfig
 
 class MinecraftVersionException : RuntimeException {
     constructor(message: String) : super(message)

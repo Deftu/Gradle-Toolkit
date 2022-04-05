@@ -31,7 +31,6 @@ data class MCVersion(
     companion object {
         @JvmStatic fun from(project: Project): MCVersion {
             val parts = project.name.substring(0, project.name.indexOf("-")).split(".")
-            project.logger.lifecycle(parts.joinToString(" | "))
             val major = parts[0].toInt()
             val minor = parts[1].toInt()
             val patch = parts[2].toInt()
