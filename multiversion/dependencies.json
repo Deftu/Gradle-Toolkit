@@ -1,0 +1,64 @@
+{
+    "1.8.9": {
+        "forge": {
+            "mappings": "de.oceanlabs.mcp:mcp_stable:22-1.8.9",
+            "forge": "net.minecraftforge:forge:1.8.9-11.15.1.2318-1.8.9"
+        }
+    },
+    "1.12.2": {
+        "forge": {
+            "mappings": "de.oceanlabs.mcp.mcp_snapshot.1_12_2.20170615-1.12-forge-1.12.2-14.23.0.2486",
+            "forge": "net.minecraftforge:forge:1.12.2-14.23.0.2486"
+        }
+    },
+    "1.14.4": {
+        "forge": {
+            "mappings": "de.oceanlabs.mcp:mcp_snapshot:20190719-1.14.3",
+            "forge": "net.minecraftforge:forge:1.14.4-28.1.113"
+        },
+        "fabric": {
+            "mappings": "net.fabricmc:yarn:1.14.4+build.16:v2",
+            "loader": "net.fabricmc:fabric-loader:0.13.3"
+        }
+    },
+    "1.15.2": {
+        "forge": {
+            "mappings": "de.oceanlabs.mcp:mcp_snapshot:20200220-1.15.1@zip",
+            "forge": "net.minecraftforge:forge:1.15.2-31.1.18"
+        },
+        "fabric": {
+            "mappings": "net.fabricmc:yarn:1.15.2+build.15:v2",
+            "loader": "net.fabricmc:fabric-loader:0.13.3"
+        }
+    },
+    "1.16.5": {
+        "forge": {
+            "mappings": "de.oceanlabs.mcp:mcp_snapshot:20201028-1.16.3",
+            "forge": "net.minecraftforge:forge:1.16.2-33.0.61"
+        },
+        "fabric": {
+            "mappings": "net.fabricmc:yarn:1.16.4+build.1:v2",
+            "loader": "net.fabricmc:fabric-loader:0.13.3"
+        }
+    },
+    "1.17.1": {
+        "forge": {
+            "mappings": "official",
+            "forge": "net.minecraftforge:forge:1.17.1-37.0.112"
+        },
+        "fabric": {
+            "mappings": "net.fabricmc:yarn:1.17.1+build.63:v2",
+            "loader": "net.fabricmc:fabric-loader:0.13.3"
+        }
+    },
+    "1.18.2": {
+        "forge": {
+            "mappings": "official",
+            "forge": "net.minecraftforge:forge:1.18.1-39.0.79"
+        },
+        "fabric": {
+            "mappings": "net.fabricmc:yarn:1.18.2+build.1:v2",
+            "loader": "net.fabricmc:fabric-loader:0.13.3"
+        }
+    }
+}

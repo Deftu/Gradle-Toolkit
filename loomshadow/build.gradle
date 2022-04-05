@@ -1,0 +1,32 @@
+archivesBaseName = "loomshadow"
+
+repositories {
+    gradlePluginPortal()
+
+    maven { url("https://jitpack.io/") }
+    maven { url("https://maven.fabricmc.net") }
+    maven { url("https://maven.architectury.dev/") }
+    maven { url("https://repo.sk1er.club/repository/maven-public/") }
+}
+
+dependencies {
+    implementation(project(":base"))
+
+    // We use the Essential fork of Architectury Loom as
+    // it's the most stable version of Forge Loom.
+    compileOnly("gg.essential:architectury-loom:0.10.0.2")
+
+    // We require Shadow to be on the classpath so that
+    // we can create our own extensions of it that work
+    // with Loom.
+    compileOnly("com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:7.1.2")
+}
+
+gradlePlugin {
+    plugins {
+        create("loomshadow") {
+            id = "xyz.unifycraft.gradle.loomshadow"
+            implementationClass = "xyz.unifycraft.gradle.loomshadow.LoomShadowPlugin"
+        }
+    }
+}

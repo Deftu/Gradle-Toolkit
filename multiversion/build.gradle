@@ -1,0 +1,40 @@
+archivesBaseName = "multiversion"
+
+repositories {
+    gradlePluginPortal()
+
+    maven { url("https://jitpack.io/") }
+    maven { url("https://maven.fabricmc.net") }
+    maven { url("https://maven.architectury.dev/") }
+    maven { url("https://repo.sk1er.club/repository/maven-public/") }
+}
+
+dependencies {
+    implementation(project(":base"))
+
+    // We need GSON for mappings handling.
+    implementation("com.google.code.gson:gson:2.9.0")
+
+    // OkHttp is used for the HTTP client.
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+
+    // We need to use ReplayMod"s preprocessor for
+    // this plugin to be functional.
+    compileOnly("com.github.replaymod:preprocessor:7746c47")
+
+    // We will automatically set a pack200 provider/adapter.
+    // compileOnly("dev.architectury:architectury-pack200:0.1.3")
+
+    // We need to detect Loom, and add additional compatibility
+    // for Architectury Loom.
+    compileOnly("gg.essential:architectury-loom:0.10.0.2")
+}
+
+gradlePlugin {
+    plugins {
+        create("multiversion") {
+            id = "xyz.unifycraft.gradle.multiversion"
+            implementationClass = "xyz.unifycraft.gradle.multiversion.MultiversionPlugin"
+        }
+    }
+}
