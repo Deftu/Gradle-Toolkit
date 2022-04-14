@@ -1,7 +1,1 @@
 rootProject.name = "Gradle-Toolkit"
-
-include("base")
-include("unibuild")
-include("loomshadow")
-include("multiversion")
-include("loomconfig")

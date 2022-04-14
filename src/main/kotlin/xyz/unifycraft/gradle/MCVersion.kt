@@ -1,4 +1,4 @@
-package xyz.unifycraft.gradle.multiversion
+package xyz.unifycraft.gradle
 
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -17,9 +17,9 @@ data class MCVersion(
         }.joinToString(".")
 
     val isFabric: Boolean
-        get() = loader == ModLoader.FABRIC
+        get() = loader == ModLoader.fabric
     val isForge: Boolean
-        get() = loader == ModLoader.FORGE
+        get() = loader == ModLoader.forge
 
     val javaVersion: JavaVersion
         get() = when {
@@ -49,15 +49,24 @@ data class MCVersion(
     }
 }
 
-enum class ModLoader {
-    FORGE,
-    FABRIC;
+class ModLoader(
+    name: String
+) {
+    var name: String = name
+        private set
+    fun withName(name: String) = apply {
+        this.name = name
+    }
+
     companion object {
-        fun from(version: String): ModLoader {
+        @JvmStatic val forge = ModLoader("forge")
+        @JvmStatic val fabric = ModLoader("fabric")
+        @JvmStatic val other = ModLoader("other")
+        @JvmStatic fun from(version: String): ModLoader {
             return when {
-                version.contains("forge") -> FORGE
-                version.contains("fabric") -> FABRIC
-                else -> throw IllegalArgumentException("Unknown mod loader for version $version")
+                version.contains("forge") -> forge
+                version.contains("fabric") -> fabric
+                else -> other.withName(version.substringAfterLast("-"))
             }
         }
     }

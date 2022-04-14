@@ -1,25 +1,54 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version("1.6.20")
+    id("com.github.johnrengelman.shadow") version("7.1.2")
+    id("org.gradle.kotlin.kotlin-dsl") version("2.2.0")
     id("java-gradle-plugin")
     id("maven-publish")
 }
 
-allprojects {
-    apply plugin: "org.jetbrains.kotlin.jvm"
-    apply plugin: "java-gradle-plugin"
-    apply plugin: "maven-publish"
+archivesBaseName = "gradle-toolkit"
+group = "xyz.unifycraft.gradle"
+version = "1.0.0"
 
-    group = "xyz.unifycraft.gradle"
-    version = "1.0.0"
+compileJava.options.encoding = "UTF-8"
 
-    sourceCompatibility = targetCompatibility = 1.8
-    compileJava.options.encoding = "UTF-8"
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
 
-    repositories {
-        mavenCentral()
-    }
+    maven { url("https://jitpack.io/") }
+    maven { url("https://maven.fabricmc.net") }
+    maven { url("https://maven.minecraftforge.net/") }
+    maven { url("https://maven.architectury.dev/") }
+    maven { url("https://repo.essential.gg/repository/maven-public") }
+    maven { url("https://server.bbkr.space/artifactory/libs-release/") }
 
-    dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    }
+    mavenLocal()
 }
+
+configurations {
+    shade
+    implementation.extendsFrom(shade)
+}
+
+dependencies {
+    // Language
+    shade("org.jetbrains.kotlin:kotlin-stdlib")
+
+    // Architectury Loom
+    implementation("xyz.unifycraft.gradle.loom:architectury-loom:1.0.0")
+    implementation("dev.architectury:architectury-pack200:0.1.3")
+
+    // Preprocessing/multi-versioning
+    implementation("com.github.replaymod:preprocessor:7746c47")
+
+    // Shadow
+    implementation("com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:7.1.2")
+}
+
+shadowJar {
+    configurations = [project.configurations.shade]
+    archiveClassifier.set("")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+jar.finalizedBy(shadowJar)

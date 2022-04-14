@@ -7,8 +7,8 @@ object CommandLineHelper {
     fun fetchCommandOutput(project: Project, vararg commands: String): String {
         val output = ByteArrayOutputStream()
         project.exec {
-            it.commandLine(*commands)
-            it.standardOutput = output
+            commandLine(*commands)
+            standardOutput = output
         }
         return output.toString().trim { it <= ' ' }
     }
