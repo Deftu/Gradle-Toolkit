@@ -1,12 +1,36 @@
 package xyz.unifycraft.gradle
 
+import com.replaymod.gradle.preprocess.PreprocessExtension
+import com.replaymod.gradle.preprocess.PreprocessPlugin
+import net.fabricmc.loom.api.LoomGradleExtensionAPI
+import net.fabricmc.loom.bootstrap.LoomGradlePluginBootstrap
+import xyz.unifycraft.gradle.utils.registerMinecraftData
+
 plugins {
-    id("xyz.unifycraft.gradle.loomconfig")
+    java
 }
 
-val extension = extensions.create("multiversion", MultiversionExtension::class.java, project)
-val mcVersion = extension.mcVersion.getOrElse(MCVersion.from(project))
+val mcData = MCData.fromExisting(project)
+registerMinecraftData(mcData)
 
-val loomConfigExtension = extensions["loomConfig"] as LoomConfigExtension
-loomConfigExtension.forge.set(mcVersion.isForge)
-loomConfigExtension.version.set(mcVersion.versionStr)
+setupLoom()
+setupPreprocessor()
+
+fun setupLoom() {
+    extra["loom.platform"] = if (mcData.isFabric) "fabric" else "forge"
+    apply<LoomGradlePluginBootstrap>()
+    extensions.configure<LoomGradleExtensionAPI> {
+        runConfigs.all {
+            isIdeConfigGenerated = true
+        }
+    }
+}
+
+fun setupPreprocessor() {
+    apply<PreprocessPlugin>()
+    extensions.configure<PreprocessExtension> {
+        vars.put("MC", mcData.version)
+        vars.put("FORGE", if (mcData.isForge) 1 else 0)
+        vars.put("FABRIC", if (mcData.isFabric) 1 else 0)
+    }
+}

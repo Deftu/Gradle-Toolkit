@@ -3,7 +3,7 @@ package xyz.unifycraft.gradle
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 
-data class MCVersion(
+data class MCData(
     val major: Int,
     val minor: Int,
     val patch: Int,
@@ -20,6 +20,10 @@ data class MCVersion(
         get() = loader == ModLoader.fabric
     val isForge: Boolean
         get() = loader == ModLoader.forge
+    val isModLauncher: Boolean
+        get() = loader == ModLoader.forge && version >= 11400
+    val isLegacyForge: Boolean
+        get() = loader == ModLoader.forge && version < 11400
 
     val javaVersion: JavaVersion
         get() = when {
@@ -29,23 +33,26 @@ data class MCVersion(
         }
 
     companion object {
-        @JvmStatic fun from(project: Project): MCVersion {
+        @JvmStatic fun from(project: Project): MCData {
             val parts = project.name.substring(0, project.name.indexOf("-")).split(".")
             val major = parts[0].toInt()
             val minor = parts[1].toInt()
             val patch = parts[2].toInt()
             val loader = ModLoader.from(project.name)
-            return MCVersion(major, minor, patch, loader)
+            return MCData(major, minor, patch, loader)
         }
 
-        @JvmStatic fun from(version: String): MCVersion {
+        @JvmStatic fun from(version: String): MCData {
             val parts = version.split(".")
             val major = parts[0].toInt()
             val minor = parts[1].toInt()
             val patch = parts[2].toInt()
             val loader = ModLoader.from(version)
-            return MCVersion(major, minor, patch, loader)
+            return MCData(major, minor, patch, loader)
         }
+
+        @JvmStatic fun fromExisting(project: Project) =
+            project.extensions.findByType(MCData::class.java) ?: from(project)
     }
 }
 

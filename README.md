@@ -8,6 +8,13 @@ to create, improve and manage projects.
 
 ---
 
+## Notice
+Some of these utilities, and some
+of their code was taken from the
+[Essential Gradle Toolkit][egt].
+
+---
+
 ## Loom Shadow
 A Gradle plugin which allows you to use the
 Shadow plugin in your (Architectury) Loom
@@ -27,3 +34,5 @@ game version.
 A Gradle plugin which automatically configures
 most of Fabric and Architectury Loom's plugin
 extension for you with few changes needed.
+
+[egt]: https://github.com/EssentialGG/essential-gradle-toolkit
