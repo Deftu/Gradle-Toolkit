@@ -9,29 +9,22 @@ plugins {
 
 afterEvaluate {
     tasks.processResources {
-        val mcData: MCData = MCData.fromExisting(project)
+        val mcData = MCData.fromExisting(project)
+        val data = mapOf(
+            "version" to project.version,
+            "mcversion" to mcData.versionStr,
+            "fmcversion" to mcData.version,
+            "javaversion" to mcData.javaVersion,
+            "file" to mapOf("jarVersion" to project.version.toString().let { if (it[0].isDigit()) it else "0.$it" })
+        )
 
-        filesMatching("mcmod.info") {
-            expand(
-                "version" to project.version,
-                "mcversion" to mcData.versionStr
-            )
+        inputs.property("data", data)
+        filesMatching(listOf("mcmod.info", "fabric.mod.json", "mixins.*.json")) {
+            expand(data)
         }
 
-        filesMatching("fabric.mod.json") {
-            expand(
-                "version" to project.version,
-                "mcversion" to mcData.versionStr
-            )
-        }
-
-        filesMatching("mixins.*.json") {
-            expand(
-                "version" to project.version,
-                "mcversion" to mcData.versionStr,
-                "fmcversion" to mcData.version,
-                "javaversion" to mcData.javaVersion
-            )
-        }
+        if (!mcData.isFabric) exclude("fabric.mod.json")
+        if (!mcData.isModLauncher) exclude("META-INF/mods.toml")
+        if (!mcData.isLegacyForge) exclude("mcmod.info")
     }
 }

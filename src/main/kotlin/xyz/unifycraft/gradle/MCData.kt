@@ -34,7 +34,17 @@ data class MCData(
 
     companion object {
         @JvmStatic fun from(project: Project): MCData {
-            val parts = project.name.substring(0, project.name.indexOf("-")).split(".")
+            if (project.hasProperty("minecraft.version") && project.hasProperty("minecraft.loader")) {
+                val version = project.property("minecraft.version") as String
+                val loader = project.property("minecraft.loader") as String
+                val split = version.split(".")
+                return MCData(split[0].toInt(), split[1].toInt(), split[2].toInt(), ModLoader.from(loader))
+            }
+
+            var name = project.name
+            if (name.lastIndexOf("-") != -1)
+                name = name.substring(name.lastIndexOf("-") + 1)
+            val parts = name.split(".")
             val major = parts[0].toInt()
             val minor = parts[1].toInt()
             val patch = parts[2].toInt()
@@ -56,12 +66,12 @@ data class MCData(
     }
 }
 
-class ModLoader(
-    name: String
+data class ModLoader(
+    private val theName: String
 ) {
-    var name: String = name
+    var name: String = theName
         private set
-    fun withName(name: String) = apply {
+    fun withName(name: String) = copy().apply {
         this.name = name
     }
 
