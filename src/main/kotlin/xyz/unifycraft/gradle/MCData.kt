@@ -42,8 +42,8 @@ data class MCData(
             }
 
             var name = project.name
-            if (name.lastIndexOf("-") != -1)
-                name = name.substring(name.lastIndexOf("-") + 1)
+            if ("-" in name)
+                name = name.substring(0, name.indexOf("-"))
             val parts = name.split(".")
             val major = parts[0].toInt()
             val minor = parts[1].toInt()
