@@ -1,6 +1,6 @@
 package xyz.unifycraft.gradle
 
-object LoomInfo {
+object GameInfo {
     val infoMap: Map<String, Map<Int, String>> = mapOf(
         "fabric_loader_version" to mapOf(
             0 to "0.13.3"

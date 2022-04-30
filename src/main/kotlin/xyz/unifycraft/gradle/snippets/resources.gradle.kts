@@ -14,7 +14,6 @@ afterEvaluate {
             "version" to project.version,
             "mcversion" to mcData.versionStr,
             "fmcversion" to mcData.version,
-            "javaversion" to mcData.javaVersion,
             "file" to mapOf("jarVersion" to project.version.toString().let { if (it[0].isDigit()) it else "0.$it" })
         )
 

@@ -6,18 +6,18 @@ import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.loom
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.mappings
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.minecraft
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.modImplementation
-import net.fabricmc.loom.bootstrap.LoomGradlePluginBootstrap
 import org.gradle.kotlin.dsl.dependencies
-import xyz.unifycraft.gradle.LoomInfo.fetchFabricLoaderVersion
-import xyz.unifycraft.gradle.LoomInfo.fetchForgeVersion
-import xyz.unifycraft.gradle.LoomInfo.fetchMcpMappings
-import xyz.unifycraft.gradle.LoomInfo.fetchYarnMappings
+import xyz.unifycraft.gradle.GameInfo.fetchFabricLoaderVersion
+import xyz.unifycraft.gradle.GameInfo.fetchForgeVersion
+import xyz.unifycraft.gradle.GameInfo.fetchMcpMappings
+import xyz.unifycraft.gradle.GameInfo.fetchYarnMappings
 import xyz.unifycraft.gradle.MCData
+import xyz.unifycraft.gradle.MODGRADLE_ID
 import xyz.unifycraft.gradle.utils.propertyOr
 import xyz.unifycraft.gradle.utils.registerMinecraftData
 
 plugins {
-    id("xyz.unifycraft.gradle.loom")
+    id(MODGRADLE_ID)
 }
 
 val mcData = MCData.fromExisting(project)
@@ -42,8 +42,6 @@ dependencies {
         modImplementation(propertyOr("loom", "fabricloader", "net.fabricmc:fabric-loader:${fetchFabricLoaderVersion(0)}"))
     } else {
         "forge"(propertyOr("loom", "forge", "net.minecraftforge:forge:${fetchForgeVersion(mcData.version)}"))
-        apply<Pack200Plugin>()
-        loom.forge.pack200Provider.set(Pack200Adapter())
     }
 }
 
