@@ -6,6 +6,6 @@ pluginManager.withPlugin("java") {
     apply(plugin = "xyz.unifycraft.gradle.snippets.java")
     apply(plugin = "xyz.unifycraft.gradle.snippets.resources")
 }
-pluginManager.withPlugin(MODGRADLE_ID) {
+pluginManager.withPlugin("gg.essential.loom") {
     apply(plugin = "xyz.unifycraft.gradle.snippets.loom")
 }

@@ -4,7 +4,6 @@ import net.fabricmc.loom.api.LoomGradleExtensionAPI
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.*
-import xyz.unifycraft.gradle.MODGRADLE_ID
 
 /**
  * Specifies a Mixin config
@@ -21,10 +20,20 @@ fun LoomGradleExtensionAPI.useForgeMixin(namespace: String, file: Boolean = fals
  * Makes Loom use a command-line
  * argument.
  */
-fun LoomGradleExtensionAPI.useArgument(key: String, value: String, state: GameSide) = apply {
-    when (state) {
+fun LoomGradleExtensionAPI.useArgument(key: String, value: String, side: GameSide) = apply {
+    when (side) {
         GameSide.GLOBAL -> launchConfigs.all { arg(key, value) }
-        else -> launchConfigs[state.name.toLowerCase()].arg(key, value)
+        else -> launchConfigs[side.name.toLowerCase()].arg(key, value)
+    }
+}
+
+/**
+ * Makes Loom use a VM property/environment variable.
+ */
+fun LoomGradleExtensionAPI.useProperty(key: String, value: String, side: GameSide) = apply {
+    when (side) {
+        GameSide.GLOBAL -> launchConfigs.all { property(key, value) }
+        else -> launchConfigs[side.name.toLowerCase()].property(key, value)
     }
 }
 
@@ -33,15 +42,15 @@ fun LoomGradleExtensionAPI.useArgument(key: String, value: String, state: GameSi
  * your mod. This is primarily
  * used for legacy Forge modding.
  */
-fun Project.useTweaker(value: String) = apply {
-    pluginManager.withPlugin(MODGRADLE_ID) {
+fun Project.useMinecraftTweaker(value: String) = apply {
+    pluginManager.withPlugin("gg.essential.loom") {
         configure<LoomGradleExtensionAPI> {
             useArgument("--tweakClass", value, GameSide.CLIENT)
         }
     }
 
     pluginManager.withPlugin("java") {
-        configure<Jar> {
+        tasks.withType<Jar> {
             manifest {
                 attributes(mapOf(
                     "TweakClass" to value
@@ -55,10 +64,10 @@ fun Project.useTweaker(value: String) = apply {
  * Disables game run configs for
  * the specified game state.
  */
-fun LoomGradleExtensionAPI.disableRunConfigs(state: GameSide) = apply {
-    when (state) {
+fun LoomGradleExtensionAPI.disableRunConfigs(side: GameSide) = apply {
+    when (side) {
         GameSide.GLOBAL -> runConfigs.all { isIdeConfigGenerated = false }
-        else -> runConfigs[state.name.toLowerCase()].isIdeConfigGenerated = false
+        else -> runConfigs[side.name.toLowerCase()].isIdeConfigGenerated = false
     }
 }
 

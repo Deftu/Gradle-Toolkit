@@ -35,7 +35,7 @@ dependencies {
     shade("org.jetbrains.kotlin:kotlin-stdlib")
 
     // Architectury Loom
-    implementation("xyz.unifycraft.modgradle:ModGradle:1.0.0")
+    implementation("gg.essential:architectury-loom:0.10.0.1")
 
     // Preprocessing/multi-versioning
     implementation("com.github.replaymod:preprocessor:73d8bed")
@@ -43,7 +43,7 @@ dependencies {
     // Publishing
     implementation("com.modrinth.minotaur:Minotaur:2.1.1")
     implementation("gradle.plugin.com.matthewprenger:CurseGradle:1.4.0")
-    // TODO: implementation("com.github.breadmoirai:github-release:2.2.12")
+    implementation("com.github.breadmoirai:github-release:2.2.12")
 
     // Shadow
     implementation("com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:7.1.2")

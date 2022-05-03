@@ -3,10 +3,9 @@ package xyz.unifycraft.gradle.snippets
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import net.fabricmc.loom.LoomGradlePlugin
 import org.gradle.jvm.tasks.Jar
-import xyz.unifycraft.gradle.SHADOW_ID
 
 plugins {
-    id(SHADOW_ID)
+    id("com.github.johnrengelman.shadow")
 }
 
 configurations.create("unishade")

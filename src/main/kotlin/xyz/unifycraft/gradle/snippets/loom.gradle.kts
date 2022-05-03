@@ -1,7 +1,5 @@
 package xyz.unifycraft.gradle.snippets
 
-import dev.architectury.pack200.java.Pack200Adapter
-import dev.architectury.pack200.java.Pack200Plugin
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.loom
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.mappings
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.minecraft
@@ -12,12 +10,11 @@ import xyz.unifycraft.gradle.GameInfo.fetchForgeVersion
 import xyz.unifycraft.gradle.GameInfo.fetchMcpMappings
 import xyz.unifycraft.gradle.GameInfo.fetchYarnMappings
 import xyz.unifycraft.gradle.MCData
-import xyz.unifycraft.gradle.MODGRADLE_ID
 import xyz.unifycraft.gradle.utils.propertyOr
 import xyz.unifycraft.gradle.utils.registerMinecraftData
 
 plugins {
-    id(MODGRADLE_ID)
+    id("gg.essential.loom")
 }
 
 val mcData = MCData.fromExisting(project)
@@ -25,17 +22,18 @@ registerMinecraftData(mcData)
 dependencies {
     minecraft(propertyOr("loom", "minecraft", "com.mojang:minecraft:${mcData.versionStr}"))
 
-    val mappingsDependency = propertyOr(
+    propertyOr(
         "loom", "mappings", when {
             mcData.isForge && mcData.version < 11700  -> "de.oceanlabs.mcp:mcp_${fetchMcpMappings(mcData.version)}"
             mcData.isFabric -> "net.fabricmc:yarn:${fetchYarnMappings(mcData.version)}"
             else -> "official"
         }
-    )
-    if (mappingsDependency == "official") {
-        mappings(loom.officialMojangMappings())
-    } else {
-        mappings(mappingsDependency)
+    ).apply {
+        if (this == "official") {
+            mappings(loom.officialMojangMappings())
+        } else {
+            mappings(this)
+        }
     }
 
     if (mcData.isFabric) {

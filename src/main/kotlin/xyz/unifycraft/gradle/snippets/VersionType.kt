@@ -1,6 +1,6 @@
 package xyz.unifycraft.gradle.snippets
 
-enum class ModrinthVersionType(
+enum class VersionType(
     val value: String
 ) {
     RELEASE("release"),
