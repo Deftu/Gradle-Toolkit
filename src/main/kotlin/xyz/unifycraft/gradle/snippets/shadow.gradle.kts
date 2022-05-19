@@ -1,17 +1,20 @@
 package xyz.unifycraft.gradle.snippets
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import gradle.kotlin.dsl.accessors._06e55093d2b2796fa8ca19eb1df48cd4.implementation
 import net.fabricmc.loom.LoomGradlePlugin
 import org.gradle.jvm.tasks.Jar
 
 plugins {
     id("com.github.johnrengelman.shadow")
+    java
 }
 
-configurations.create("unishade")
-configurations["implementation"].extendsFrom(configurations["unishade"])
+val unishade by configurations.creating {
+    configurations.implementation.get().extendsFrom(this)
+}
 
-tasks.register("unishadowJar", ShadowJar::class.java) {
+val unishadowJar = tasks.register<ShadowJar>("unishadowJar") {
     group = "unishadow"
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     configurations = listOf(project.configurations["unishade"])
@@ -37,17 +40,16 @@ tasks.register("unishadowJar", ShadowJar::class.java) {
 }
 
 pluginManager.withPlugin("java") {
-    tasks["assemble"].dependsOn(tasks["unishadowJar"])
+    tasks["assemble"].dependsOn(unishadowJar)
 }
 
-if (plugins.hasPlugin(LoomGradlePlugin::class.java as Class<Plugin<Any>>)) {
+pluginManager.withPlugin("gg.essential.loom") {
     tasks["shadowJar"].doFirst {
-        throw GradleException("Incorrect task! You're looking for unishadowJar")
+        throw GradleException("Incorrect task! You're looking for unishadowJar.")
     }
 
     val remapJar = project.tasks["remapJar"] as Jar
-    remapJar.archiveClassifier.set("remapped")
     val unishadowJar = tasks["unishadowJar"] as ShadowJar
-    unishadowJar.dependsOn(remapJar)
-    unishadowJar.from(remapJar.archiveFile.get())
+    remapJar.dependsOn(unishadowJar)
+    remapJar.from(unishadowJar.archiveFile.get())
 }

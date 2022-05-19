@@ -1,7 +1,9 @@
 package xyz.unifycraft.gradle
 
+import groovy.lang.MissingPropertyException
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import xyz.unifycraft.gradle.utils.propertyOr
 
 data class MCData(
     val major: Int,
@@ -33,10 +35,15 @@ data class MCData(
         }
 
     companion object {
-        @JvmStatic fun from(project: Project): MCData {
+        @JvmStatic
+        fun from(project: Project): MCData {
+            val extension = project.extensions.findByName("mcData") as MCData?
+            if (extension != null)
+                return extension
+
             if (project.hasProperty("minecraft.version") && project.hasProperty("minecraft.loader")) {
-                val version = project.property("minecraft.version") as String
-                val loader = project.property("minecraft.loader") as String
+                val version = project.propertyOr("minecraft.version") ?: throw MissingPropertyException("minecraft.version")
+                val loader = project.propertyOr("minecraft.loader", project.propertyOr("loom.platform", null)) ?: throw MissingPropertyException("minecraft.loader")
                 val split = version.split(".")
                 return MCData(split[0].toInt(), split[1].toInt(), split[2].toInt(), ModLoader.from(loader))
             }
@@ -49,20 +56,10 @@ data class MCData(
             val minor = parts[1].toInt()
             val patch = parts[2].toInt()
             val loader = ModLoader.from(project.name)
-            return MCData(major, minor, patch, loader)
+            val data = MCData(major, minor, patch, loader)
+            project.extensions.add("mcData", data)
+            return data
         }
-
-        @JvmStatic fun from(version: String): MCData {
-            val parts = version.split(".")
-            val major = parts[0].toInt()
-            val minor = parts[1].toInt()
-            val patch = parts[2].toInt()
-            val loader = ModLoader.from(version)
-            return MCData(major, minor, patch, loader)
-        }
-
-        @JvmStatic fun fromExisting(project: Project) =
-            project.extensions.findByType(MCData::class.java) ?: from(project)
     }
 }
 
@@ -76,10 +73,15 @@ data class ModLoader(
     }
 
     companion object {
-        @JvmStatic val forge = ModLoader("forge")
-        @JvmStatic val fabric = ModLoader("fabric")
-        @JvmStatic val other = ModLoader("other")
-        @JvmStatic fun from(version: String): ModLoader {
+        @JvmStatic
+        val forge = ModLoader("forge")
+        @JvmStatic
+        val fabric = ModLoader("fabric")
+        @JvmStatic
+        val other = ModLoader("other")
+
+        @JvmStatic
+        fun from(version: String): ModLoader {
             return when {
                 version.contains("forge") -> forge
                 version.contains("fabric") -> fabric

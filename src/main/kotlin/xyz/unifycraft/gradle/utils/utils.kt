@@ -22,8 +22,11 @@ fun checkJavaVersion(minVersion: JavaVersion) {
     }
 }
 
-fun Project.registerMinecraftData(mcData: MCData) = apply {
-    if (extensions.findByName("mcData") == null) {
-        extensions.add("mcData", mcData)
-    }
-}
+fun Project.propertyOr(key: String, default: String? = null) =
+    (findProperty(key)
+        ?: System.getProperty(key)
+        ?: default
+        ?: throw GradleException("No default property for key \"$key\" found. Set it in gradle.properties, environment variables or in the system properties.")) as String?
+
+fun Project.propertyBoolOr(key: String, default: Boolean = false) =
+    propertyOr(key, default.toString()).toBoolean()

@@ -1,5 +1,6 @@
 package xyz.unifycraft.gradle.snippets
 
+import dev.architectury.pack200.java.Pack200Adapter
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.loom
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.mappings
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.minecraft
@@ -11,24 +12,22 @@ import xyz.unifycraft.gradle.GameInfo.fetchMcpMappings
 import xyz.unifycraft.gradle.GameInfo.fetchYarnMappings
 import xyz.unifycraft.gradle.MCData
 import xyz.unifycraft.gradle.utils.propertyOr
-import xyz.unifycraft.gradle.utils.registerMinecraftData
 
 plugins {
     id("gg.essential.loom")
 }
 
-val mcData = MCData.fromExisting(project)
-registerMinecraftData(mcData)
+val mcData = MCData.from(project)
 dependencies {
-    minecraft(propertyOr("loom", "minecraft", "com.mojang:minecraft:${mcData.versionStr}"))
+    minecraft(propertyOr("loom.minecraft", "com.mojang:minecraft:${mcData.versionStr}")!!)
 
     propertyOr(
-        "loom", "mappings", when {
+        "loom.mappings", when {
             mcData.isForge && mcData.version < 11700  -> "de.oceanlabs.mcp:mcp_${fetchMcpMappings(mcData.version)}"
             mcData.isFabric -> "net.fabricmc:yarn:${fetchYarnMappings(mcData.version)}"
             else -> "official"
         }
-    ).apply {
+    )!!.apply {
         if (this == "official") {
             mappings(loom.officialMojangMappings())
         } else {
@@ -37,16 +36,18 @@ dependencies {
     }
 
     if (mcData.isFabric) {
-        modImplementation(propertyOr("loom", "fabricloader", "net.fabricmc:fabric-loader:${fetchFabricLoaderVersion(0)}"))
+        modImplementation(propertyOr("loom.fabricloader", "net.fabricmc:fabric-loader:${fetchFabricLoaderVersion(0)}")!!)
     } else {
-        "forge"(propertyOr("loom", "forge", "net.minecraftforge:forge:${fetchForgeVersion(mcData.version)}"))
+        "forge"(propertyOr("loom.forge", "net.minecraftforge:forge:${fetchForgeVersion(mcData.version)}")!!)
+        loom.forge.pack200Provider.set(Pack200Adapter())
     }
 }
 
 // https://github.com/architectury/architectury-loom/pull/10
 if (mcData.isModLauncher) {
+    logger.lifecycle("> ModLauncher detected, updating Forge metadata sources.")
     (repositories.find {
-        it.name == "Forge"
+        it.name.contains("Forge", ignoreCase = true)
     } as? MavenArtifactRepository)?.metadataSources {
         mavenPom()
         artifact()

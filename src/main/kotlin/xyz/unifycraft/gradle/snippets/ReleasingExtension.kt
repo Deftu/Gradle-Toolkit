@@ -12,7 +12,7 @@ import org.gradle.kotlin.dsl.get
 import xyz.unifycraft.gradle.MCData
 import java.io.File
 
-abstract class ModPublishingExtension(
+abstract class ReleasingExtension(
     project: Project
 ) {
     abstract val version: Property<String>
@@ -34,7 +34,7 @@ abstract class ModPublishingExtension(
         @Nested get
 
     init {
-        val mcData = MCData.fromExisting(project)
+        val mcData = MCData.from(project)
         version.convention(project.version.toString())
         versionType.convention(VersionType.RELEASE)
         gameVersions.convention(listOf(mcData.versionStr))

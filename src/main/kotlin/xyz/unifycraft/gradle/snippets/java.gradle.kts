@@ -7,7 +7,7 @@ plugins {
     java
 }
 
-val mcData = MCData.fromExisting(project)
+val mcData = MCData.from(project)
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"

@@ -1,6 +1,7 @@
 package xyz.unifycraft.gradle.snippets
 
 import xyz.unifycraft.gradle.MCData
+import xyz.unifycraft.gradle.ModData
 
 plugins {
     java
@@ -8,12 +9,16 @@ plugins {
 
 afterEvaluate {
     tasks.processResources {
-        val mcData = MCData.fromExisting(project)
+        val mcData = MCData.from(project)
+        val modData = ModData.from(project)
         val data = mapOf(
-            "version" to project.version,
-            "mcversion" to mcData.versionStr,
-            "fmcversion" to mcData.version,
-            "file" to mapOf("jarVersion" to project.version.toString().let { if (it[0].isDigit()) it else "0.$it" })
+            "mod_version" to modData.version,
+            "mod_id" to modData.id,
+            "mod_name" to modData.name,
+            "mc_version" to mcData.versionStr,
+            "format_mc_version" to mcData.version,
+            "java_version" to if (mcData.javaVersion.isJava8) "JAVA_8" else if (mcData.javaVersion.isCompatibleWith(JavaVersion.VERSION_16)) "JAVA_16" else "JAVA_17",
+            "file" to mapOf("jarVersion" to modData.version.toString().let { if (it[0].isDigit()) it else "0.$it" })
         )
 
         inputs.property("data", data)
