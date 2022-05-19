@@ -41,7 +41,7 @@ data class MCData(
             if (extension != null)
                 return extension
 
-            if (project.hasProperty("minecraft.version") && project.hasProperty("minecraft.loader")) {
+            if (project.hasProperty("minecraft.version") && (project.hasProperty("minecraft.loader") || project.hasProperty("loom.platform"))) {
                 val version = project.propertyOr("minecraft.version") ?: throw MissingPropertyException("minecraft.version")
                 val loader = project.propertyOr("minecraft.loader", project.propertyOr("loom.platform", null)) ?: throw MissingPropertyException("minecraft.loader")
                 val split = version.split(".")
