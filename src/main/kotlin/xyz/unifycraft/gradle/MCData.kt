@@ -41,7 +41,10 @@ data class MCData(
             if (extension != null)
                 return extension
 
+            project.logger.lifecycle("> Minecraft data not set for ${project.name}. Generating it now.")
+
             if (project.hasProperty("minecraft.version") && (project.hasProperty("minecraft.loader") || project.hasProperty("loom.platform"))) {
+                project.logger.lifecycle("> Minecraft data found in project properties for ${project.name}. Using this.")
                 val version = project.propertyOr("minecraft.version") ?: throw MissingPropertyException("minecraft.version")
                 val loader = project.propertyOr("minecraft.loader", project.propertyOr("loom.platform", null)) ?: throw MissingPropertyException("minecraft.loader")
                 val split = version.split(".")

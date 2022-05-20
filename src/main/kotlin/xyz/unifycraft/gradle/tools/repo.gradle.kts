@@ -1,4 +1,4 @@
-package xyz.unifycraft.gradle.snippets
+package xyz.unifycraft.gradle.tools
 
 import xyz.unifycraft.gradle.utils.propertyOr
 

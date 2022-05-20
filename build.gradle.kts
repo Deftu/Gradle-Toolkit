@@ -38,7 +38,9 @@ val shade: Configuration by configurations.creating {
 
 dependencies {
     // Language
-    shade("org.jetbrains.kotlin:kotlin-stdlib")
+    implementation(gradleApi())
+    shade("org.jetbrains.kotlin:kotlin-stdlib:1.6.10")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10")
 
     // Architectury Loom
     implementation("gg.essential:architectury-loom:0.10.0.3")

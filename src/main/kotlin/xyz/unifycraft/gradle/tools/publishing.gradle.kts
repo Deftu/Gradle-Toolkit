@@ -1,4 +1,4 @@
-package xyz.unifycraft.gradle.snippets
+package xyz.unifycraft.gradle.tools
 
 import xyz.unifycraft.gradle.MCData
 import xyz.unifycraft.gradle.ModData
@@ -22,7 +22,7 @@ tasks {
                 artifactId = modData.name
                 groupId = modData.group
                 version = modData.version
-                if (pluginManager.hasPlugin("xyz.unifycraft.gradle.snippets.shadow")) {
+                if (pluginManager.hasPlugin("xyz.unifycraft.gradle.tools.shadow")) {
                     artifact("unishadowJar")
                     artifact("sourcesJar")
                 } else from(components["java"])

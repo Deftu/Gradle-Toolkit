@@ -1,18 +1,42 @@
 package xyz.unifycraft.gradle.utils
 
+import net.fabricmc.loom.LoomGradleExtension
 import net.fabricmc.loom.api.LoomGradleExtensionAPI
+import net.fabricmc.loom.extension.LoomGradleExtensionApiImpl
+import net.fabricmc.loom.extension.LoomGradleExtensionImpl
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.*
+import xyz.unifycraft.gradle.MCData
+
+// Internal
+
+private val LoomGradleExtensionImpl.theProject: Project
+    get() = javaClass.getDeclaredField("project").let {
+        it.isAccessible = true
+        it.get(this) as Project
+    }
+
+// Exposed
 
 /**
  * Specifies a Mixin config
  * for Forge.
  */
 @JvmOverloads
-fun LoomGradleExtensionAPI.useForgeMixin(namespace: String, file: Boolean = false) {
+fun LoomGradleExtensionImpl.useForgeMixin(namespace: String, file: Boolean = false) {
+    val value = if (file) namespace else "mixins.$namespace.json"
     forge {
-        mixinConfig(if (file) namespace else "mixins.$namespace.json")
+        mixinConfig(value)
+    }
+    theProject.pluginManager.withPlugin("java") {
+        theProject.tasks.withType<Jar> {
+            manifest {
+                attributes(mapOf(
+                    "MixinConfigs" to value
+                ))
+            }
+        }
     }
 }
 
@@ -20,7 +44,7 @@ fun LoomGradleExtensionAPI.useForgeMixin(namespace: String, file: Boolean = fals
  * Makes Loom use a command-line
  * argument.
  */
-fun LoomGradleExtensionAPI.useArgument(key: String, value: String, side: GameSide) = apply {
+fun LoomGradleExtensionImpl.useArgument(key: String, value: String, side: GameSide) = apply {
     when (side) {
         GameSide.GLOBAL -> launchConfigs.all { arg(key, value) }
         else -> launchConfigs[side.name.toLowerCase()].arg(key, value)
@@ -30,32 +54,34 @@ fun LoomGradleExtensionAPI.useArgument(key: String, value: String, side: GameSid
 /**
  * Makes Loom use a VM property/environment variable.
  */
-fun LoomGradleExtensionAPI.useProperty(key: String, value: String, side: GameSide) = apply {
+fun LoomGradleExtensionImpl.useProperty(key: String, value: String, side: GameSide) = apply {
     when (side) {
         GameSide.GLOBAL -> launchConfigs.all { property(key, value) }
         else -> launchConfigs[side.name.toLowerCase()].property(key, value)
     }
 }
 
-// TODO
 /**
  * Appends a tweaker to
- * your mod. This is primarily
- * used for legacy Forge modding.
+ * your mod.
+ *
+ * **Legacy Forge**
  */
-fun Project.useMinecraftTweaker(value: String) = apply {
-    pluginManager.withPlugin("gg.essential.loom") {
-        configure<LoomGradleExtensionAPI> {
-            useArgument("--tweakClass", value, GameSide.CLIENT)
-        }
-    }
-
-    pluginManager.withPlugin("java") {
-        tasks.withType<Jar> {
+fun LoomGradleExtensionImpl.useTweaker(value: String) = apply {
+    val mcData = MCData.from(theProject)
+    useArgument("--tweakClass", value, GameSide.CLIENT)
+    theProject.pluginManager.withPlugin("java") {
+        theProject.tasks.withType<Jar> {
             manifest {
-                attributes(mapOf(
+                val theAttributes = mutableMapOf<String, Any>(
                     "TweakClass" to value
-                ))
+                )
+                if (mcData.isLegacyForge) theAttributes.apply {
+                    this["ForceLoadAsMod"] = true
+                    this["TweakOrder"] = "0"
+                    this["ModSide"] = "CLIENT"
+                }
+                attributes(theAttributes)
             }
         }
     }
@@ -65,7 +91,7 @@ fun Project.useMinecraftTweaker(value: String) = apply {
  * Disables game run configs for
  * the specified game state.
  */
-fun LoomGradleExtensionAPI.disableRunConfigs(side: GameSide) = apply {
+fun LoomGradleExtensionImpl.disableRunConfigs(side: GameSide) = apply {
     when (side) {
         GameSide.GLOBAL -> runConfigs.all { isIdeConfigGenerated = false }
         else -> runConfigs[side.name.toLowerCase()].isIdeConfigGenerated = false

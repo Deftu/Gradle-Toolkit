@@ -1,4 +1,4 @@
-package xyz.unifycraft.gradle.snippets
+package xyz.unifycraft.gradle.tools
 
 import dev.architectury.pack200.java.Pack200Adapter
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.loom

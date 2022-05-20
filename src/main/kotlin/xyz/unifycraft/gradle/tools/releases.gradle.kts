@@ -1,4 +1,4 @@
-package xyz.unifycraft.gradle.snippets
+package xyz.unifycraft.gradle.tools
 
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseExtension
 import com.matthewprenger.cursegradle.CurseArtifact

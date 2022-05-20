@@ -16,10 +16,12 @@ data class ModData(
             if (extension != null)
                 return extension
 
+            project.logger.lifecycle("> Mod data not set for ${project.name}. Generating it now.")
+
             val name = project.propertyOr("mod.name", project.name)!!
             val id = project.propertyOr("mod.id", name.toLowerCase().replace(" ", "_"))!!
             val version = project.propertyOr("mod.version", project.version.toString())!!
-            val group = project.propertyOr("mod.group", "")!!
+            val group = project.propertyOr("mod.group", project.group.toString())!!
             val data = ModData(name, id, version, group)
             project.extensions.add("modData", data)
             return data

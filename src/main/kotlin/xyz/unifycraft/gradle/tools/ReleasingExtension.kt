@@ -1,4 +1,4 @@
-package xyz.unifycraft.gradle.snippets
+package xyz.unifycraft.gradle.tools
 
 import com.modrinth.minotaur.dependencies.Dependency
 import org.gradle.api.Action

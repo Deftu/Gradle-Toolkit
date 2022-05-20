@@ -11,7 +11,9 @@ plugins {
 
 val mcData = MCData.from(project)
 
+logger.lifecycle("> Setting up Architectury Loom")
 setupLoom()
+logger.lifecycle("> Setting up Preprocessor")
 setupPreprocessor()
 
 fun setupLoom() {

@@ -1,6 +1,7 @@
-package xyz.unifycraft.gradle.snippets
+package xyz.unifycraft.gradle.tools
 
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.kotlin.dsl.provider.KotlinGradleApiSpecProvider
 import xyz.unifycraft.gradle.MCData
 
 plugins {

@@ -1,8 +1,7 @@
-package xyz.unifycraft.gradle.snippets
+package xyz.unifycraft.gradle.tools
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import gradle.kotlin.dsl.accessors._06e55093d2b2796fa8ca19eb1df48cd4.implementation
-import net.fabricmc.loom.LoomGradlePlugin
 import org.gradle.jvm.tasks.Jar
 
 plugins {
