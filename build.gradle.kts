@@ -68,6 +68,7 @@ tasks {
     named<Jar>("jar") {
         archiveBaseName.set(projectName)
         dependsOn("shadowJar")
+        from("LICENSE")
     }
 
     named<ShadowJar>("shadowJar") {
