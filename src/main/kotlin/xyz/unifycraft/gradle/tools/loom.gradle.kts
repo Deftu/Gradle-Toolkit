@@ -18,6 +18,7 @@ plugins {
 }
 
 val mcData = MCData.from(project)
+extensions.create("loomHelper", LoomHelperExtension::class.java)
 dependencies {
     minecraft(propertyOr("loom.minecraft", "com.mojang:minecraft:${mcData.versionStr}")!!)
 

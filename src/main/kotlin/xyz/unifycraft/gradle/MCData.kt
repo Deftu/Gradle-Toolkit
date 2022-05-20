@@ -48,7 +48,9 @@ data class MCData(
                 val version = project.propertyOr("minecraft.version") ?: throw MissingPropertyException("minecraft.version")
                 val loader = project.propertyOr("minecraft.loader", project.propertyOr("loom.platform", null)) ?: throw MissingPropertyException("minecraft.loader")
                 val split = version.split(".")
-                return MCData(split[0].toInt(), split[1].toInt(), split[2].toInt(), ModLoader.from(loader))
+                val data = MCData(split[0].toInt(), split[1].toInt(), split[2].toInt(), ModLoader.from(loader))
+                project.extensions.add("mcData", data)
+                return data
             }
 
             var name = project.name
