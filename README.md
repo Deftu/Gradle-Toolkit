@@ -148,8 +148,8 @@ processing with common replacements.
 `${mod_version}`: The version of your mod.\
 `${mod_id}`: Your mod's mod ID.\
 `${mod_name}`: The name of your mod.\
-`${mc_version}`: The current Minecraft version.
-`${format_mc_version}`: The current Minecraft version conformed to a padded integer.
+`${mc_version}`: The current Minecraft version.\
+`${format_mc_version}`: The current Minecraft version conformed to a padded integer.\
 `${java_version}`: The current Java version, conformed to "JAVA_8", "JAVA_16" and "JAVA_17".
 </details>
 
