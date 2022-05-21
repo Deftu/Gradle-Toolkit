@@ -1,5 +1,13 @@
 package xyz.unifycraft.gradle
 
+import xyz.unifycraft.gradle.utils.checkGradleVersion
+import xyz.unifycraft.gradle.utils.checkJavaVersion
+
+// Check if we're in a Java 17 and Gradle 7 environment.
+checkJavaVersion(JavaVersion.VERSION_17)
+checkGradleVersion(GradleVersion.version("7.0.0"))
+
+// Apply default plugins.
 apply(plugin = "xyz.unifycraft.gradle.tools.configure")
 apply(plugin = "xyz.unifycraft.gradle.tools.repo")
 
@@ -19,3 +27,6 @@ pluginManager.withPlugin("maven-publish") {
 pluginManager.withPlugin("gg.essential.loom") {
     apply(plugin = "xyz.unifycraft.gradle.tools.loom")
 }
+
+// Perform our logic.
+extensions.create<ToolkitExtension>("unifycraft")

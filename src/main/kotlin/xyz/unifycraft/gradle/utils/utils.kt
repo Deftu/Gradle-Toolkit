@@ -3,6 +3,7 @@ package xyz.unifycraft.gradle.utils
 import org.gradle.api.GradleException
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.util.GradleVersion
 import xyz.unifycraft.gradle.MCData
 
 /**
@@ -19,6 +20,12 @@ fun checkJavaVersion(minVersion: JavaVersion) {
                 "Current JAVA_HOME: ${System.getenv("JAVA_HOME")}"
             },
         ).joinToString("\n"))
+    }
+}
+
+fun checkGradleVersion(minVersion: GradleVersion) {
+    if (GradleVersion.current() < minVersion) {
+        throw GradleException("Gradle $minVersion is required to build (running ${GradleVersion.current()}).")
     }
 }
 
