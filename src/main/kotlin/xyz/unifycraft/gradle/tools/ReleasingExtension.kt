@@ -43,7 +43,7 @@ abstract class ReleasingExtension(
             file.convention(project.tasks["jar"] as Jar)
         }
 
-        changelog.convention("No changelog was specified.")
+        changelog.convention("No changelog provided.")
     }
 
     // Platform specific

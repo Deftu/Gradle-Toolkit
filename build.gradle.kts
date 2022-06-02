@@ -55,6 +55,7 @@ dependencies {
     implementation("com.github.breadmoirai:github-release:2.2.12")
 
     // Other
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.6.10")
     implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
     implementation("net.kyori:blossom:1.3.0")
 }

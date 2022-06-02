@@ -30,7 +30,7 @@ fun checkGradleVersion(minVersion: GradleVersion) {
 }
 
 fun Project.propertyOr(key: String, default: String? = null) =
-    (findProperty(key)
+    (project.findProperty(key)
         ?: System.getProperty(key)
         ?: default
         ?: throw GradleException("No default property for key \"$key\" found. Set it in gradle.properties, environment variables or in the system properties.")) as String?

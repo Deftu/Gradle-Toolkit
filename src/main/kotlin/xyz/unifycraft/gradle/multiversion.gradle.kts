@@ -17,7 +17,7 @@ logger.lifecycle("> Setting up Preprocessor")
 setupPreprocessor()
 
 fun setupLoom() {
-    extra["loom.platform"] = if (mcData.isFabric) "fabric" else "forge"
+    extra.set("loom.platform", if (mcData.isFabric) "fabric" else "forge")
     apply<LoomGradlePluginBootstrap>()
     extensions.configure<LoomGradleExtensionAPI> {
         runConfigs.all {
