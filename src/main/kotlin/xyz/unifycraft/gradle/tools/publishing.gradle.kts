@@ -1,12 +1,12 @@
 package xyz.unifycraft.gradle.tools
 
-import gradle.kotlin.dsl.accessors._06e55093d2b2796fa8ca19eb1df48cd4.java
-import gradle.kotlin.dsl.accessors._1c15fb89b58737430628bcc1daf4c274.publishing
 import xyz.unifycraft.gradle.MCData
 import xyz.unifycraft.gradle.ModData
+import java.net.URI
 
 plugins {
     `maven-publish`
+    signing
     java
 }
 
@@ -37,6 +37,39 @@ afterEvaluate {
                     }
                 } else from(components["java"])
             }
+        }
+
+        repositories {
+            if (project.hasProperty("unifycraft.publishing.username") && project.hasProperty("unifycraft.publishing.password")) {
+                fun MavenArtifactRepository.applyCredentials() {
+                    credentials {
+                        username = property("unifycraft.publishing.username")?.toString()
+                        password = property("unifycraft.publishing.password")?.toString()
+                    }
+                    authentication {
+                        create<BasicAuthentication>("basic")
+                    }
+                }
+
+                maven {
+                    name = "UnifyCraftRelease"
+                    url = URI.create("https://maven.unifycraft.xyz/releases")
+                    applyCredentials()
+                }
+
+                maven {
+                    name = "UnifyCraftSnapshots"
+                    url = URI.create("https://maven.unifycraft.xyz/snapshots")
+                    applyCredentials()
+                }
+            }
+        }
+    }
+
+    if (project.hasProperty("signing.password")) {
+        signing {
+            publishing.publications.forEach(::sign)
+            sign(configurations.archives.get())
         }
     }
 }

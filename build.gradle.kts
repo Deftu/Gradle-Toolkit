@@ -9,9 +9,6 @@ plugins {
 }
 
 val projectName: String by project
-val projectDescription: String by project
-val projectUrl: String by project
-val projectScm: String by project
 val projectVersion: String by project
 val projectGroup: String by project
 
@@ -83,22 +80,6 @@ afterEvaluate {
     publishing {
         publications.filterIsInstance<MavenPublication>().forEach { publication ->
             publication.pom {
-                name.set(projectName)
-                description.set(projectDescription)
-                url.set(projectUrl)
-
-                scm {
-                    url.set(projectScm)
-                }
-
-                developers {
-                    developer {
-                        id.set("unifycraft")
-                        name.set("UnifyCraft Team")
-                        email.set("contact@unifycraft.xyz")
-                    }
-                }
-
                 licenses {
                     license {
                         name.set("GNU Lesser General Public License v3.0")
@@ -111,11 +92,14 @@ afterEvaluate {
         repositories {
             if (project.hasProperty("unifycraft.publishing.username") && project.hasProperty("unifycraft.publishing.password")) {
                 maven {
-                    name = "MavenCentral"
-                    url = URI.create("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                    name = "UnifyCraft-Release"
+                    url = URI.create("https://maven.unifycraft.xyz/releases")
                     credentials {
                         username = property("unifycraft.publishing.username")?.toString()
                         password = property("unifycraft.publishing.password")?.toString()
+                    }
+                    authentication {
+                        create<BasicAuthentication>("basic")
                     }
                 }
             }

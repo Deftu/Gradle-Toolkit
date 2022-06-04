@@ -7,6 +7,9 @@ import xyz.unifycraft.gradle.utils.checkJavaVersion
 checkJavaVersion(JavaVersion.VERSION_17)
 checkGradleVersion(GradleVersion.version("7.0.0"))
 
+// Initialize Github data.
+GithubData.from(project)
+
 // Apply default plugins.
 apply(plugin = "xyz.unifycraft.gradle.tools.configure")
 apply(plugin = "xyz.unifycraft.gradle.tools.repo")
