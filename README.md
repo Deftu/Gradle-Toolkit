@@ -1,6 +1,6 @@
 <div align="center">
 
-# `Gradle Toolkit`
+# [`Gradle Toolkit`]
 UnifyCraft's full Gradle toolkit, used
 to create, improve and manage projects.
 
