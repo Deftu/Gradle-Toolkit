@@ -27,13 +27,21 @@ afterEvaluate {
                 groupId = modData.group
                 version = modData.version
                 if (pluginManager.hasPlugin("xyz.unifycraft.gradle.tools.shadow")) {
-                    artifact("unishadowJar")
-                    artifact("sourcesJar")
+                    val unishadowJar by tasks.getting
+                    artifact(unishadowJar)
+                    val sourcesJar by tasks.getting
+                    artifact(sourcesJar)
+
                     pluginManager.withPlugin("java") {
                         val javadocJar = project.tasks.findByName("javadocJar") as Jar?
                         if (javadocJar != null && javadocJar.enabled) {
                             artifact(javadocJar)
                         }
+                    }
+
+                    val dokkaJavadocJar = project.tasks.findByName("dokkaJavadocJar") as Jar?
+                    if (dokkaJavadocJar != null && dokkaJavadocJar.enabled) {
+                        artifact(dokkaJavadocJar)
                     }
                 } else from(components["java"])
             }

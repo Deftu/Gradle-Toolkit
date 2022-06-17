@@ -91,9 +91,7 @@ afterEvaluate {
 
         repositories {
             if (project.hasProperty("unifycraft.publishing.username") && project.hasProperty("unifycraft.publishing.password")) {
-                maven {
-                    name = "UnifyCraft-Release"
-                    url = URI.create("https://maven.unifycraft.xyz/releases")
+                fun MavenArtifactRepository.applyCredentials() {
                     credentials {
                         username = property("unifycraft.publishing.username")?.toString()
                         password = property("unifycraft.publishing.password")?.toString()
@@ -101,6 +99,18 @@ afterEvaluate {
                     authentication {
                         create<BasicAuthentication>("basic")
                     }
+                }
+
+                maven {
+                    name = "UnifyCraftRelease"
+                    url = URI.create("https://maven.unifycraft.xyz/releases")
+                    applyCredentials()
+                }
+
+                maven {
+                    name = "UnifyCraftSnapshots"
+                    url = URI.create("https://maven.unifycraft.xyz/snapshots")
+                    applyCredentials()
                 }
             }
         }

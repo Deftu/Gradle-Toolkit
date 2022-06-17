@@ -47,8 +47,8 @@ pluginManager.withPlugin("gg.essential.loom") {
         throw GradleException("Incorrect task! You're looking for unishadowJar.")
     }
 
-    val remapJar = project.tasks["remapJar"] as Jar
     val unishadowJar = tasks["unishadowJar"] as ShadowJar
-    remapJar.dependsOn(unishadowJar)
-    remapJar.from(unishadowJar.archiveFile.get())
+    val remapJar = project.tasks["remapJar"] as Jar
+    unishadowJar.dependsOn(remapJar)
+    unishadowJar.from(remapJar.archiveFile.get())
 }
