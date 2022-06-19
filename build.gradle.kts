@@ -5,7 +5,6 @@ plugins {
     id("com.github.johnrengelman.shadow") version("7.1.2")
     `kotlin-dsl`
     `maven-publish`
-    signing
 }
 
 val projectName: String by project
@@ -40,19 +39,19 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10")
 
     // Architectury Loom
-    implementation("gg.essential:architectury-loom:0.10.0.3")
+    implementation("gg.essential:architectury-loom:0.10.0.4")
     implementation("dev.architectury:architectury-pack200:0.1.3")
 
     // Preprocessing/multi-versioning
-    implementation("com.github.replaymod:preprocessor:73d8bed")
+    implementation("com.github.replaymod:preprocessor:48e02ad")
 
     // Publishing
-    implementation("com.modrinth.minotaur:Minotaur:2.1.1")
-    implementation("gradle.plugin.com.matthewprenger:CurseGradle:1.4.0")
-    implementation("com.github.breadmoirai:github-release:2.2.12")
+    implementation("com.modrinth.minotaur:Minotaur:2.3.1")
+    implementation("me.hyperionmc.cursegradle:CurseGradle:2.0.1")
+    implementation("com.github.breadmoirai:github-release:2.4.1")
 
     // Other
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.6.10")
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.6.20")
     implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
     implementation("net.kyori:blossom:1.3.0")
 }
@@ -78,17 +77,6 @@ tasks {
 
 afterEvaluate {
     publishing {
-        publications.filterIsInstance<MavenPublication>().forEach { publication ->
-            publication.pom {
-                licenses {
-                    license {
-                        name.set("GNU Lesser General Public License v3.0")
-                        url.set("https://www.gnu.org/licenses/lgpl-3.0.en.html")
-                    }
-                }
-            }
-        }
-
         repositories {
             if (project.hasProperty("unifycraft.publishing.username") && project.hasProperty("unifycraft.publishing.password")) {
                 fun MavenArtifactRepository.applyCredentials() {
@@ -113,13 +101,6 @@ afterEvaluate {
                     applyCredentials()
                 }
             }
-        }
-    }
-
-    if (project.hasProperty("signing.password")) {
-        signing {
-            publishing.publications.forEach(::sign)
-            sign(configurations.archives.get())
         }
     }
 }

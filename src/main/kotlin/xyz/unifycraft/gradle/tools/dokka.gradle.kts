@@ -13,13 +13,7 @@ java {
     withJavadocJar()
 }
 
-val dokkaJavadocJar by tasks.register<Jar>("dokkaJavadocJar") {
+tasks.named<Jar>("javadocJar") {
     dependsOn(tasks.dokkaJavadoc)
-    from(tasks.dokkaJavadoc.flatMap { it.outputDirectory })
-    archiveClassifier.set("dokka-javadoc")
-}
-
-artifacts {
-    archives(tasks.named("javadocJar"))
-    archives(dokkaJavadocJar)
+    from(tasks.dokkaJavadoc)
 }
