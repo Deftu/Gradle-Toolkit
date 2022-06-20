@@ -6,6 +6,8 @@ to create, improve and manage projects.
 
 </div>
 
+![Repository badge](https://maven.unifycraft.xyz/api/badge/latest/releases/xyz/unifycraft/gradle/gradle-toolkit?color=912fed&name=Gradle+Toolkit)
+
 ---
 
 ## Notice
