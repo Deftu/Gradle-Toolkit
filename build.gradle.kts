@@ -17,26 +17,23 @@ group = projectGroup
 repositories {
     mavenCentral()
     gradlePluginPortal()
+    maven("https://maven.unifycraft.xyz/releases/")
 
     maven("https://jitpack.io/")
-    maven("https://maven.fabricmc.net")
+    maven("https://maven.fabricmc.net/")
     maven("https://maven.minecraftforge.net/")
     maven("https://maven.architectury.dev/")
-    maven("https://repo.essential.gg/repository/maven-public")
-    maven("https://server.bbkr.space/artifactory/libs-release/")
+    maven("https://repo.essential.gg/repository/maven-public/")
 
+    maven("https://maven.unifycraft.xyz/snapshots/")
     mavenLocal()
-}
-
-val shade: Configuration by configurations.creating {
-    configurations.implementation.get().extendsFrom(this)
 }
 
 dependencies {
     // Language
     implementation(gradleApi())
-    shade("org.jetbrains.kotlin:kotlin-stdlib:1.6.10")
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.7.0")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.0")
 
     // Architectury Loom
     implementation("gg.essential:architectury-loom:0.10.0.4")
@@ -45,15 +42,15 @@ dependencies {
     // Preprocessing/multi-versioning
     implementation("com.github.replaymod:preprocessor:48e02ad")
 
+    // Other
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.7.0")
+    implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
+    implementation("net.kyori:blossom:1.3.1-UNIFYCRAFT")
+
     // Publishing
     implementation("com.modrinth.minotaur:Minotaur:2.3.1")
-    implementation("me.hyperionmc.cursegradle:CurseGradle:2.0.1")
-    implementation("com.github.breadmoirai:github-release:2.4.1")
-
-    // Other
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.6.20")
-    implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
-    implementation("net.kyori:blossom:1.3.0")
+    implementation("me.hypherionmc.cursegradle:CurseGradle:2.0.1")
+    implementation("com.github.breadmoirai:github-release:2.2.12")
 }
 
 java {
@@ -64,14 +61,7 @@ java {
 tasks {
     named<Jar>("jar") {
         archiveBaseName.set(projectName)
-        dependsOn("shadowJar")
         from("LICENSE")
-    }
-
-    named<ShadowJar>("shadowJar") {
-        configurations = listOf(shade)
-        archiveClassifier.set("")
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
 }
 

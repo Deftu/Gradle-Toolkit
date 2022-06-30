@@ -38,11 +38,6 @@ afterEvaluate {
                             artifact(javadocJar)
                         }
                     }
-
-                    val dokkaJavadocJar = project.tasks.findByName("dokkaJavadocJar") as Jar?
-                    if (dokkaJavadocJar != null && dokkaJavadocJar.enabled) {
-                        artifact(dokkaJavadocJar)
-                    }
                 } else from(components["java"])
             }
         }
