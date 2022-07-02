@@ -28,7 +28,9 @@ afterEvaluate {
                 version = modData.version
                 if (pluginManager.hasPlugin("xyz.unifycraft.gradle.tools.shadow")) {
                     val unishadowJar by tasks.getting
-                    artifact(unishadowJar)
+                    artifact(unishadowJar) {
+                        classifier = null
+                    }
                     val sourcesJar by tasks.getting
                     artifact(sourcesJar)
 
