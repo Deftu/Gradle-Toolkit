@@ -1,8 +1,11 @@
 package xyz.unifycraft.gradle.tools
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import gradle.kotlin.dsl.accessors._06e55093d2b2796fa8ca19eb1df48cd4.implementation
+import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.implementation
+import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.remapJar
+import gradle.kotlin.dsl.accessors._8d08aa9ad8bc8c840f59d6f15750154b.shadowJar
 import org.gradle.jvm.tasks.Jar
+import xyz.unifycraft.gradle.ModData
 
 plugins {
     id("com.github.johnrengelman.shadow")
@@ -43,12 +46,24 @@ pluginManager.withPlugin("java") {
 }
 
 pluginManager.withPlugin("gg.essential.loom") {
-    tasks["shadowJar"].doFirst {
-        throw GradleException("Incorrect task! You're looking for unishadowJar.")
-    }
+    tasks {
+        shadowJar {
+            doFirst {
+                throw GradleException("Incorrect task! You're looking for unishadowJar.")
+            }
+        }
+        
+        unishadowJar {
+            archiveClassifier.set("dev")
+        }
 
-    val unishadowJar = tasks["unishadowJar"] as ShadowJar
-    val remapJar = project.tasks["remapJar"] as Jar
-    unishadowJar.dependsOn(remapJar)
-    unishadowJar.from(remapJar.archiveFile.get())
+        remapJar {
+            dependsOn(unishadowJar)
+            archiveClassifier.set("")
+            input.set(unishadowJar.get().archiveFile)
+
+            val modData = ModData.from(project)
+            archiveBaseName.set(modData.name)
+        }
+    }
 }
