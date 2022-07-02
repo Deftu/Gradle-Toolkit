@@ -1,5 +1,4 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import java.net.URI
 
 plugins {
     id("com.github.johnrengelman.shadow") version("7.1.2")
@@ -17,14 +16,15 @@ group = projectGroup
 repositories {
     mavenCentral()
     gradlePluginPortal()
+    maven("https://maven.unifycraft.xyz/releases/")
 
     maven("https://jitpack.io/")
-    maven("https://maven.fabricmc.net")
+    maven("https://maven.fabricmc.net/")
     maven("https://maven.minecraftforge.net/")
     maven("https://maven.architectury.dev/")
     maven("https://repo.essential.gg/repository/maven-public")
-    maven("https://server.bbkr.space/artifactory/libs-release/")
 
+    maven("https://maven.unifycraft.xyz/snapshots/")
     mavenLocal()
 }
 
@@ -45,15 +45,15 @@ dependencies {
     // Preprocessing/multi-versioning
     implementation("com.github.replaymod:preprocessor:48e02ad")
 
-    // Publishing
-    implementation("com.modrinth.minotaur:Minotaur:2.3.1")
-    implementation("me.hyperionmc.cursegradle:CurseGradle:2.0.1")
-    implementation("com.github.breadmoirai:github-release:2.4.1")
-
     // Other
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.6.20")
     implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
     implementation("net.kyori:blossom:1.3.0")
+
+    // Publishing
+    implementation("com.modrinth.minotaur:Minotaur:2.3.1")
+    implementation("me.hypherionmc.cursegradle:CurseGradle:2.0.1")
+    implementation("com.github.breadmoirai:github-release:2.2.12")
 }
 
 java {
@@ -91,13 +91,13 @@ afterEvaluate {
 
                 maven {
                     name = "UnifyCraftRelease"
-                    url = URI.create("https://maven.unifycraft.xyz/releases")
+                    url = uri("https://maven.unifycraft.xyz/releases")
                     applyCredentials()
                 }
 
                 maven {
                     name = "UnifyCraftSnapshots"
-                    url = URI.create("https://maven.unifycraft.xyz/snapshots")
+                    url = uri("https://maven.unifycraft.xyz/snapshots")
                     applyCredentials()
                 }
             }

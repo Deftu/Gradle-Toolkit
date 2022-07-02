@@ -35,6 +35,14 @@ abstract class LoomHelperExtension(
         }
     }
 
+    @JvmOverloads
+    fun useMixinRefMap(namespace: String, file: Boolean = false) {
+        val value = if (file) namespace else "mixins.$namespace.refmap.json"
+        withLoom {
+            mixin.defaultRefmapName.set(value)
+        }
+    }
+
     /**
      * Makes Loom use a command-line
      * argument.
