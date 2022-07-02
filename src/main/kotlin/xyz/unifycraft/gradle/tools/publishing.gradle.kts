@@ -1,8 +1,10 @@
 package xyz.unifycraft.gradle.tools
 
+import gradle.kotlin.dsl.accessors._89edf7476531f98eff64d602eb448354.publishing
+import gradle.kotlin.dsl.accessors._89edf7476531f98eff64d602eb448354.signing
+import gradle.kotlin.dsl.accessors._ca59d7b33a587bae1dcf00e1f22a5064.java
 import xyz.unifycraft.gradle.MCData
 import xyz.unifycraft.gradle.ModData
-import java.net.URI
 
 plugins {
     `maven-publish`
@@ -74,7 +76,6 @@ afterEvaluate {
     if (project.hasProperty("signing.password")) {
         signing {
             publishing.publications.forEach(::sign)
-            sign(configurations.archives.get())
         }
     }
 }
