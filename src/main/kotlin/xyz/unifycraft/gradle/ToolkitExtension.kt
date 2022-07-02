@@ -19,5 +19,18 @@ abstract class ToolkitExtension(
         project.dependencies.add("compileOnly", "$apiDependency:$apiVersion")
     }
 
+    fun useDevAuth() {
+        val repo = "https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1"
+        project.repositories.maven {
+            url = project.uri(repo)
+            name = "DJtheRedstoner DevAuth"
+        }
+        val mcData = MCData.from(project)
+        val module = if (mcData.isFabric) "fabric" else if (mcData.isForge && mcData.version <= 11202) "forge-legacy" else "forge-latest"
+        val dependency = "me.djtheredstoner:DevAuth-$module"
+        val version = DependencyHelper.fetchLatestRelease(repo, dependency)
+        project.dependencies.add("runtimeOnly", "$dependency:$version")
+    }
+
     // TODO: useUniCore
 }
