@@ -1,11 +1,11 @@
 package xyz.unifycraft.gradle.tools
 
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseExtension
-import me.hypherionmc.cursegradle.CurseArtifact
-import me.hypherionmc.cursegradle.CurseExtension
-import me.hypherionmc.cursegradle.CurseProject
-import me.hypherionmc.cursegradle.CurseRelation
-import me.hypherionmc.cursegradle.Options
+import com.matthewprenger.cursegradle.CurseArtifact
+import com.matthewprenger.cursegradle.CurseExtension
+import com.matthewprenger.cursegradle.CurseProject
+import com.matthewprenger.cursegradle.CurseRelation
+import com.matthewprenger.cursegradle.Options
 import com.modrinth.minotaur.ModrinthExtension
 import gradle.kotlin.dsl.accessors._72efc76fad8c8cf3476d335fb6323bde.jar
 import xyz.unifycraft.gradle.MCData
@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets
 plugins {
     java
     id("com.modrinth.minotaur")
-    id("me.hypherionmc.cursegradle")
+    id("com.matthewprenger.cursegradle")
     id("com.github.breadmoirai.github-release")
 }
 
