@@ -1,7 +1,5 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 plugins {
-    id("com.github.johnrengelman.shadow") version("7.1.2")
+    kotlin("jvm") version("1.7.0")
     `kotlin-dsl`
     `maven-publish`
 }
@@ -28,15 +26,11 @@ repositories {
     mavenLocal()
 }
 
-val shade: Configuration by configurations.creating {
-    configurations.implementation.get().extendsFrom(this)
-}
-
 dependencies {
     // Language
     implementation(gradleApi())
-    shade("org.jetbrains.kotlin:kotlin-stdlib:1.6.10")
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10")
+    implementation(kotlin("stdlib"))
+    implementation(kotlin("gradle-plugin"))
 
     // Architectury Loom
     implementation("gg.essential:architectury-loom:0.10.0.4")
@@ -46,9 +40,9 @@ dependencies {
     implementation("com.github.replaymod:preprocessor:48e02ad")
 
     // Other
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.6.20")
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.7.0")
     implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
-    implementation("net.kyori:blossom:1.3.0")
+    implementation("net.kyori:blossom:1.3.2-UNIFYCRAFT")
 
     // Publishing
     implementation("com.modrinth.minotaur:Minotaur:2.3.1")
@@ -64,14 +58,7 @@ java {
 tasks {
     named<Jar>("jar") {
         archiveBaseName.set(projectName)
-        dependsOn("shadowJar")
         from("LICENSE")
-    }
-
-    named<ShadowJar>("shadowJar") {
-        configurations = listOf(shade)
-        archiveClassifier.set("")
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
 }
 

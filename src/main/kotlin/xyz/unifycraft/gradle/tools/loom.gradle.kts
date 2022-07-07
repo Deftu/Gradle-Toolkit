@@ -47,7 +47,6 @@ dependencies {
 
 // https://github.com/architectury/architectury-loom/pull/10
 if (mcData.isModLauncher) {
-    logger.lifecycle("> ModLauncher detected, updating Forge metadata sources.")
     (repositories.find {
         it.name.contains("Forge", ignoreCase = true)
     } as? MavenArtifactRepository)?.metadataSources {

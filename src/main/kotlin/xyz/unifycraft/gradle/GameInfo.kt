@@ -3,8 +3,9 @@ package xyz.unifycraft.gradle
 object GameInfo {
     val infoMap: Map<String, Map<Int, String>> = mapOf(
         "fabric_loader_version" to mapOf(
-            0 to "0.13.3"
+            0 to "0.14.8"
         ), "forge_version" to mapOf(
+            11900 to "1.19-41.0.63",
             11802 to "1.18.2-40.1.51",
             11801 to "1.18.1-39.0.79",
             11701 to "1.17.1-37.0.112",
@@ -16,6 +17,7 @@ object GameInfo {
             10800 to "1.8-11.14.4.1563",
             10710 to "1.7.10-10.13.4.1558-1.7.10"
         ), "yarn_mappings" to mapOf(
+            11900 to "1.19+build.4",
             11802 to "1.18.2+build.3",
             11801 to "1.18.2+build.2:v2",
             11701 to "1.17.1+build.39:v2",

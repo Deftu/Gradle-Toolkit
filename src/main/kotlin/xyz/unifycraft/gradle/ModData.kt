@@ -16,8 +16,6 @@ data class ModData(
             if (extension != null)
                 return extension
 
-            project.logger.lifecycle("> Mod data not set for ${project.name}. Fetching it now.")
-
             val name = project.propertyOr("mod.name", project.name)!!
             val id = project.propertyOr("mod.id", name.toLowerCase().replace(" ", "_"))!!
             val version = project.propertyOr("mod.version", project.version.toString())!!

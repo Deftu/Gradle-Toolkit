@@ -36,32 +36,24 @@ data class MCData(
 
     companion object {
         @JvmStatic
+        val versionRegex = "(?<major>\\d+).(?<minor>\\d+).?(?<patch>\\d+)?".toRegex()
+
+        @JvmStatic
         fun from(project: Project): MCData {
             val extension = project.extensions.findByName("mcData") as MCData?
-            if (extension != null)
-                return extension
+            if (extension != null) return extension
 
-            project.logger.lifecycle("> Minecraft data not set for ${project.name}. Generating it now.")
-
-            if (project.hasProperty("minecraft.version") && (project.hasProperty("minecraft.loader") || project.hasProperty("loom.platform"))) {
-                project.logger.lifecycle("> Minecraft data found in project properties for ${project.name}. Using this.")
-                val version = project.propertyOr("minecraft.version") ?: throw MissingPropertyException("minecraft.version")
-                val loader = project.propertyOr("minecraft.loader", project.propertyOr("loom.platform", null)) ?: throw MissingPropertyException("minecraft.loader")
-                val split = version.split(".")
-                val data = MCData(split[0].toInt(), split[1].toInt(), split[2].toInt(), ModLoader.from(loader))
-                project.extensions.add("mcData", data)
-                return data
-            }
-
-            var name = project.name
-            if ("-" in name)
-                name = name.substring(0, name.indexOf("-"))
-            val parts = name.split(".")
-            val major = parts[0].toInt()
-            val minor = parts[1].toInt()
-            val patch = parts[2].toInt()
-            val loader = ModLoader.from(project.name)
-            val data = MCData(major, minor, patch, loader)
+            var usingVersionProp: Boolean
+            val version = project.propertyOr(run {
+                usingVersionProp = true
+                "minecraft.version"
+            }, run {
+                usingVersionProp = false
+                project.name
+            })!! // Either get it from the property or infer it from the project's name for multi-version projects.
+            val versionMatch = (versionRegex.find(version) ?: throw MissingPropertyException("Couldn't fetch Minecraft version. Either set the minecraft.version property in your Gradle properties file or define the Minecraft version in the project's name.")).groups
+            val loader = ModLoader.from(project.propertyOr("minecraft.loader", project.propertyOr("loom.platform", null)) ?: throw MissingPropertyException("minecraft.loader"), usingVersionProp)
+            val data = MCData(versionMatch["major"]!!.value.toInt(), versionMatch["minor"]!!.value.toInt(), versionMatch["patch"]?.value?.toInt() ?: 0, loader)
             project.extensions.add("mcData", data)
             return data
         }
@@ -86,11 +78,11 @@ data class ModLoader(
         val other = ModLoader("other")
 
         @JvmStatic
-        fun from(version: String): ModLoader {
+        fun from(input: String, multiversion: Boolean): ModLoader {
             return when {
-                version.contains("forge") -> forge
-                version.contains("fabric") -> fabric
-                else -> other.withName(version.substringAfterLast("-"))
+                input.contains("forge") -> forge
+                input.contains("fabric") -> fabric
+                else -> if (!multiversion) other.withName(input) else other.withName(input.substringAfterLast("-")) // Multi-version projects (should) have a "-<loader>" suffix.
             }
         }
     }
