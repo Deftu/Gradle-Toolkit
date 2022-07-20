@@ -13,8 +13,7 @@ data class GithubData(
         @JvmStatic
         fun from(project: Project): GithubData {
             val extension = project.extensions.findByName("githubData") as GithubData?
-            if (extension != null)
-                return extension
+            if (extension != null) return extension
 
             val branch = project.propertyOr("GITHUB_REF_NAME", fetchCurrentBranch(project) ?: "LOCAL")!!
             val commit = project.propertyOr("GITHUB_SHA", fetchCurrentCommit(project) ?: "LOCAL")!!

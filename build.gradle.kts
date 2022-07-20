@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version("1.7.0")
+    kotlin("jvm") version("1.6.21")
     `kotlin-dsl`
     `maven-publish`
 }
@@ -40,7 +40,7 @@ dependencies {
     implementation("com.github.replaymod:preprocessor:48e02ad")
 
     // Other
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.7.0")
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.6.21")
     implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
     implementation("net.kyori:blossom:1.3.2-UNIFYCRAFT")
 

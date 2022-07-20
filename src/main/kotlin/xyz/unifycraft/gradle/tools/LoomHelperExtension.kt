@@ -106,7 +106,7 @@ abstract class LoomHelperExtension(
         }
     }
 
-    fun withLoom(block: LoomGradleExtensionAPI.() -> Unit) {
+    private fun withLoom(block: LoomGradleExtensionAPI.() -> Unit) {
         project.configure<LoomGradleExtensionAPI> {
             block()
         }
