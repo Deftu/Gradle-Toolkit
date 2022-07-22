@@ -13,7 +13,7 @@ abstract class ToolkitExtension(
         val loaderVersion = DependencyHelper.fetchLatestRelease(repo, loaderDependency)
         val usingUnishadow = project.pluginManager.hasPlugin("xyz.unifycraft.gradle.tools.shadow")
         project.dependencies.add(if (usingUnishadow) "unishade" else "implementation", "$loaderDependency:$loaderVersion")
-        if (!usingUnishadow) project.logger.warn("- It is recommended to use UCGT Shadow to embed the Essential loader inside your built mod JAR.")
+        if (!usingUnishadow) project.logger.warn("It is recommended to use UCGT Shadow to embed the Essential loader inside your built mod JAR.")
         val apiDependency = "gg.essential:essential-${mcData.versionStr}-${mcData.loader.name}"
         val apiVersion = DependencyHelper.fetchLatestRelease(repo, apiDependency)
         project.dependencies.add("compileOnly", "$apiDependency:$apiVersion")
@@ -32,5 +32,21 @@ abstract class ToolkitExtension(
         project.dependencies.add("runtimeOnly", "$dependency:$version")
     }
 
-    // TODO: useUniCore
+    fun useUniCore() {
+        val repo = "https://maven.unifycraft.xyz/releases"
+        val mcData = MCData.from(project)
+
+        // Loader
+        val loaderModule = if (mcData.isFabric) "fabric" else if (mcData.isForge && mcData.version <= 11202) "forge-legacy" else "forge-modern"
+        val loaderDependency = "xyz.unifycraft.unicore:UniCore-Loader-$loaderModule"
+        val loaderVersion = DependencyHelper.fetchLatestRelease(repo, loaderDependency)
+        val usingUnishadow = project.pluginManager.hasPlugin("xyz.unifycraft.gradle.tools.shadow")
+        project.dependencies.add(if (usingUnishadow) "unishade" else "implementation", "$loaderDependency:$loaderVersion")
+        if (!usingUnishadow) project.logger.warn("- It is recommended to use UCGT Shadow to embed the UniCore loader inside your built mod JAR.")
+
+        // API
+        val apiDependency = "xyz.unifycraft.unicore:UniCore-${mcData.versionStr}-${mcData.loader.name}"
+        val apiVersion = DependencyHelper.fetchLatestRelease(repo, apiDependency)
+        project.dependencies.add("runtimeOnly", "$apiDependency:$apiVersion")
+    }
 }
