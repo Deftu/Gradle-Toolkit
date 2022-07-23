@@ -42,7 +42,7 @@ dependencies {
     // Other
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.6.21")
     implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
-    implementation("net.kyori:blossom:1.3.2-UNIFYCRAFT")
+    implementation("net.kyori:blossom:1.3.0")
 
     // Publishing
     implementation("com.modrinth.minotaur:Minotaur:2.3.1")

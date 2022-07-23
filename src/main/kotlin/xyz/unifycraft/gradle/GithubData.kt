@@ -25,35 +25,47 @@ data class GithubData(
 
         @JvmStatic
         fun fetchCurrentBranch(project: Project): String? {
-            val output = ByteArrayOutputStream()
-            project.exec {
-                commandLine("git", "rev-parse", "--abbrev-ref", "HEAD")
-                standardOutput = output
+            return try {
+                val output = ByteArrayOutputStream()
+                project.exec {
+                    commandLine("git", "rev-parse", "--abbrev-ref", "HEAD")
+                    standardOutput = output
+                }
+                val string = output.toString().trim()
+                if (string.isEmpty() || string.startsWith("fatal")) null else string
+            } catch (e: Exception) {
+                "LOCAL"
             }
-            val string = output.toString().trim()
-            return if (string.isEmpty() || string.startsWith("fatal")) null else string
         }
 
         @JvmStatic
         fun fetchCurrentCommit(project: Project): String? {
-            val output = ByteArrayOutputStream()
-            project.exec {
-                commandLine("git", "rev-parse", "HEAD")
-                standardOutput = output
+            return try {
+                val output = ByteArrayOutputStream()
+                project.exec {
+                    commandLine("git", "rev-parse", "HEAD")
+                    standardOutput = output
+                }
+                val string = output.toString().trim()
+                if (string.isEmpty() || string.startsWith("fatal")) "LOCAL" else string.substring(0, 7)
+            } catch (e: Exception) {
+                "LOCAL"
             }
-            val string = output.toString().trim()
-            return if (string.isEmpty() || string.startsWith("fatal")) null else string.substring(0, 7)
         }
 
         @JvmStatic
         fun fetchCurrentUrl(project: Project): String? {
-            val output = ByteArrayOutputStream()
-            project.exec {
-                commandLine("git", "config", "--get", "remote.origin.url")
-                standardOutput = output
+            return try {
+                val output = ByteArrayOutputStream()
+                project.exec {
+                    commandLine("git", "config", "--get", "remote.origin.url")
+                    standardOutput = output
+                }
+                val string = output.toString().trim()
+                if (string.isEmpty() || string.startsWith("fatal")) "LOCAL" else string
+            } catch (e: Exception) {
+                "LOCAL"
             }
-            val string = output.toString().trim()
-            return if (string.isEmpty() || string.startsWith("fatal")) null else string
         }
     }
 }
