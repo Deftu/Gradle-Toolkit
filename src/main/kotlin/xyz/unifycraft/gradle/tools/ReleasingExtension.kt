@@ -21,6 +21,8 @@ abstract class ReleasingExtension(
     abstract val loaders: ListProperty<String>
     abstract val file: Property<Zip>
 
+    abstract val releaseName: Property<String>
+
     // Changelog
     abstract val changelog: Property<String>
     abstract val changelogFile: Property<File>
@@ -62,7 +64,6 @@ abstract class PublishingModrinthExtension {
 }
 
 abstract class PublishingCurseForgeExtension {
-    abstract val releaseName: Property<String>
     abstract val projectId: Property<String>
     abstract val dependencies: ListProperty<CurseDependency>
     abstract val changelogType: Property<String>

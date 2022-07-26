@@ -45,7 +45,7 @@ dependencies {
     implementation("net.kyori:blossom:1.3.0")
 
     // Publishing
-    implementation("com.modrinth.minotaur:Minotaur:2.3.1")
+    implementation("com.modrinth.minotaur:Minotaur:2.4.2")
     implementation("me.hypherionmc.cursegradle:CurseGradle:2.0.1")
     implementation("com.github.breadmoirai:github-release:2.2.12")
 }

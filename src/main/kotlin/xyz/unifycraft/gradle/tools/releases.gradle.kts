@@ -23,26 +23,30 @@ plugins {
 val mcData = MCData.from(project)
 val modData = ModData.from(project)
 val extension = extensions.create("releases", ReleasingExtension::class)
-val task = tasks.register("releaseMod") {
-    group = "unifycraft-gradle-toolkit"
-    dependsOn("modrinth", "curseforge", "githubRelease")
-}
-
-if (extension.changelogFile.isPresent) {
-    val changelogFile = extension.changelogFile.get()
-    val changelog = changelogFile.readText(StandardCharsets.UTF_8)
-    extension.changelog.set(changelog)
-    extension.curseforge.changelogType.set(when (changelogFile.extension) {
-        "md" -> "markdown"
-        "html" -> "html"
-        else -> "text"
-    })
-}
 
 afterEvaluate {
     val modrinthToken = propertyOr("publish.modrinth.token", "")!!
     val curseForgeApiKey = propertyOr("publish.curseforge.apikey", "")!!
     val githubToken = propertyOr("publish.github.token", "")!!
+
+    val task = tasks.register("releaseMod") {
+        group = "unifycraft-gradle-toolkit"
+        if (modrinthToken.isNotBlank()) dependsOn("modrinth")
+        if (curseForgeApiKey.isNotBlank()) dependsOn("curseforge")
+        if (githubToken.isNotBlank()) dependsOn("githubRelease")
+    }
+
+    if (extension.changelogFile.isPresent) {
+        val changelogFile = extension.changelogFile.get()
+        logger.lifecycle("Set changelog to contents of ${changelogFile.nameWithoutExtension}")
+        val changelog = changelogFile.readText(StandardCharsets.UTF_8)
+        extension.changelog.set(changelog)
+        extension.curseforge.changelogType.set(when (changelogFile.extension) {
+            "md" -> "markdown"
+            "html" -> "html"
+            else -> "text"
+        })
+    }
 
     if (modrinthToken.isNotBlank())
         setupModrinth(modrinthToken)
@@ -54,8 +58,10 @@ afterEvaluate {
 
 fun setupModrinth(token: String) {
     configure<ModrinthExtension> {
+        failSilently.set(true)
         this.token.set(token)
         projectId.set(extension.modrinth.projectId.get())
+        versionName.set(extension.releaseName.getOrElse("${modData.name} ${modData.version}"))
         versionNumber.set(extension.version.getOrElse(project.version.toString()))
         versionType.set(extension.versionType.getOrElse(VersionType.RELEASE).value)
         uploadFile.set(extension.file.getOrElse(tasks.jar.get()))
@@ -85,7 +91,7 @@ fun setupCurseForge(apiKey: String) {
             })
 
             mainArtifact(extension.file.getOrElse(tasks.jar.get()), closureOf<CurseArtifact> {
-                displayName = extension.curseforge.releaseName.getOrElse(project.name)
+                displayName = extension.releaseName.getOrElse("${modData.name} ${modData.version}")
             })
 
             options(closureOf<Options> {
