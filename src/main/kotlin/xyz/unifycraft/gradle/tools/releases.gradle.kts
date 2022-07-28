@@ -1,11 +1,11 @@
 package xyz.unifycraft.gradle.tools
 
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseExtension
-import me.hypherionmc.cursegradle.CurseArtifact
-import me.hypherionmc.cursegradle.CurseExtension
-import me.hypherionmc.cursegradle.CurseProject
-import me.hypherionmc.cursegradle.CurseRelation
-import me.hypherionmc.cursegradle.Options
+import com.matthewprenger.cursegradle.CurseArtifact
+import com.matthewprenger.cursegradle.CurseExtension
+import com.matthewprenger.cursegradle.CurseProject
+import com.matthewprenger.cursegradle.CurseRelation
+import com.matthewprenger.cursegradle.Options
 import com.modrinth.minotaur.ModrinthExtension
 import gradle.kotlin.dsl.accessors._72efc76fad8c8cf3476d335fb6323bde.jar
 import xyz.unifycraft.gradle.MCData
@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets
 plugins {
     java
     id("com.modrinth.minotaur")
-    id("me.hypherionmc.cursegradle")
+    id("com.matthewprenger.cursegradle")
     id("com.github.breadmoirai.github-release")
 }
 
@@ -29,16 +29,21 @@ afterEvaluate {
     val curseForgeApiKey = propertyOr("publish.curseforge.apikey", "")!!
     val githubToken = propertyOr("publish.github.token", "")!!
 
+    val publishToModrinth by tasks.registering { group = "unifycraft-gradle-toolkit" }
+    val publishToCurseForge by tasks.registering {
+        group = "unifycraft-gradle-toolkit"
+    }
+    val publishToGitHubRelease by tasks.registering { group = "unifycraft-gradle-toolkit" }
     val task = tasks.register("releaseMod") {
         group = "unifycraft-gradle-toolkit"
-        if (modrinthToken.isNotBlank()) dependsOn("modrinth")
-        if (curseForgeApiKey.isNotBlank()) dependsOn("curseforge")
-        if (githubToken.isNotBlank()) dependsOn("githubRelease")
+        if (modrinthToken.isNotBlank()) dependsOn(publishToModrinth)
+        if (curseForgeApiKey.isNotBlank()) dependsOn(publishToCurseForge)
+        if (githubToken.isNotBlank()) dependsOn(publishToGitHubRelease)
     }
 
     if (extension.changelogFile.isPresent) {
         val changelogFile = extension.changelogFile.get()
-        logger.lifecycle("Set changelog to contents of ${changelogFile.nameWithoutExtension}")
+        logger.lifecycle("Set changelog to contents of ${changelogFile.name}")
         val changelog = changelogFile.readText(StandardCharsets.UTF_8)
         extension.changelog.set(changelog)
         extension.curseforge.changelogType.set(when (changelogFile.extension) {
@@ -57,6 +62,7 @@ afterEvaluate {
 }
 
 fun setupModrinth(token: String) {
+    tasks["publishToModrinth"].dependsOn(tasks["modrinth"])
     configure<ModrinthExtension> {
         failSilently.set(true)
         this.token.set(token)
@@ -73,6 +79,8 @@ fun setupModrinth(token: String) {
 }
 
 fun setupCurseForge(apiKey: String) {
+    tasks["curseforge"].dependsOn("remapJar")
+    tasks["publishToCurseForge"].dependsOn(tasks["curseforge"])
     configure<CurseExtension> {
         this.apiKey = apiKey
         project(closureOf<CurseProject> {
@@ -90,18 +98,19 @@ fun setupCurseForge(apiKey: String) {
                 }
             })
 
-            mainArtifact(extension.file.getOrElse(tasks.jar.get()), closureOf<CurseArtifact> {
-                displayName = extension.releaseName.getOrElse("${modData.name} ${modData.version}")
-            })
-
             options(closureOf<Options> {
                 forgeGradleIntegration = false
+            })
+
+            mainArtifact(extension.file.getOrElse(tasks["remapJar"] as org.gradle.jvm.tasks.Jar), closureOf<CurseArtifact> {
+                displayName = extension.releaseName.getOrElse("${modData.name} ${modData.version}")
             })
         })
     }
 }
 
 fun setupGitHub(token: String) {
+    tasks["publishToGitHubRelease"].dependsOn("githubRelease")
     configure<GithubReleaseExtension> {
         setToken(token)
         owner.set(extension.github.owner.get())

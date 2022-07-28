@@ -46,7 +46,7 @@ dependencies {
 
     // Publishing
     implementation("com.modrinth.minotaur:Minotaur:2.4.2")
-    implementation("me.hypherionmc.cursegradle:CurseGradle:2.0.1")
+    implementation("gradle.plugin.com.matthewprenger:CurseGradle:1.4.0")
     implementation("com.github.breadmoirai:github-release:2.2.12")
 }
 

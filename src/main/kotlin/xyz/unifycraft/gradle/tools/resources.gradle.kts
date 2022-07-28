@@ -22,7 +22,7 @@ afterEvaluate {
         )
 
         inputs.property("data", data)
-        filesMatching(listOf("mcmod.info", "fabric.mod.json", "mixins.*.json")) {
+        filesMatching(listOf("mcmod.info", "fabric.mod.json", "META-INF/mods.toml", "mixins.*.json")) {
             expand(data)
         }
 
