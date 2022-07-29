@@ -4,21 +4,21 @@ import org.gradle.api.Project
 import xyz.unifycraft.gradle.utils.propertyOr
 import java.io.ByteArrayOutputStream
 
-data class GithubData(
+data class GitHubData(
     val branch: String,
     val commit: String,
     val url: String
 ) {
     companion object {
         @JvmStatic
-        fun from(project: Project): GithubData {
-            val extension = project.extensions.findByName("githubData") as GithubData?
+        fun from(project: Project): GitHubData {
+            val extension = project.extensions.findByName("githubData") as GitHubData?
             if (extension != null) return extension
 
             val branch = project.propertyOr("GITHUB_REF_NAME", fetchCurrentBranch(project) ?: "LOCAL")!!
             val commit = project.propertyOr("GITHUB_SHA", fetchCurrentCommit(project) ?: "LOCAL")!!
             val url = fetchCurrentUrl(project) ?: "NONE"
-            val data = GithubData(branch, commit, url)
+            val data = GitHubData(branch, commit, url)
             project.extensions.add("githubData", data)
             return data
         }

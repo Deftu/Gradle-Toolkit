@@ -29,6 +29,11 @@ fun checkGradleVersion(minVersion: GradleVersion) {
     }
 }
 
+fun Project.isLoomPresent(): Boolean =
+    (pluginManager.hasPlugin("fabric-loom") || pluginManager.hasPlugin("gg.essential.loom") || pluginManager.hasPlugin("dev.architectury.loom"))
+fun Project.isMultiversionProject(): Boolean =
+    (pluginManager.hasPlugin("com.replaymod.preprocess-root") || pluginManager.hasPlugin("com.replaymod.preprocess") || pluginManager.hasPlugin("xyz.unifycraft.gradle.multiversion-root") || pluginManager.hasPlugin("xyz.unifycraft.gradle.multiversion"))
+
 fun Project.propertyOr(key: String, default: String? = null) =
     (project.findProperty(key)
         ?: System.getProperty(key)

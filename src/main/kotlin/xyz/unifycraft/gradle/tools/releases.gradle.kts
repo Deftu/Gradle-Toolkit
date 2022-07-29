@@ -1,15 +1,19 @@
 package xyz.unifycraft.gradle.tools
 
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseExtension
+import com.github.breadmoirai.githubreleaseplugin.GithubReleasePlugin
 import com.matthewprenger.cursegradle.CurseArtifact
 import com.matthewprenger.cursegradle.CurseExtension
+import com.matthewprenger.cursegradle.CurseGradlePlugin
 import com.matthewprenger.cursegradle.CurseProject
 import com.matthewprenger.cursegradle.CurseRelation
 import com.matthewprenger.cursegradle.Options
+import com.modrinth.minotaur.Minotaur
 import com.modrinth.minotaur.ModrinthExtension
 import gradle.kotlin.dsl.accessors._72efc76fad8c8cf3476d335fb6323bde.jar
 import xyz.unifycraft.gradle.MCData
 import xyz.unifycraft.gradle.ModData
+import xyz.unifycraft.gradle.utils.isMultiversionProject
 import xyz.unifycraft.gradle.utils.propertyOr
 import java.nio.charset.StandardCharsets
 
@@ -63,24 +67,25 @@ afterEvaluate {
 
 fun setupModrinth(token: String) {
     tasks["publishToModrinth"].dependsOn(tasks["modrinth"])
+    apply<Minotaur>()
     configure<ModrinthExtension> {
         failSilently.set(true)
         this.token.set(token)
         projectId.set(extension.modrinth.projectId.get())
         versionName.set(extension.releaseName.getOrElse("${modData.name} ${modData.version}"))
-        versionNumber.set(extension.version.getOrElse(project.version.toString()))
+        versionNumber.set(extension.version.getOrElse(if (isMultiversionProject()) "${mcData.versionStr}-${modData.version}" else modData.version))
         versionType.set(extension.versionType.getOrElse(VersionType.RELEASE).value)
-        uploadFile.set(extension.file.getOrElse(tasks.jar.get()))
+        uploadFile.set(extension.file.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get()))
         changelog.set(extension.changelog.get())
-        gameVersions.set(extension.gameVersions.getOrElse(listOf(mcData.versionStr)))
-        loaders.set(extension.loaders.getOrElse(listOf(mcData.loader.name)))
-        dependencies.set(extension.modrinth.dependencies.getOrElse(listOf()))
+        gameVersions.addAll(extension.gameVersions.getOrElse(listOf(mcData.versionStr)))
+        loaders.addAll(extension.loaders.getOrElse(listOf(mcData.loader.name)))
+        dependencies.addAll(extension.modrinth.dependencies.getOrElse(listOf()))
     }
 }
 
 fun setupCurseForge(apiKey: String) {
-    tasks["curseforge"].dependsOn("remapJar")
     tasks["publishToCurseForge"].dependsOn(tasks["curseforge"])
+    apply<CurseGradlePlugin>()
     configure<CurseExtension> {
         this.apiKey = apiKey
         project(closureOf<CurseProject> {
@@ -102,6 +107,10 @@ fun setupCurseForge(apiKey: String) {
                 forgeGradleIntegration = false
             })
 
+            afterEvaluate {
+                uploadTask.dependsOn(tasks["remapJar"])
+            }
+
             mainArtifact(extension.file.getOrElse(tasks["remapJar"] as org.gradle.jvm.tasks.Jar), closureOf<CurseArtifact> {
                 displayName = extension.releaseName.getOrElse("${modData.name} ${modData.version}")
             })
@@ -111,6 +120,7 @@ fun setupCurseForge(apiKey: String) {
 
 fun setupGitHub(token: String) {
     tasks["publishToGitHubRelease"].dependsOn("githubRelease")
+    apply<GithubReleasePlugin>()
     configure<GithubReleaseExtension> {
         setToken(token)
         owner.set(extension.github.owner.get())
