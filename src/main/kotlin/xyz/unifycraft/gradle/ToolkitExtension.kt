@@ -3,6 +3,7 @@ package xyz.unifycraft.gradle
 import org.gradle.api.Project
 import xyz.unifycraft.gradle.utils.DependencyHelper
 
+@Suppress("unused")
 abstract class ToolkitExtension(
     val project: Project
 ) {
@@ -32,8 +33,8 @@ abstract class ToolkitExtension(
         project.dependencies.add("runtimeOnly", "$dependency:$version")
     }
 
-    fun useUniCore() {
-        val repo = "https://maven.unifycraft.xyz/releases"
+    fun useUniCore(snapshots: Boolean = false) {
+        val repo = "https://maven.unifycraft.xyz/" + if (snapshots) "snapshots" else "releases"
         val mcData = MCData.from(project)
 
         // Loader

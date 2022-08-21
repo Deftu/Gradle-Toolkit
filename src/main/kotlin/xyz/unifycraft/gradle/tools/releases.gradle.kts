@@ -13,6 +13,7 @@ import com.modrinth.minotaur.ModrinthExtension
 import gradle.kotlin.dsl.accessors._72efc76fad8c8cf3476d335fb6323bde.jar
 import xyz.unifycraft.gradle.MCData
 import xyz.unifycraft.gradle.ModData
+import xyz.unifycraft.gradle.utils.isLoomPresent
 import xyz.unifycraft.gradle.utils.isMultiversionProject
 import xyz.unifycraft.gradle.utils.propertyOr
 import java.nio.charset.StandardCharsets
@@ -38,8 +39,8 @@ afterEvaluate {
         group = "unifycraft-gradle-toolkit"
     }
     val publishToGitHubRelease by tasks.registering { group = "unifycraft-gradle-toolkit" }
-    val task = tasks.register("releaseMod") {
-        group = "unifycraft-gradle-toolkit"
+    tasks.register("releaseMod") {
+        group = "unifycraft"
         if (modrinthToken.isNotBlank()) dependsOn(publishToModrinth)
         if (curseForgeApiKey.isNotBlank()) dependsOn(publishToCurseForge)
         if (githubToken.isNotBlank()) dependsOn(publishToGitHubRelease)
@@ -66,12 +67,14 @@ afterEvaluate {
 }
 
 fun setupModrinth(token: String) {
+    val projectId = extension.modrinth.projectId.orNull
+    if (projectId.isNullOrBlank()) return
     tasks["publishToModrinth"].dependsOn(tasks["modrinth"])
     apply<Minotaur>()
     configure<ModrinthExtension> {
         failSilently.set(true)
         this.token.set(token)
-        projectId.set(extension.modrinth.projectId.get())
+        this.projectId.set(projectId)
         versionName.set(extension.releaseName.getOrElse("${modData.name} ${modData.version}"))
         versionNumber.set(extension.version.getOrElse(if (isMultiversionProject()) "${mcData.versionStr}-${modData.version}" else modData.version))
         versionType.set(extension.versionType.getOrElse(VersionType.RELEASE).value)
@@ -84,12 +87,14 @@ fun setupModrinth(token: String) {
 }
 
 fun setupCurseForge(apiKey: String) {
+    val projectId = extension.curseforge.projectId.orNull
+    if (projectId.isNullOrBlank()) return
     tasks["publishToCurseForge"].dependsOn(tasks["curseforge"])
     apply<CurseGradlePlugin>()
     configure<CurseExtension> {
         this.apiKey = apiKey
         project(closureOf<CurseProject> {
-            id = extension.curseforge.projectId.get()
+            id = projectId
             releaseType = extension.versionType.getOrElse(VersionType.RELEASE).value
             extension.gameVersions.getOrElse(listOf(mcData.versionStr)).forEach(::addGameVersion)
 
@@ -103,7 +108,7 @@ fun setupCurseForge(apiKey: String) {
                 }
             })
 
-            options(closureOf<Options> {
+            if (project.isLoomPresent()) options(closureOf<Options> {
                 forgeGradleIntegration = false
             })
 
@@ -119,12 +124,15 @@ fun setupCurseForge(apiKey: String) {
 }
 
 fun setupGitHub(token: String) {
+    val owner = extension.github.owner.orNull
+    val repo = extension.github.repository.orNull
+    if (owner.isNullOrBlank() || repo.isNullOrBlank()) return
     tasks["publishToGitHubRelease"].dependsOn("githubRelease")
     apply<GithubReleasePlugin>()
     configure<GithubReleaseExtension> {
         setToken(token)
-        owner.set(extension.github.owner.get())
-        repo.set(extension.github.repository.get())
+        this.owner.set(owner)
+        this.repo.set(repo)
         val version = extension.version.getOrElse(project.version.toString())
         tagName.set(version)
         releaseName.set(extension.github.releaseName.getOrElse(version))
