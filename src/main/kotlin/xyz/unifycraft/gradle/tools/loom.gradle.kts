@@ -11,6 +11,7 @@ import xyz.unifycraft.gradle.GameInfo.fetchForgeVersion
 import xyz.unifycraft.gradle.GameInfo.fetchMcpMappings
 import xyz.unifycraft.gradle.GameInfo.fetchYarnMappings
 import xyz.unifycraft.gradle.MCData
+import xyz.unifycraft.gradle.utils.propertyBoolOr
 import xyz.unifycraft.gradle.utils.propertyOr
 
 plugins {
@@ -21,27 +22,31 @@ val mcData = MCData.from(project)
 extensions.create("loomHelper", LoomHelperExtension::class.java)
 extra.set("loom.platform", if (mcData.isFabric) "fabric" else "forge")
 dependencies {
-    minecraft(propertyOr("loom.minecraft", "com.mojang:minecraft:${mcData.versionStr}")!!)
+    if (propertyBoolOr("loom.minecraft.use", true)) minecraft(propertyOr("loom.minecraft", "com.mojang:minecraft:${mcData.versionStr}")!!)
 
-    propertyOr(
-        "loom.mappings", when {
-            mcData.isForge && mcData.version < 11700  -> "de.oceanlabs.mcp:mcp_${fetchMcpMappings(mcData.version)}"
-            mcData.isFabric -> "net.fabricmc:yarn:${fetchYarnMappings(mcData.version)}"
-            else -> "official"
-        }
-    )!!.apply {
-        if (this == "official") {
-            mappings(loom.officialMojangMappings())
-        } else {
-            mappings(this)
+    if (propertyBoolOr("loom.mappings.use", true)) {
+        propertyOr(
+            "loom.mappings", when {
+                mcData.isForge && mcData.version < 11700  -> "de.oceanlabs.mcp:mcp_${fetchMcpMappings(mcData.version)}"
+                mcData.isFabric -> "net.fabricmc:yarn:${fetchYarnMappings(mcData.version)}"
+                else -> "official"
+            }
+        )!!.apply {
+            if (this == "official") {
+                mappings(loom.officialMojangMappings())
+            } else {
+                mappings(this)
+            }
         }
     }
 
-    if (mcData.isFabric) {
-        modImplementation(propertyOr("loom.fabricloader", "net.fabricmc:fabric-loader:${fetchFabricLoaderVersion(0)}")!!)
-    } else {
-        "forge"(propertyOr("loom.forge", "net.minecraftforge:forge:${fetchForgeVersion(mcData.version)}")!!)
-        loom.forge.pack200Provider.set(Pack200Adapter())
+    if (propertyBoolOr("loom.loader.use", true)) {
+        if (mcData.isFabric) {
+            modImplementation(propertyOr("loom.fabricloader", "net.fabricmc:fabric-loader:${fetchFabricLoaderVersion(0)}")!!)
+        } else {
+            "forge"(propertyOr("loom.forge", "net.minecraftforge:forge:${fetchForgeVersion(mcData.version)}")!!)
+            loom.forge.pack200Provider.set(Pack200Adapter())
+        }
     }
 }
 

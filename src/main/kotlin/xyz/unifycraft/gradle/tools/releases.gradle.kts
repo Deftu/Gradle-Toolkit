@@ -21,7 +21,6 @@ import java.nio.charset.StandardCharsets
 plugins {
     java
     id("com.modrinth.minotaur")
-    id("com.matthewprenger.cursegradle")
     id("com.github.breadmoirai.github-release")
 }
 
@@ -34,11 +33,9 @@ afterEvaluate {
     val curseForgeApiKey = propertyOr("publish.curseforge.apikey", "")!!
     val githubToken = propertyOr("publish.github.token", "")!!
 
-    val publishToModrinth by tasks.registering { group = "unifycraft-gradle-toolkit" }
-    val publishToCurseForge by tasks.registering {
-        group = "unifycraft-gradle-toolkit"
-    }
-    val publishToGitHubRelease by tasks.registering { group = "unifycraft-gradle-toolkit" }
+    val publishToModrinth by tasks.registering { group = "unifycraft" }
+    val publishToCurseForge by tasks.registering { group = "unifycraft" }
+    val publishToGitHubRelease by tasks.registering { group = "unifycraft" }
     tasks.register("releaseMod") {
         group = "unifycraft"
         if (modrinthToken.isNotBlank()) dependsOn(publishToModrinth)
@@ -89,7 +86,6 @@ fun setupModrinth(token: String) {
 fun setupCurseForge(apiKey: String) {
     val projectId = extension.curseforge.projectId.orNull
     if (projectId.isNullOrBlank()) return
-    tasks["publishToCurseForge"].dependsOn(tasks["curseforge"])
     apply<CurseGradlePlugin>()
     configure<CurseExtension> {
         this.apiKey = apiKey
@@ -108,19 +104,17 @@ fun setupCurseForge(apiKey: String) {
                 }
             })
 
-            if (project.isLoomPresent()) options(closureOf<Options> {
-                forgeGradleIntegration = false
-            })
-
-            afterEvaluate {
-                uploadTask.dependsOn(tasks["remapJar"])
-            }
-
+            uploadTask.dependsOn(tasks["remapJar"])
             mainArtifact(extension.file.getOrElse(tasks["remapJar"] as org.gradle.jvm.tasks.Jar), closureOf<CurseArtifact> {
                 displayName = extension.releaseName.getOrElse("${modData.name} ${modData.version}")
             })
+
+            if (project.isLoomPresent()) options(closureOf<Options> {
+                forgeGradleIntegration = false
+            })
         })
     }
+    tasks["publishToCurseForge"].dependsOn(tasks["curseforge"])
 }
 
 fun setupGitHub(token: String) {
