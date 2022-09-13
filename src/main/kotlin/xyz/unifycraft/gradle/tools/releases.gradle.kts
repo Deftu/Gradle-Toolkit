@@ -28,6 +28,8 @@ val mcData = MCData.from(project)
 val modData = ModData.from(project)
 val extension = extensions.create("releases", ReleasingExtension::class)
 
+private var curseProject: CurseProject? = null
+
 afterEvaluate {
     val modrinthToken = propertyOr("publish.modrinth.token", "")!!
     val curseForgeApiKey = propertyOr("publish.curseforge.apikey", "")!!
@@ -90,6 +92,8 @@ fun setupCurseForge(apiKey: String) {
     configure<CurseExtension> {
         this.apiKey = apiKey
         project(closureOf<CurseProject> {
+            curseProject = this
+
             id = projectId
             releaseType = extension.versionType.getOrElse(VersionType.RELEASE).value
             extension.gameVersions.getOrElse(listOf(mcData.versionStr)).forEach(::addGameVersion)
@@ -104,7 +108,6 @@ fun setupCurseForge(apiKey: String) {
                 }
             })
 
-            uploadTask.dependsOn(tasks["remapJar"])
             mainArtifact(extension.file.getOrElse(tasks["remapJar"] as org.gradle.jvm.tasks.Jar), closureOf<CurseArtifact> {
                 displayName = extension.releaseName.getOrElse("${modData.name} ${modData.version}")
             })
@@ -112,6 +115,10 @@ fun setupCurseForge(apiKey: String) {
             if (project.isLoomPresent()) options(closureOf<Options> {
                 forgeGradleIntegration = false
             })
+
+            /*afterEvaluate {
+                uploadTask.dependsOn(tasks["remapJar"])
+            }*/
         })
     }
     tasks["publishToCurseForge"].dependsOn(tasks["curseforge"])
@@ -134,5 +141,13 @@ fun setupGitHub(token: String) {
         draft.set(extension.github.draft.getOrElse(false))
         prerelease.set(extension.versionType.getOrElse(VersionType.RELEASE) != VersionType.RELEASE)
         releaseAssets(extension.file.getOrElse(tasks.jar.get()))
+    }
+}
+
+afterEvaluate {
+    if (curseProject != null) {
+        curseProject!!.apply {
+            uploadTask.dependsOn(tasks["remapJar"])
+        }
     }
 }

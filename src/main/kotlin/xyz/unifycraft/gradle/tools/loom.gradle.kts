@@ -27,7 +27,7 @@ dependencies {
     if (propertyBoolOr("loom.mappings.use", true)) {
         propertyOr(
             "loom.mappings", when {
-                mcData.isForge && mcData.version < 11700  -> "de.oceanlabs.mcp:mcp_${fetchMcpMappings(mcData.version)}"
+                mcData.isForge && mcData.version <= 11502  -> "de.oceanlabs.mcp:mcp_${fetchMcpMappings(mcData.version)}"
                 mcData.isFabric -> "net.fabricmc:yarn:${fetchYarnMappings(mcData.version)}"
                 else -> "official"
             }
