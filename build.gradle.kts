@@ -65,6 +65,7 @@ tasks {
 afterEvaluate {
     publishing {
         repositories {
+            mavenLocal()
             if (project.hasProperty("unifycraft.publishing.username") && project.hasProperty("unifycraft.publishing.password")) {
                 fun MavenArtifactRepository.applyCredentials() {
                     credentials {

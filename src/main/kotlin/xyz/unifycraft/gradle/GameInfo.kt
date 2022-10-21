@@ -79,7 +79,7 @@ object GameInfo {
             11401 to "1.14.1+build.10",
             11400 to "1.14+build.21"
         ), "mcp_mappings" to mapOf(
-            11502 to "snapshot:20211108-1.15.1",
+            11502 to "stable:60-1.15",
             11500 to "stable:60-1.15",
 
             11404 to "stable:58-1.14.4",
