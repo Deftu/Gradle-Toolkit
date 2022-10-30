@@ -1,4 +1,4 @@
-package xyz.unifycraft.gradle.tools
+package xyz.enhancedpixel.gradle.tools
 
 import com.modrinth.minotaur.dependencies.Dependency
 import org.gradle.api.Action
@@ -9,7 +9,7 @@ import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.bundling.Zip
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.get
-import xyz.unifycraft.gradle.MCData
+import xyz.enhancedpixel.gradle.MCData
 import java.io.File
 
 abstract class ReleasingExtension(

@@ -1,7 +1,7 @@
-package xyz.unifycraft.gradle
+package xyz.enhancedpixel.gradle
 
 import org.gradle.api.JavaVersion
-import xyz.unifycraft.gradle.utils.checkJavaVersion
+import xyz.enhancedpixel.gradle.utils.checkJavaVersion
 
 plugins {
     id("com.replaymod.preprocess-root")

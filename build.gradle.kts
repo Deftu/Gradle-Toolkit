@@ -14,7 +14,7 @@ group = projectGroup
 repositories {
     mavenCentral()
     gradlePluginPortal()
-    maven("https://maven.unifycraft.xyz/releases/")
+    maven("https://maven.enhancedpixel.xyz/releases/")
 
     maven("https://jitpack.io/")
     maven("https://maven.fabricmc.net/")
@@ -22,7 +22,7 @@ repositories {
     maven("https://maven.architectury.dev/")
     maven("https://repo.essential.gg/repository/maven-public")
 
-    maven("https://maven.unifycraft.xyz/snapshots/")
+    maven("https://maven.enhancedpixel.xyz/snapshots/")
     mavenLocal()
 }
 
@@ -66,26 +66,24 @@ afterEvaluate {
     publishing {
         repositories {
             mavenLocal()
-            if (project.hasProperty("unifycraft.publishing.username") && project.hasProperty("unifycraft.publishing.password")) {
+            if (project.hasProperty("enhancedpixel.publishing.username") && project.hasProperty("enhancedpixel.publishing.password")) {
                 fun MavenArtifactRepository.applyCredentials() {
+                    authentication.create<BasicAuthentication>("basic")
                     credentials {
-                        username = property("unifycraft.publishing.username")?.toString()
-                        password = property("unifycraft.publishing.password")?.toString()
-                    }
-                    authentication {
-                        create<BasicAuthentication>("basic")
+                        username = property("enhancedpixel.publishing.username")?.toString()
+                        password = property("enhancedpixel.publishing.password")?.toString()
                     }
                 }
 
                 maven {
-                    name = "UnifyCraftRelease"
-                    url = uri("https://maven.unifycraft.xyz/releases")
+                    name = "EnhancedPixelReleases"
+                    url = uri("https://maven.enhancedpixel.xyz/releases")
                     applyCredentials()
                 }
 
                 maven {
-                    name = "UnifyCraftSnapshots"
-                    url = uri("https://maven.unifycraft.xyz/snapshots")
+                    name = "EnhancedPixelSnapshots"
+                    url = uri("https://maven.enhancedpixel.xyz/snapshots")
                     applyCredentials()
                 }
             }

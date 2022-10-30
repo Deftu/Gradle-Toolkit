@@ -1,32 +1,32 @@
-package xyz.unifycraft.gradle.tools
+package xyz.enhancedpixel.gradle.tools
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.implementation
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.remapJar
 import gradle.kotlin.dsl.accessors._8d08aa9ad8bc8c840f59d6f15750154b.shadowJar
 import org.gradle.jvm.tasks.Jar
-import xyz.unifycraft.gradle.ModData
+import xyz.enhancedpixel.gradle.ModData
 
 plugins {
     id("com.github.johnrengelman.shadow")
     java
 }
 
-val unishade by configurations.creating {
+val shade by configurations.creating {
     configurations.implementation.get().extendsFrom(this)
 }
 
-val unishadowJar = tasks.register<ShadowJar>("unishadowJar") {
+val fatJar = tasks.register<ShadowJar>("fatJar") {
     group = "unishadow"
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    configurations = listOf(project.configurations["unishade"])
+    configurations = listOf(project.configurations["shade"])
 
     val javaPlugin = project.convention.getPlugin(JavaPluginConvention::class.java)
     val jarTask = project.tasks.getByName("jar") as Jar
 
     manifest.inheritFrom(jarTask.manifest)
     val libsProvider = project.provider { listOf(jarTask.manifest.attributes["Class-Path"]) }
-    val files = project.objects.fileCollection().from(project.configurations["unishade"])
+    val files = project.objects.fileCollection().from(project.configurations["shade"])
     doFirst {
         if (!files.isEmpty) {
             val libs = libsProvider.get().toMutableList()
@@ -38,29 +38,29 @@ val unishadowJar = tasks.register<ShadowJar>("unishadowJar") {
     from(javaPlugin.sourceSets.getByName("main").output)
     exclude("META-INF/INDEX.LIST", "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "module-info.class")
 
-    project.artifacts.add("unishade", project.tasks.named("unishadowJar"))
+    project.artifacts.add("shade", project.tasks.named("fatJar"))
 }
 
 pluginManager.withPlugin("java") {
-    tasks["assemble"].dependsOn(unishadowJar)
+    tasks["assemble"].dependsOn(fatJar)
 }
 
 pluginManager.withPlugin("gg.essential.loom") {
     tasks {
         shadowJar {
             doFirst {
-                throw GradleException("Incorrect task! You're looking for unishadowJar.")
+                throw GradleException("Incorrect task! You're looking for fatJar.")
             }
         }
         
-        unishadowJar {
+        fatJar {
             archiveClassifier.set("dev")
         }
 
         remapJar {
-            dependsOn(unishadowJar)
+            dependsOn(fatJar)
             archiveClassifier.set("")
-            input.set(unishadowJar.get().archiveFile)
+            input.set(fatJar.get().archiveFile)
 
             val modData = ModData.from(project)
             archiveBaseName.set(modData.name)

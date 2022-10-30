@@ -1,9 +1,9 @@
-package xyz.unifycraft.gradle
+package xyz.enhancedpixel.gradle
 
 import groovy.lang.MissingPropertyException
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import xyz.unifycraft.gradle.utils.propertyOr
+import xyz.enhancedpixel.gradle.utils.propertyOr
 
 data class MCData(
     val major: Int,
@@ -17,6 +17,8 @@ data class MCData(
         get() = listOf(major, minor, patch).dropLastWhile {
             it == 0
         }.joinToString(".")
+    val minorVersionStr: String
+        get() = listOf(major, minor).joinToString(".")
 
     val isFabric: Boolean
         get() = loader == ModLoader.fabric

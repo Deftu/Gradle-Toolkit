@@ -1,4 +1,4 @@
-package xyz.unifycraft.gradle
+package xyz.enhancedpixel.gradle
 
 object GameInfo {
     val infoMap: Map<String, Map<Int, String>> = mapOf(
@@ -31,7 +31,7 @@ object GameInfo {
 
             11302 to "1.13.2-25.0.223",
 
-            11202 to "1.12.2-14.23.5.2860",
+            11202 to "1.12.2-14.23.5.2847",
             11201 to "1.12.1-14.22.1.2485",
             11200 to "1.12-14.21.1.2443",
 
@@ -79,8 +79,8 @@ object GameInfo {
             11401 to "1.14.1+build.10",
             11400 to "1.14+build.21"
         ), "mcp_mappings" to mapOf(
-            11502 to "stable:60-1.15",
-            11500 to "stable:60-1.15",
+            11502 to "snapshot:20200220-1.15.1@zip",
+            11500 to "snapshot:20200220-1.15.1@zip",
 
             11404 to "stable:58-1.14.4",
             11403 to "stable:56-1.14.3",

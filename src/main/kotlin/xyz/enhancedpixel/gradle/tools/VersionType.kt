@@ -1,4 +1,4 @@
-package xyz.unifycraft.gradle.tools
+package xyz.enhancedpixel.gradle.tools
 
 enum class VersionType(
     val value: String

@@ -1,4 +1,4 @@
-package xyz.unifycraft.gradle
+package xyz.enhancedpixel.gradle
 
 import com.replaymod.gradle.preprocess.PreprocessExtension
 import com.replaymod.gradle.preprocess.PreprocessPlugin

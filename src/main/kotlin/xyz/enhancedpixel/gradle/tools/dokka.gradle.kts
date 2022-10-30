@@ -1,4 +1,4 @@
-package xyz.unifycraft.gradle.tools
+package xyz.enhancedpixel.gradle.tools
 
 import gradle.kotlin.dsl.accessors._ca59d7b33a587bae1dcf00e1f22a5064.dokkaJavadoc
 import gradle.kotlin.dsl.accessors._ca59d7b33a587bae1dcf00e1f22a5064.java

@@ -1,7 +1,7 @@
-package xyz.unifycraft.gradle.tools
+package xyz.enhancedpixel.gradle.tools
 
-import xyz.unifycraft.gradle.MCData
-import xyz.unifycraft.gradle.ModData
+import xyz.enhancedpixel.gradle.MCData
+import xyz.enhancedpixel.gradle.ModData
 
 plugins {
     java
@@ -16,6 +16,7 @@ afterEvaluate {
             "mod_id" to modData.id,
             "mod_name" to modData.name,
             "mc_version" to mcData.versionStr,
+            "minor_mc_version" to mcData.minorVersionStr,
             "format_mc_version" to mcData.version,
             "java_version" to if (mcData.javaVersion.isJava8) "JAVA_8" else if (mcData.javaVersion.isCompatibleWith(JavaVersion.VERSION_16)) "JAVA_16" else "JAVA_17",
             "file" to mapOf("jarVersion" to modData.version.let { if (it[0].isDigit()) it else "0.$it" })

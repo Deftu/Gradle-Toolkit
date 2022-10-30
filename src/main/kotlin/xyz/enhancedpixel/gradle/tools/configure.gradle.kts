@@ -1,9 +1,9 @@
-package xyz.unifycraft.gradle.tools
+package xyz.enhancedpixel.gradle.tools
 
-import xyz.unifycraft.gradle.MCData
-import xyz.unifycraft.gradle.ModData
-import xyz.unifycraft.gradle.utils.isLoomPresent
-import xyz.unifycraft.gradle.utils.propertyBoolOr
+import xyz.enhancedpixel.gradle.MCData
+import xyz.enhancedpixel.gradle.ModData
+import xyz.enhancedpixel.gradle.utils.isLoomPresent
+import xyz.enhancedpixel.gradle.utils.propertyBoolOr
 
 plugins {
     java

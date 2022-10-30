@@ -1,4 +1,4 @@
-package xyz.unifycraft.gradle.utils
+package xyz.enhancedpixel.gradle.utils
 
 enum class GameSide {
     GLOBAL,

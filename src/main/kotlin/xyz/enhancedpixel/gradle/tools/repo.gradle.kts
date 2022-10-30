@@ -1,6 +1,6 @@
-package xyz.unifycraft.gradle.tools
+package xyz.enhancedpixel.gradle.tools
 
-import xyz.unifycraft.gradle.utils.propertyBoolOr
+import xyz.enhancedpixel.gradle.utils.propertyBoolOr
 
 repositories {
     mavenCentral()
@@ -9,8 +9,8 @@ repositories {
     optionalMaven("repo.jitpack", "JitPack", "https://jitpack.io/")
     optionalMaven("repo.essential", "Essential", "https://repo.essential.gg/repository/maven-public/")
     optionalMaven("repo.sponge", "SpongePowered", "https://repo.spongepowered.org/maven/")
-    maven("https://maven.unifycraft.xyz/releases")
-    maven("https://maven.unifycraft.xyz/snapshots")
+    maven("https://maven.enhancedpixel.xyz/releases")
+    maven("https://maven.enhancedpixel.xyz/snapshots")
 }
 
 fun RepositoryHandler.optionalMaven(propertyName: String, name: String? = null, url: String) {

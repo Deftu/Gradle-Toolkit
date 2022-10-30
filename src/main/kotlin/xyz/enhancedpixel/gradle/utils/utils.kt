@@ -1,10 +1,10 @@
-package xyz.unifycraft.gradle.utils
+package xyz.enhancedpixel.gradle.utils
 
 import org.gradle.api.GradleException
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.util.GradleVersion
-import xyz.unifycraft.gradle.MCData
+import java.io.File
 
 /**
  * Taken from Essential under GPL 3.0
@@ -32,7 +32,7 @@ fun checkGradleVersion(minVersion: GradleVersion) {
 fun Project.isLoomPresent(): Boolean =
     (pluginManager.hasPlugin("fabric-loom") || pluginManager.hasPlugin("gg.essential.loom") || pluginManager.hasPlugin("dev.architectury.loom"))
 fun Project.isMultiversionProject(): Boolean =
-    (pluginManager.hasPlugin("com.replaymod.preprocess-root") || pluginManager.hasPlugin("com.replaymod.preprocess") || pluginManager.hasPlugin("xyz.unifycraft.gradle.multiversion-root") || pluginManager.hasPlugin("xyz.unifycraft.gradle.multiversion"))
+    (pluginManager.hasPlugin("com.replaymod.preprocess-root") || pluginManager.hasPlugin("com.replaymod.preprocess") || pluginManager.hasPlugin("xyz.enhancedpixel.gradle.multiversion-root") || pluginManager.hasPlugin("xyz.enhancedpixel.gradle.multiversion") || (rootProject.file("versions").exists() && File(rootProject.file("versions"), "mainProject").exists()))
 
 fun Project.propertyOr(key: String, default: String? = null) =
     (project.findProperty(key)

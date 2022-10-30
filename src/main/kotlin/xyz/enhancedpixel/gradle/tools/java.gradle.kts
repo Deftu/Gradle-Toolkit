@@ -1,7 +1,7 @@
-package xyz.unifycraft.gradle.tools
+package xyz.enhancedpixel.gradle.tools
 
 import org.gradle.api.tasks.compile.JavaCompile
-import xyz.unifycraft.gradle.MCData
+import xyz.enhancedpixel.gradle.MCData
 
 plugins {
     java

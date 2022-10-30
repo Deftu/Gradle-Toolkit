@@ -1,8 +1,8 @@
-package xyz.unifycraft.gradle.tools
+package xyz.enhancedpixel.gradle.tools
 
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import xyz.unifycraft.gradle.MCData
+import xyz.enhancedpixel.gradle.MCData
 
 val mcData = MCData.from(project)
 

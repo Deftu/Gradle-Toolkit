@@ -1,4 +1,4 @@
-package xyz.unifycraft.gradle.tools
+package xyz.enhancedpixel.gradle.tools
 
 import dev.architectury.pack200.java.Pack200Adapter
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.loom
@@ -6,13 +6,13 @@ import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.mappings
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.minecraft
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.modImplementation
 import org.gradle.kotlin.dsl.dependencies
-import xyz.unifycraft.gradle.GameInfo.fetchFabricLoaderVersion
-import xyz.unifycraft.gradle.GameInfo.fetchForgeVersion
-import xyz.unifycraft.gradle.GameInfo.fetchMcpMappings
-import xyz.unifycraft.gradle.GameInfo.fetchYarnMappings
-import xyz.unifycraft.gradle.MCData
-import xyz.unifycraft.gradle.utils.propertyBoolOr
-import xyz.unifycraft.gradle.utils.propertyOr
+import xyz.enhancedpixel.gradle.GameInfo.fetchFabricLoaderVersion
+import xyz.enhancedpixel.gradle.GameInfo.fetchForgeVersion
+import xyz.enhancedpixel.gradle.GameInfo.fetchMcpMappings
+import xyz.enhancedpixel.gradle.GameInfo.fetchYarnMappings
+import xyz.enhancedpixel.gradle.MCData
+import xyz.enhancedpixel.gradle.utils.propertyBoolOr
+import xyz.enhancedpixel.gradle.utils.propertyOr
 
 plugins {
     id("gg.essential.loom")

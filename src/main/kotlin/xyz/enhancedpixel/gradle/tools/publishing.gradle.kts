@@ -1,10 +1,11 @@
-package xyz.unifycraft.gradle.tools
+package xyz.enhancedpixel.gradle.tools
 
 import gradle.kotlin.dsl.accessors._89edf7476531f98eff64d602eb448354.publishing
 import gradle.kotlin.dsl.accessors._89edf7476531f98eff64d602eb448354.signing
 import gradle.kotlin.dsl.accessors._ca59d7b33a587bae1dcf00e1f22a5064.java
-import xyz.unifycraft.gradle.MCData
-import xyz.unifycraft.gradle.ModData
+import xyz.enhancedpixel.gradle.MCData
+import xyz.enhancedpixel.gradle.ModData
+import xyz.enhancedpixel.gradle.utils.isMultiversionProject
 
 plugins {
     `maven-publish`
@@ -25,12 +26,12 @@ afterEvaluate {
     publishing {
         publications {
             create<MavenPublication>("mavenJava") {
-                artifactId = modData.name
+                artifactId = if (isMultiversionProject()) "${modData.name}-${mcData.versionStr}" else modData.name
                 groupId = modData.group
                 version = modData.version
-                if (pluginManager.hasPlugin("xyz.unifycraft.gradle.tools.shadow")) {
-                    val unishadowJar by tasks.getting
-                    artifact(unishadowJar) {
+                if (pluginManager.hasPlugin("xyz.enhancedpixel.gradle.tools.shadow")) {
+                    val fatJar by tasks.getting
+                    artifact(fatJar) {
                         classifier = null
                     }
                     val sourcesJar by tasks.getting
@@ -47,26 +48,24 @@ afterEvaluate {
         }
 
         repositories {
-            if (project.hasProperty("unifycraft.publishing.username") && project.hasProperty("unifycraft.publishing.password")) {
+            if (project.hasProperty("enhancedpixel.publishing.username") && project.hasProperty("enhancedpixel.publishing.password")) {
                 fun MavenArtifactRepository.applyCredentials() {
+                    authentication.create<BasicAuthentication>("basic")
                     credentials {
-                        username = property("unifycraft.publishing.username")?.toString()
-                        password = property("unifycraft.publishing.password")?.toString()
-                    }
-                    authentication {
-                        create<BasicAuthentication>("basic")
+                        username = property("enhancedpixel.publishing.username")?.toString()
+                        password = property("enhancedpixel.publishing.password")?.toString()
                     }
                 }
 
                 maven {
-                    name = "UnifyCraftRelease"
-                    url = uri("https://maven.unifycraft.xyz/releases")
+                    name = "EnhancedPixelReleases"
+                    url = uri("https://maven.enhancedpixel.xyz/releases")
                     applyCredentials()
                 }
 
                 maven {
-                    name = "UnifyCraftSnapshots"
-                    url = uri("https://maven.unifycraft.xyz/snapshots")
+                    name = "EnhancedPixelSnapshots"
+                    url = uri("https://maven.enhancedpixel.xyz/snapshots")
                     applyCredentials()
                 }
             }

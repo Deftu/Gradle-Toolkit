@@ -1,4 +1,4 @@
-package xyz.unifycraft.gradle.tools
+package xyz.enhancedpixel.gradle.tools
 
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseExtension
 import com.github.breadmoirai.githubreleaseplugin.GithubReleasePlugin
@@ -11,11 +11,11 @@ import com.matthewprenger.cursegradle.Options
 import com.modrinth.minotaur.Minotaur
 import com.modrinth.minotaur.ModrinthExtension
 import gradle.kotlin.dsl.accessors._72efc76fad8c8cf3476d335fb6323bde.jar
-import xyz.unifycraft.gradle.MCData
-import xyz.unifycraft.gradle.ModData
-import xyz.unifycraft.gradle.utils.isLoomPresent
-import xyz.unifycraft.gradle.utils.isMultiversionProject
-import xyz.unifycraft.gradle.utils.propertyOr
+import xyz.enhancedpixel.gradle.MCData
+import xyz.enhancedpixel.gradle.ModData
+import xyz.enhancedpixel.gradle.utils.isLoomPresent
+import xyz.enhancedpixel.gradle.utils.isMultiversionProject
+import xyz.enhancedpixel.gradle.utils.propertyOr
 import java.nio.charset.StandardCharsets
 
 plugins {
@@ -35,11 +35,11 @@ afterEvaluate {
     val curseForgeApiKey = propertyOr("publish.curseforge.apikey", "")!!
     val githubToken = propertyOr("publish.github.token", "")!!
 
-    val publishToModrinth by tasks.registering { group = "unifycraft" }
-    val publishToCurseForge by tasks.registering { group = "unifycraft" }
-    val publishToGitHubRelease by tasks.registering { group = "unifycraft" }
+    val publishToModrinth by tasks.registering { group = "enhancedpixel" }
+    val publishToCurseForge by tasks.registering { group = "enhancedpixel" }
+    val publishToGitHubRelease by tasks.registering { group = "enhancedpixel" }
     tasks.register("releaseMod") {
-        group = "unifycraft"
+        group = "enhancedpixel"
         if (modrinthToken.isNotBlank()) dependsOn(publishToModrinth)
         if (curseForgeApiKey.isNotBlank()) dependsOn(publishToCurseForge)
         if (githubToken.isNotBlank()) dependsOn(publishToGitHubRelease)

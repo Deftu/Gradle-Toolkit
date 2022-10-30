@@ -1,7 +1,7 @@
-package xyz.unifycraft.gradle
+package xyz.enhancedpixel.gradle
 
 import org.gradle.api.Project
-import xyz.unifycraft.gradle.utils.propertyOr
+import xyz.enhancedpixel.gradle.utils.propertyOr
 import java.io.ByteArrayOutputStream
 
 data class GitHubData(

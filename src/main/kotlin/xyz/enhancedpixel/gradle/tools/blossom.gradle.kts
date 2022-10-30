@@ -1,8 +1,8 @@
-package xyz.unifycraft.gradle.tools
+package xyz.enhancedpixel.gradle.tools
 
-import xyz.unifycraft.gradle.GitHubData
-import xyz.unifycraft.gradle.MCData
-import xyz.unifycraft.gradle.ModData
+import xyz.enhancedpixel.gradle.GitHubData
+import xyz.enhancedpixel.gradle.MCData
+import xyz.enhancedpixel.gradle.ModData
 
 plugins {
     java

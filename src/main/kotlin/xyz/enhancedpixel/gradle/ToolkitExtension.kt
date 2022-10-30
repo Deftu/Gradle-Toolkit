@@ -1,7 +1,7 @@
-package xyz.unifycraft.gradle
+package xyz.enhancedpixel.gradle
 
 import org.gradle.api.Project
-import xyz.unifycraft.gradle.utils.DependencyHelper
+import xyz.enhancedpixel.gradle.utils.DependencyHelper
 
 @Suppress("unused")
 abstract class ToolkitExtension(
@@ -16,9 +16,9 @@ abstract class ToolkitExtension(
         val mcData = MCData.from(project)
         val loaderDependency = "gg.essential:" + if (mcData.isForge) "loader-launchwrapper" else "loader-fabric"
         val loaderVersion = DependencyHelper.fetchLatestRelease(repo, loaderDependency)
-        val usingUnishadow = project.pluginManager.hasPlugin("xyz.unifycraft.gradle.tools.shadow")
+        val usingUnishadow = project.pluginManager.hasPlugin("xyz.enhancedpixel.gradle.tools.shadow")
         project.dependencies.add(if (usingUnishadow) "unishade" else "implementation", "$loaderDependency:$loaderVersion")
-        if (!usingUnishadow) project.logger.warn("It is recommended to use UCGT Shadow to embed the Essential loader inside your built mod JAR.")
+        if (!usingUnishadow) project.logger.warn("It is recommended to use EPGT Shadow to embed the Essential loader inside your built mod JAR.")
         val apiDependency = "gg.essential:essential-${mcData.versionStr}-${mcData.loader.name}"
         val apiVersion = DependencyHelper.fetchLatestRelease(repo, apiDependency)
         project.dependencies.add("compileOnly", "$apiDependency:$apiVersion")
@@ -38,19 +38,19 @@ abstract class ToolkitExtension(
     }
 
     fun useUniCore(snapshots: Boolean = false) {
-        val repo = "https://maven.unifycraft.xyz/" + if (snapshots) "snapshots" else "releases"
+        val repo = "https://maven.enhancedpixel.xyz/" + if (snapshots) "snapshots" else "releases"
         val mcData = MCData.from(project)
 
         // Loader
         val loaderModule = if (mcData.isFabric) "fabric" else if (mcData.isForge && mcData.version <= 11202) "forge-legacy" else "forge-modern"
-        val loaderDependency = "xyz.unifycraft.unicore:UniCore-Loader-$loaderModule"
+        val loaderDependency = "xyz.enhancedpixel:UniCore-Loader-$loaderModule"
         val loaderVersion = DependencyHelper.fetchLatestRelease(repo, loaderDependency)
-        val usingUnishadow = project.pluginManager.hasPlugin("xyz.unifycraft.gradle.tools.shadow")
+        val usingUnishadow = project.pluginManager.hasPlugin("xyz.enhancedpixel.gradle.tools.shadow")
         project.dependencies.add(if (usingUnishadow) "unishade" else "implementation", "$loaderDependency:$loaderVersion")
-        if (!usingUnishadow) project.logger.warn("- It is recommended to use UCGT Shadow to embed the UniCore loader inside your built mod JAR.")
+        if (!usingUnishadow) project.logger.warn("- It is recommended to use EPGT Shadow to embed the UniCore loader inside your built mod JAR.")
 
         // API
-        val apiDependency = "xyz.unifycraft.unicore:UniCore-${mcData.versionStr}-${mcData.loader.name}"
+        val apiDependency = "xyz.enhancedpixel:UniCore-${mcData.versionStr}-${mcData.loader.name}"
         val apiVersion = DependencyHelper.fetchLatestRelease(repo, apiDependency)
         project.dependencies.add("runtimeOnly", "$apiDependency:$apiVersion")
     }
