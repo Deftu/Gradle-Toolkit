@@ -56,7 +56,7 @@ fun setupModrinth(token: String) {
         failSilently.set(true)
         this.token.set(token)
         this.projectId.set(projectId)
-        versionName.set(extension.releaseName.getOrElse("${if (isMultiversionProject()) "[${mcData.minorVersionStr}]" else ""}${modData.name} ${modData.version}"))
+        versionName.set(extension.releaseName.getOrElse("${if (isMultiversionProject()) "[${mcData.minorVersionStr}] " else ""}${modData.name} ${modData.version}"))
         versionNumber.set(extension.version.getOrElse(if (isMultiversionProject()) "${mcData.versionStr}-${modData.version}" else modData.version))
         versionType.set(extension.versionType.getOrElse(VersionType.RELEASE).value)
         uploadFile.set(extension.file.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get()))
@@ -83,7 +83,8 @@ fun setupCurseForge(apiKey: String) {
         this.apiToken = apiKey
 
         upload(projectId, extension.file.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get())).apply {
-            displayName = extension.releaseName.getOrElse("${if (isMultiversionProject()) "[${mcData.minorVersionStr}]" else ""}${modData.name} ${modData.version}")
+            disableVersionDetection()
+            displayName = extension.releaseName.getOrElse("${if (isMultiversionProject()) "[${mcData.minorVersionStr}] " else ""}${modData.name} ${modData.version}")
             releaseType = extension.versionType.getOrElse(VersionType.RELEASE).value
             changelog = extension.changelog.get()
             changelogType = extension.curseforge.changelogType.getOrElse("text")
@@ -109,7 +110,7 @@ fun setupGitHub(token: String) {
         this.repo.set(repo)
         val version = extension.version.getOrElse(project.version.toString())
         tagName.set(version)
-        releaseName.set(extension.github.releaseName.getOrElse(version))
+        releaseName.set(extension.releaseName.getOrElse("${if (isMultiversionProject()) "[${mcData.minorVersionStr}] " else ""}${modData.name} ${modData.version}"))
         body.set(extension.changelog.get())
         draft.set(extension.github.draft.getOrElse(false))
         prerelease.set(extension.versionType.getOrElse(VersionType.RELEASE) != VersionType.RELEASE)

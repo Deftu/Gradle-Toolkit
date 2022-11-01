@@ -97,7 +97,6 @@ abstract class PublishingGitHubExtension(
 ) {
     abstract val owner: Property<String>
     abstract val repository: Property<String>
-    abstract val releaseName: Property<String>
     abstract val targetCommitish: Property<String>
     abstract val draft: Property<Boolean>
     init {
