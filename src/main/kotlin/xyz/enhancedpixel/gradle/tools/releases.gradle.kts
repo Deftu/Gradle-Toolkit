@@ -26,7 +26,8 @@ afterEvaluate {
     val curseForgeApiKey = propertyOr("publish.curseforge.apikey", "")!!
     val githubToken = propertyOr("publish.github.token", "")!!
 
-    tasks.register("releaseMod") { group = "enhancedpixel" }
+    val releaseMod by tasks.registering { group = "enhancedpixel" }
+    releaseMod.get().dependsOn(tasks["build"])
 
     if (extension.changelogFile.isPresent) {
         val changelogFile = extension.changelogFile.get()
@@ -72,6 +73,7 @@ fun setupModrinth(token: String) {
     }
 
     tasks["releaseMod"].dependsOn(publishToModrinth)
+    publishToModrinth.get().mustRunAfter(tasks["build"])
 }
 
 fun setupCurseForge(apiKey: String) {
@@ -97,6 +99,7 @@ fun setupCurseForge(apiKey: String) {
     }
 
     tasks["releaseMod"].dependsOn(publishToCurseForge)
+    publishToCurseForge.get().mustRunAfter(tasks["build"])
 }
 
 fun setupGitHub(token: String) {
@@ -123,4 +126,5 @@ fun setupGitHub(token: String) {
     }
 
     tasks["releaseMod"].dependsOn(publishToGitHubRelease)
+    publishToGitHubRelease.get().mustRunAfter(tasks["build"])
 }
