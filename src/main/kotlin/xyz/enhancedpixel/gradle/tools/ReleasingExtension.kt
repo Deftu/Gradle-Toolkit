@@ -42,10 +42,6 @@ abstract class ReleasingExtension(
         versionType.convention(VersionType.RELEASE)
         gameVersions.convention(listOf(mcData.versionStr))
         loaders.convention(listOf(mcData.loader.name))
-        project.pluginManager.withPlugin("java") {
-            file.convention(project.tasks["jar"] as Jar)
-        }
-
         changelog.convention("No changelog provided.")
     }
 
@@ -66,10 +62,10 @@ abstract class PublishingModrinthExtension {
 
 abstract class PublishingCurseForgeExtension {
     abstract val projectId: Property<String>
-    abstract val relations: ListProperty<CursRelation>
+    abstract val relations: ListProperty<CurseRelation>
     abstract val changelogType: Property<String>
     init {
-        changelogType.convention("")
+        changelogType.convention("text")
     }
 }
 
@@ -81,7 +77,7 @@ enum class CurseRelationType {
     OPTIONAL
 }
 
-data class CursRelation(
+data class CurseRelation(
     val name: String,
     val type: CurseRelationType
 ) {

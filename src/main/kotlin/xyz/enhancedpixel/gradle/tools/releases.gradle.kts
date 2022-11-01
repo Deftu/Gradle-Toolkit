@@ -26,13 +26,7 @@ afterEvaluate {
     val curseForgeApiKey = propertyOr("publish.curseforge.apikey", "")!!
     val githubToken = propertyOr("publish.github.token", "")!!
 
-    val publishToModrinth by tasks.registering { group = "enhancedpixel" }
-    val publishToGitHubRelease by tasks.registering { group = "enhancedpixel" }
-    tasks.register("releaseMod") {
-        group = "enhancedpixel"
-        if (modrinthToken.isNotBlank()) dependsOn(publishToModrinth)
-        if (githubToken.isNotBlank()) dependsOn(publishToGitHubRelease)
-    }
+    tasks.register("releaseMod") { group = "enhancedpixel" }
 
     if (extension.changelogFile.isPresent) {
         val changelogFile = extension.changelogFile.get()
@@ -57,7 +51,6 @@ afterEvaluate {
 fun setupModrinth(token: String) {
     val projectId = extension.modrinth.projectId.orNull
     if (projectId.isNullOrBlank()) return
-    tasks["publishToModrinth"].dependsOn(tasks["modrinth"])
     apply<Minotaur>()
     configure<ModrinthExtension> {
         failSilently.set(true)
@@ -72,6 +65,13 @@ fun setupModrinth(token: String) {
         loaders.addAll(extension.loaders.getOrElse(listOf(mcData.loader.name)))
         dependencies.addAll(extension.modrinth.dependencies.getOrElse(listOf()))
     }
+
+    val publishToModrinth by tasks.registering {
+        group = "enhancedpixel"
+        dependsOn("modrinth")
+    }
+
+    tasks["releaseMod"].dependsOn(publishToModrinth)
 }
 
 fun setupCurseForge(apiKey: String) {
@@ -96,15 +96,12 @@ fun setupCurseForge(apiKey: String) {
     }
 
     tasks["releaseMod"].dependsOn(publishToCurseForge)
-    // Just in case.
-    tasks["build"].dependsOn.remove(publishToCurseForge)
 }
 
 fun setupGitHub(token: String) {
     val owner = extension.github.owner.orNull
     val repo = extension.github.repository.orNull
     if (owner.isNullOrBlank() || repo.isNullOrBlank()) return
-    tasks["publishToGitHubRelease"].dependsOn("githubRelease")
     apply<GithubReleasePlugin>()
     configure<GithubReleaseExtension> {
         setToken(token)
@@ -118,4 +115,11 @@ fun setupGitHub(token: String) {
         prerelease.set(extension.versionType.getOrElse(VersionType.RELEASE) != VersionType.RELEASE)
         releaseAssets(extension.file.getOrElse(tasks.jar.get()))
     }
+
+    val publishToGitHubRelease by tasks.registering {
+        group = "enhancedpixel"
+        dependsOn("githubRelease")
+    }
+
+    tasks["releaseMod"].dependsOn(publishToGitHubRelease)
 }
