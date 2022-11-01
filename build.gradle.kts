@@ -12,17 +12,16 @@ version = projectVersion
 group = projectGroup
 
 repositories {
-    mavenCentral()
-    gradlePluginPortal()
     maven("https://maven.enhancedpixel.xyz/releases/")
-
     maven("https://jitpack.io/")
     maven("https://maven.fabricmc.net/")
     maven("https://maven.minecraftforge.net/")
     maven("https://maven.architectury.dev/")
-    maven("https://repo.essential.gg/repository/maven-public")
-
+    maven("https://repo.essential.gg/repository/maven-public/")
     maven("https://maven.enhancedpixel.xyz/snapshots/")
+
+    mavenCentral()
+    gradlePluginPortal()
     mavenLocal()
 }
 
@@ -46,7 +45,7 @@ dependencies {
 
     // Publishing
     implementation("com.modrinth.minotaur:Minotaur:2.4.2")
-    implementation("gradle.plugin.com.matthewprenger:CurseGradle:1.4.0")
+    implementation("net.darkhax.curseforgegradle:CurseForgeGradle:1.0.11")
     implementation("com.github.breadmoirai:github-release:2.2.12")
 }
 

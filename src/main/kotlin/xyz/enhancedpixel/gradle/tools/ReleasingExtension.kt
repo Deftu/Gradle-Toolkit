@@ -1,6 +1,7 @@
 package xyz.enhancedpixel.gradle.tools
 
 import com.modrinth.minotaur.dependencies.Dependency
+import net.darkhax.curseforgegradle.UploadArtifact
 import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.provider.ListProperty
@@ -65,17 +66,35 @@ abstract class PublishingModrinthExtension {
 
 abstract class PublishingCurseForgeExtension {
     abstract val projectId: Property<String>
-    abstract val dependencies: ListProperty<CurseDependency>
+    abstract val relations: ListProperty<CursRelation>
     abstract val changelogType: Property<String>
     init {
         changelogType.convention("")
     }
 }
 
-data class CurseDependency(
+enum class CurseRelationType {
+    INCOMPATIBLE,
+    REQUIRED,
+    EMBEDDED,
+    TOOL,
+    OPTIONAL
+}
+
+data class CursRelation(
     val name: String,
-    val isRequired: Boolean
-)
+    val type: CurseRelationType
+) {
+    fun applyTo(task: UploadArtifact) {
+        when (type) {
+            CurseRelationType.INCOMPATIBLE -> task.addIncompatibility(name)
+            CurseRelationType.REQUIRED -> task.addRequirement(name)
+            CurseRelationType.EMBEDDED -> task.addEmbedded(name)
+            CurseRelationType.TOOL -> task.addTool(name)
+            CurseRelationType.OPTIONAL -> task.addOptional(name)
+        }
+    }
+}
 
 abstract class PublishingGitHubExtension(
     project: Project
