@@ -15,7 +15,7 @@ import xyz.enhancedpixel.gradle.utils.propertyBoolOr
 import xyz.enhancedpixel.gradle.utils.propertyOr
 
 plugins {
-    id("gg.essential.loom")
+    id("dev.architectury.loom")
 }
 
 val mcData = MCData.from(project)
