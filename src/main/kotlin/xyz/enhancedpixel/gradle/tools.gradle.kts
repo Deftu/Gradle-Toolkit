@@ -27,7 +27,7 @@ pluginManager.withPlugin("net.kyori.blossom") {
 pluginManager.withPlugin("maven-publish") {
     apply(plugin = "xyz.enhancedpixel.gradle.tools.publishing")
 }
-pluginManager.withPlugin("gg.essential.loom") {
+pluginManager.withPlugin("dev.architectury.loom") {
     apply(plugin = "xyz.enhancedpixel.gradle.tools.loom")
 }
 
