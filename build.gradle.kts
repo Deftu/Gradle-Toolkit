@@ -12,13 +12,11 @@ version = projectVersion
 group = projectGroup
 
 repositories {
-    maven("https://maven.enhancedpixel.xyz/releases/")
     maven("https://jitpack.io/")
     maven("https://maven.fabricmc.net/")
     maven("https://maven.minecraftforge.net/")
     maven("https://maven.architectury.dev/")
     maven("https://repo.essential.gg/repository/maven-public/")
-    maven("https://maven.enhancedpixel.xyz/snapshots/")
 
     mavenCentral()
     gradlePluginPortal()
@@ -65,24 +63,24 @@ afterEvaluate {
     publishing {
         repositories {
             mavenLocal()
-            if (project.hasProperty("enhancedpixel.publishing.username") && project.hasProperty("enhancedpixel.publishing.password")) {
+            if (project.hasProperty("deftu.publishing.username") && project.hasProperty("deftu.publishing.password")) {
                 fun MavenArtifactRepository.applyCredentials() {
                     authentication.create<BasicAuthentication>("basic")
                     credentials {
-                        username = property("enhancedpixel.publishing.username")?.toString()
-                        password = property("enhancedpixel.publishing.password")?.toString()
+                        username = property("deftu.publishing.username")?.toString()
+                        password = property("deftu.publishing.password")?.toString()
                     }
                 }
 
                 maven {
-                    name = "EnhancedPixelReleases"
-                    url = uri("https://maven.enhancedpixel.xyz/releases")
+                    name = "DeftuReleases"
+                    url = uri("https://maven.deftu.xyz/releases")
                     applyCredentials()
                 }
 
                 maven {
-                    name = "EnhancedPixelSnapshots"
-                    url = uri("https://maven.enhancedpixel.xyz/snapshots")
+                    name = "DeftuSnapshots"
+                    url = uri("https://maven.deftu.xyz/snapshots")
                     applyCredentials()
                 }
             }

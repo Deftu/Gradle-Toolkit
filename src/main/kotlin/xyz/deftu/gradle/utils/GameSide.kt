@@ -1,4 +1,4 @@
-package xyz.enhancedpixel.gradle.utils
+package xyz.deftu.gradle.utils
 
 enum class GameSide {
     GLOBAL,

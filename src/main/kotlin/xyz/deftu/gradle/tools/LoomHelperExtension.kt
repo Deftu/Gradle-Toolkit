@@ -1,4 +1,4 @@
-package xyz.enhancedpixel.gradle.tools
+package xyz.deftu.gradle.tools
 
 import net.fabricmc.loom.api.LoomGradleExtensionAPI
 import org.gradle.api.Project
@@ -6,8 +6,8 @@ import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.withType
-import xyz.enhancedpixel.gradle.MCData
-import xyz.enhancedpixel.gradle.utils.GameSide
+import xyz.deftu.gradle.MCData
+import xyz.deftu.gradle.utils.GameSide
 
 abstract class LoomHelperExtension(
     val project: Project
@@ -24,6 +24,7 @@ abstract class LoomHelperExtension(
                 mixinConfig(value)
             }
         }
+
         project.pluginManager.withPlugin("java") {
             project.tasks.withType<Jar> {
                 manifest {
@@ -70,8 +71,7 @@ abstract class LoomHelperExtension(
     }
 
     /**
-     * Appends a tweaker to
-     * your mod.
+     * Appends a tweaker to your mod.
      */
     fun useTweaker(value: String) = apply {
         val mcData = MCData.from(project)

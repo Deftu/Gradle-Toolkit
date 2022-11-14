@@ -1,7 +1,7 @@
-package xyz.enhancedpixel.gradle.tools
+package xyz.deftu.gradle.tools
 
 import org.gradle.api.tasks.compile.JavaCompile
-import xyz.enhancedpixel.gradle.MCData
+import xyz.deftu.gradle.MCData
 
 plugins {
     java

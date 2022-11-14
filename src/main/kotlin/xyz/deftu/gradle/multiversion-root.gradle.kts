@@ -1,7 +1,7 @@
-package xyz.enhancedpixel.gradle
+package xyz.deftu.gradle
 
 import org.gradle.api.JavaVersion
-import xyz.enhancedpixel.gradle.utils.checkJavaVersion
+import xyz.deftu.gradle.utils.checkJavaVersion
 
 plugins {
     id("com.replaymod.preprocess-root")

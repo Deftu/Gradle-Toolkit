@@ -1,11 +1,12 @@
-package xyz.enhancedpixel.gradle.tools
+package xyz.deftu.gradle.tools
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.implementation
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.remapJar
 import gradle.kotlin.dsl.accessors._8d08aa9ad8bc8c840f59d6f15750154b.shadowJar
 import org.gradle.jvm.tasks.Jar
-import xyz.enhancedpixel.gradle.ModData
+import xyz.deftu.gradle.ModData
+import xyz.deftu.gradle.utils.withLoom
 
 plugins {
     id("com.github.johnrengelman.shadow")
@@ -17,7 +18,7 @@ val shade by configurations.creating {
 }
 
 val fatJar = tasks.register<ShadowJar>("fatJar") {
-    group = "unishadow"
+    group = "deftu"
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     configurations = listOf(project.configurations["shade"])
 
@@ -45,7 +46,7 @@ pluginManager.withPlugin("java") {
     tasks["assemble"].dependsOn(fatJar)
 }
 
-pluginManager.withPlugin("gg.essential.loom") {
+withLoom {
     tasks {
         shadowJar {
             doFirst {

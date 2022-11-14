@@ -1,8 +1,8 @@
-package xyz.enhancedpixel.gradle.tools
+package xyz.deftu.gradle.tools
 
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import xyz.enhancedpixel.gradle.MCData
+import xyz.deftu.gradle.MCData
 
 val mcData = MCData.from(project)
 

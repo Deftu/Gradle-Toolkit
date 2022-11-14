@@ -1,8 +1,8 @@
-package xyz.enhancedpixel.gradle.tools
+package xyz.deftu.gradle.tools
 
-import xyz.enhancedpixel.gradle.GitHubData
-import xyz.enhancedpixel.gradle.MCData
-import xyz.enhancedpixel.gradle.ModData
+import xyz.deftu.gradle.GitData
+import xyz.deftu.gradle.MCData
+import xyz.deftu.gradle.ModData
 
 plugins {
     java
@@ -11,7 +11,7 @@ plugins {
 
 val mcData = MCData.from(project)
 val modData = ModData.from(project)
-val githubData = GitHubData.from(project)
+val githubData = GitData.from(project)
 
 blossom {
     replaceToken("@MC_VERSION@", mcData.version)

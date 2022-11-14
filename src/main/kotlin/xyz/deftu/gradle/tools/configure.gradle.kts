@@ -1,9 +1,9 @@
-package xyz.enhancedpixel.gradle.tools
+package xyz.deftu.gradle.tools
 
-import xyz.enhancedpixel.gradle.MCData
-import xyz.enhancedpixel.gradle.ModData
-import xyz.enhancedpixel.gradle.utils.isLoomPresent
-import xyz.enhancedpixel.gradle.utils.propertyBoolOr
+import xyz.deftu.gradle.MCData
+import xyz.deftu.gradle.ModData
+import xyz.deftu.gradle.utils.isLoomPresent
+import xyz.deftu.gradle.utils.propertyBoolOr
 
 plugins {
     java
@@ -12,11 +12,11 @@ plugins {
 val mcData = MCData.from(project)
 val modData = ModData.from(project)
 
-if (propertyBoolOr("mod.version.set", true))
+if (propertyBoolOr("mod.version.setup", true))
     version = modData.version
-if (propertyBoolOr("mod.group.set", true))
+if (propertyBoolOr("mod.group.setup", true))
     group = modData.group
-if (propertyBoolOr("mod.name.set", true)) {
+if (propertyBoolOr("mod.name.setup", true)) {
     base.archivesName.set(modData.name)
     tasks {
         if (isLoomPresent()) {

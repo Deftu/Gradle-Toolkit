@@ -1,4 +1,4 @@
-package xyz.enhancedpixel.gradle.tools
+package xyz.deftu.gradle.tools
 
 import com.modrinth.minotaur.dependencies.Dependency
 import net.darkhax.curseforgegradle.UploadArtifact
@@ -10,7 +10,7 @@ import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.bundling.Zip
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.get
-import xyz.enhancedpixel.gradle.MCData
+import xyz.deftu.gradle.MCData
 import java.io.File
 
 abstract class ReleasingExtension(

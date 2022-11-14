@@ -1,4 +1,4 @@
-package xyz.enhancedpixel.gradle
+package xyz.deftu.gradle
 
 object GameInfo {
     val infoMap: Map<String, Map<Int, String>> = mapOf(

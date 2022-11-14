@@ -1,25 +1,32 @@
-package xyz.enhancedpixel.gradle
+package xyz.deftu.gradle
 
 import org.gradle.api.Project
-import xyz.enhancedpixel.gradle.utils.propertyOr
+import xyz.deftu.gradle.utils.Constants
+import xyz.deftu.gradle.utils.propertyOr
 import java.io.ByteArrayOutputStream
+import java.io.OutputStream
 
-data class GitHubData(
+data class GitData(
     val branch: String,
     val commit: String,
     val url: String
 ) {
     companion object {
+        private val debug: Boolean
+            get() = Constants.debug || System.getProperty("epgt.debug.git", "false").toBoolean()
+        private val errorOutput: OutputStream?
+            get() = if (debug) System.err else null
+
         @JvmStatic
-        fun from(project: Project): GitHubData {
-            val extension = project.extensions.findByName("githubData") as GitHubData?
+        fun from(project: Project): GitData {
+            val extension = project.extensions.findByName("gitData") as GitData?
             if (extension != null) return extension
 
-            val branch = project.propertyOr("GITHUB_REF_NAME", fetchCurrentBranch(project) ?: "LOCAL")!!
-            val commit = project.propertyOr("GITHUB_SHA", fetchCurrentCommit(project) ?: "LOCAL")!!
+            val branch = project.propertyOr("GITHUB_REF_NAME", fetchCurrentBranch(project) ?: "LOCAL")
+            val commit = project.propertyOr("GITHUB_SHA", fetchCurrentCommit(project) ?: "LOCAL")
             val url = fetchCurrentUrl(project) ?: "NONE"
-            val data = GitHubData(branch, commit, url)
-            project.extensions.add("githubData", data)
+            val data = GitData(branch, commit, url)
+            project.extensions.add("gitData", data)
             return data
         }
 
@@ -30,6 +37,7 @@ data class GitHubData(
                 project.exec {
                     commandLine("git", "rev-parse", "--abbrev-ref", "HEAD")
                     standardOutput = output
+                    errorOutput = this@Companion.errorOutput
                 }
                 val string = output.toString().trim()
                 if (string.isEmpty() || string.startsWith("fatal")) null else string
@@ -45,6 +53,7 @@ data class GitHubData(
                 project.exec {
                     commandLine("git", "rev-parse", "HEAD")
                     standardOutput = output
+                    errorOutput = this@Companion.errorOutput
                 }
                 val string = output.toString().trim()
                 if (string.isEmpty() || string.startsWith("fatal")) "LOCAL" else string.substring(0, 7)
@@ -60,6 +69,7 @@ data class GitHubData(
                 project.exec {
                     commandLine("git", "config", "--get", "remote.origin.url")
                     standardOutput = output
+                    errorOutput = this@Companion.errorOutput
                 }
                 val string = output.toString().trim()
                 if (string.isEmpty() || string.startsWith("fatal")) "LOCAL" else string

@@ -1,4 +1,4 @@
-package xyz.enhancedpixel.gradle
+package xyz.deftu.gradle
 
 import com.replaymod.gradle.preprocess.PreprocessExtension
 import com.replaymod.gradle.preprocess.PreprocessPlugin
@@ -17,11 +17,6 @@ setupPreprocessor()
 fun setupLoom() {
     extra.set("loom.platform", if (mcData.isFabric) "fabric" else "forge")
     apply<LoomGradlePluginBootstrap>()
-    extensions.configure<LoomGradleExtensionAPI> {
-        runConfigs.all {
-            isIdeConfigGenerated = true
-        }
-    }
 }
 
 fun setupPreprocessor() {

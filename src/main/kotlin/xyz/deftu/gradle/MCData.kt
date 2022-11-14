@@ -1,9 +1,9 @@
-package xyz.enhancedpixel.gradle
+package xyz.deftu.gradle
 
 import groovy.lang.MissingPropertyException
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import xyz.enhancedpixel.gradle.utils.propertyOr
+import xyz.deftu.gradle.utils.propertyOr
 
 data class MCData(
     val major: Int,
@@ -45,9 +45,9 @@ data class MCData(
             val extension = project.extensions.findByName("mcData") as MCData?
             if (extension != null) return extension
 
-            val version = project.propertyOr("minecraft.version", project.name)!! // Either get it from the property or infer it from the project's name for multi-version projects.
+            val version = project.propertyOr("minecraft.version", project.name) // Either get it from the property or infer it from the project's name for multi-version projects.
             val versionMatch = (versionRegex.find(version) ?: throw MissingPropertyException("Couldn't fetch Minecraft version. Either set the minecraft.version property in your Gradle properties file or define the Minecraft version in the project's name.")).groups
-            val loader = ModLoader.from(project.propertyOr("minecraft.loader", project.propertyOr("loom.platform", project.name)) ?: throw MissingPropertyException("minecraft.loader"), !project.hasProperty("minecraft.version"))
+            val loader = ModLoader.from(project.propertyOr("minecraft.loader", project.propertyOr("loom.platform", project.name)), !project.hasProperty("minecraft.version"))
             val data = MCData(versionMatch["major"]!!.value.toInt(), versionMatch["minor"]!!.value.toInt(), versionMatch["patch"]?.value?.toInt() ?: 0, loader)
             project.extensions.add("mcData", data)
             return data

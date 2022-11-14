@@ -1,11 +1,11 @@
 <div align="center">
 
 # [`Gradle Toolkit`]
-EnhancedPixel's Gradle toolkit suite, used to create, improve and manage projects.
+Deftu's Gradle toolkit, used to create, improve and manage projects.
 
 </div>
 
-![Repository badge](https://maven.enhancedpixel.xyz/api/badge/latest/releases/xyz/enhancedpixel/gradle-toolkit?color=912fed&name=Gradle+Toolkit)
+![Repository badge](https://maven.deftu.xyz/api/badge/latest/releases/xyz/deftu/gradle-toolkit?color=c91212&name=Gradle+Toolkit)
 
 ---
 

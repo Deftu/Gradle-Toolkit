@@ -1,7 +1,7 @@
-package xyz.enhancedpixel.gradle
+package xyz.deftu.gradle
 
 import org.gradle.api.Project
-import xyz.enhancedpixel.gradle.utils.propertyOr
+import xyz.deftu.gradle.utils.propertyOr
 
 data class ModData(
     val name: String,
@@ -15,10 +15,10 @@ data class ModData(
             val extension = project.extensions.findByName("modData") as ModData?
             if (extension != null) return extension
 
-            val name = project.propertyOr("mod.name", project.name)!!
-            val id = project.propertyOr("mod.id", name.toLowerCase().replace(" ", "_"))!!
-            val version = project.propertyOr("mod.version", project.version.toString())!!
-            val group = project.propertyOr("mod.group", project.group.toString())!!
+            val name = project.propertyOr("mod.name", project.name)
+            val id = project.propertyOr("mod.id", name.toLowerCase().replace(" ", "_"))
+            val version = project.propertyOr("mod.version", project.version.toString())
+            val group = project.propertyOr("mod.group", project.group.toString())
             val data = ModData(name, id, version, group)
             project.extensions.add("modData", data)
             return data

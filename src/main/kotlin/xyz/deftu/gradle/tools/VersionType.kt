@@ -1,4 +1,4 @@
-package xyz.enhancedpixel.gradle.tools
+package xyz.deftu.gradle.tools
 
 enum class VersionType(
     val value: String

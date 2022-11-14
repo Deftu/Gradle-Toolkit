@@ -1,4 +1,4 @@
-package xyz.enhancedpixel.gradle.tools
+package xyz.deftu.gradle.tools
 
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseExtension
 import com.github.breadmoirai.githubreleaseplugin.GithubReleasePlugin
@@ -7,10 +7,10 @@ import com.modrinth.minotaur.ModrinthExtension
 import gradle.kotlin.dsl.accessors._72efc76fad8c8cf3476d335fb6323bde.jar
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
 import org.gradle.kotlin.dsl.registering
-import xyz.enhancedpixel.gradle.MCData
-import xyz.enhancedpixel.gradle.ModData
-import xyz.enhancedpixel.gradle.utils.isMultiversionProject
-import xyz.enhancedpixel.gradle.utils.propertyOr
+import xyz.deftu.gradle.MCData
+import xyz.deftu.gradle.ModData
+import xyz.deftu.gradle.utils.isMultiversionProject
+import xyz.deftu.gradle.utils.propertyOr
 import java.nio.charset.StandardCharsets
 
 plugins {
@@ -22,11 +22,11 @@ val modData = ModData.from(project)
 val extension = extensions.create("releases", ReleasingExtension::class)
 
 afterEvaluate {
-    val modrinthToken = propertyOr("publish.modrinth.token", "")!!
-    val curseForgeApiKey = propertyOr("publish.curseforge.apikey", "")!!
-    val githubToken = propertyOr("publish.github.token", "")!!
+    val modrinthToken = propertyOr("publish.modrinth.token", "")
+    val curseForgeApiKey = propertyOr("publish.curseforge.apikey", "")
+    val githubToken = propertyOr("publish.github.token", "")
 
-    val releaseMod by tasks.registering { group = "enhancedpixel" }
+    val releaseMod by tasks.registering { group = "publishing" }
     releaseMod.get().dependsOn(tasks["build"])
 
     if (extension.changelogFile.isPresent) {
@@ -68,7 +68,7 @@ fun setupModrinth(token: String) {
     }
 
     val publishToModrinth by tasks.registering {
-        group = "enhancedpixel"
+        group = "publishing"
         dependsOn("modrinth")
     }
 
@@ -81,7 +81,7 @@ fun setupCurseForge(apiKey: String) {
     if (projectId.isNullOrBlank()) return
 
     val publishToCurseForge by tasks.registering(TaskPublishCurseForge::class) {
-        group = "enhancedpixel"
+        group = "publishing"
         this.apiToken = apiKey
 
         upload(projectId, extension.file.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get())).apply {
@@ -121,7 +121,7 @@ fun setupGitHub(token: String) {
     }
 
     val publishToGitHubRelease by tasks.registering {
-        group = "enhancedpixel"
+        group = "publishing"
         dependsOn("githubRelease")
     }
 
