@@ -13,17 +13,17 @@ data class GitData(
 ) {
     companion object {
         private val debug: Boolean
-            get() = Constants.debug || System.getProperty("epgt.debug.git", "false").toBoolean()
+            get() = Constants.debug || System.getProperty("dgt.debug.git", "false").toBoolean()
         private val errorOutput: OutputStream?
-            get() = if (debug) System.err else null
+            get() = if (debug) System.err else ByteArrayOutputStream()
 
         @JvmStatic
         fun from(project: Project): GitData {
             val extension = project.extensions.findByName("gitData") as GitData?
             if (extension != null) return extension
 
-            val branch = project.propertyOr("GITHUB_REF_NAME", fetchCurrentBranch(project) ?: "LOCAL")
-            val commit = project.propertyOr("GITHUB_SHA", fetchCurrentCommit(project) ?: "LOCAL")
+            val branch = project.propertyOr("GITHUB_REF_NAME", fetchCurrentBranch(project) ?: "LOCAL", false)
+            val commit = project.propertyOr("GITHUB_SHA", fetchCurrentCommit(project) ?: "LOCAL", false)
             val url = fetchCurrentUrl(project) ?: "NONE"
             val data = GitData(branch, commit, url)
             project.extensions.add("gitData", data)

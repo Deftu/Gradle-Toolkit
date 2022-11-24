@@ -52,13 +52,32 @@ fun Project.isMultiversionProject(): Boolean = preprocessorIds.any { id ->
     pluginManager.hasPlugin(id)
 } || (rootProject.file("versions").exists() && File(rootProject.file("versions"), "mainProject").exists())
 
-fun Project.propertyOr(key: String, default: String? = null): String {
-    val key = "dgt.$key"
+fun Project.propertyOr(
+    key: String,
+    default: String? = null,
+    prefix: Boolean = true
+): String {
+    val key = if (prefix) "dgt.$key" else key
     return (project.findProperty(key)
         ?: System.getProperty(key)
         ?: default) as String?
         ?: throw GradleException("No default property for key \"$key\" found. Set it in gradle.properties, environment variables or in the system properties.")
 }
 
-fun Project.propertyBoolOr(key: String, default: Boolean = false) =
-    propertyOr(key, default.toString()).toBoolean()
+fun Project.propertyBoolOr(
+    key: String,
+    default: Boolean = false,
+    prefix: Boolean = true
+) = propertyOr(key, default.toString(), prefix).toBoolean()
+
+fun Project.propertyIntOr(
+    key: String,
+    default: Int = 0,
+    prefix: Boolean = true
+) = propertyOr(key, default.toString(), prefix).toInt()
+
+fun Project.propertyDoubleOr(
+    key: String,
+    default: Double = 0.0,
+    prefix: Boolean = true
+) = propertyOr(key, default.toString(), prefix).toDouble()

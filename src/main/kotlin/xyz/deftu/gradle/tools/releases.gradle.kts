@@ -9,6 +9,7 @@ import net.darkhax.curseforgegradle.TaskPublishCurseForge
 import org.gradle.kotlin.dsl.registering
 import xyz.deftu.gradle.MCData
 import xyz.deftu.gradle.ModData
+import xyz.deftu.gradle.ProjectData
 import xyz.deftu.gradle.utils.isMultiversionProject
 import xyz.deftu.gradle.utils.propertyOr
 import java.nio.charset.StandardCharsets
@@ -19,6 +20,7 @@ plugins {
 
 val mcData = MCData.from(project)
 val modData = ModData.from(project)
+val projectData = ProjectData.from(project)
 val extension = extensions.create("releases", ReleasingExtension::class)
 
 afterEvaluate {
@@ -26,8 +28,8 @@ afterEvaluate {
     val curseForgeApiKey = propertyOr("publish.curseforge.apikey", "")
     val githubToken = propertyOr("publish.github.token", "")
 
-    val releaseMod by tasks.registering { group = "publishing" }
-    releaseMod.get().dependsOn(tasks["build"])
+    val releaseProject by tasks.registering { group = "publishing" }
+    releaseProject.get().dependsOn(tasks["build"])
 
     if (extension.changelogFile.isPresent) {
         val changelogFile = extension.changelogFile.get()
@@ -41,11 +43,11 @@ afterEvaluate {
         })
     }
 
-    if (modrinthToken.isNotBlank())
+    if (modData.present && modrinthToken.isNotBlank())
         setupModrinth(modrinthToken)
-    if (curseForgeApiKey.isNotBlank())
+    if (modData.present && curseForgeApiKey.isNotBlank())
         setupCurseForge(curseForgeApiKey)
-    if (githubToken.isNotBlank())
+    if ((modData.present || projectData.present) && githubToken.isNotBlank())
         setupGitHub(githubToken)
 }
 
@@ -72,7 +74,7 @@ fun setupModrinth(token: String) {
         dependsOn("modrinth")
     }
 
-    tasks["releaseMod"].dependsOn(publishToModrinth)
+    tasks["releaseProject"].dependsOn(publishToModrinth)
     publishToModrinth.get().mustRunAfter(tasks["build"])
 }
 
@@ -98,7 +100,7 @@ fun setupCurseForge(apiKey: String) {
         }
     }
 
-    tasks["releaseMod"].dependsOn(publishToCurseForge)
+    tasks["releaseProject"].dependsOn(publishToCurseForge)
     publishToCurseForge.get().mustRunAfter(tasks["build"])
 }
 
@@ -113,7 +115,15 @@ fun setupGitHub(token: String) {
         this.repo.set(repo)
         val version = extension.version.getOrElse(project.version.toString())
         tagName.set(version)
-        releaseName.set(extension.releaseName.getOrElse("${if (isMultiversionProject()) "[${mcData.minorVersionStr}] " else ""}${modData.name} ${modData.version}"))
+        releaseName.set(extension.releaseName.getOrElse(buildString {
+            if (mcData.present) {
+                append(if (isMultiversionProject()) "[${mcData.minorVersionStr}] " else "" + modData.name + " " + modData.version)
+            }
+
+            if (projectData.present) {
+                append(projectData.name + " " + projectData.version)
+            }
+        }))
         body.set(extension.changelog.get())
         draft.set(extension.github.draft.getOrElse(false))
         prerelease.set(extension.versionType.getOrElse(VersionType.RELEASE) != VersionType.RELEASE)
@@ -125,6 +135,6 @@ fun setupGitHub(token: String) {
         dependsOn("githubRelease")
     }
 
-    tasks["releaseMod"].dependsOn(publishToGitHubRelease)
+    tasks["releaseProject"].dependsOn(publishToGitHubRelease)
     publishToGitHubRelease.get().mustRunAfter(tasks["build"])
 }
