@@ -23,7 +23,7 @@ if (mcData.present) {
     }
 } else {
     val javaVersion = floor(propertyOr("java.version", JavaVersion.current().toString(), prefix = false).let { version ->
-        version.substring(0, version.indexOf("."))
+        if (version.startsWith("1.")) version.substring(2) else version
     }.toDouble()).toInt()
     if (javaVersion != 0) {
         tasks.withType<KotlinCompile> {
