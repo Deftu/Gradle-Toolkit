@@ -38,6 +38,15 @@ data class MCData(
             else -> JavaVersion.VERSION_1_8
         }
 
+    val fabricApiVersion: String
+        get() = GameInfo.fetchFabricApiVersion(version) ?: GameInfo.fetchLatestFabricApiVersion()!!
+    val forgeVersion: String
+        get() = GameInfo.fetchForgeVersion(version) ?: GameInfo.fetchLatestForgeVersion()!!
+    val yarnMappings: String
+        get() = GameInfo.fetchYarnMappings(version) ?: GameInfo.fetchLatestYarnMappings()!!
+    val mcpMappings: String
+        get() = GameInfo.fetchMcpMappings(version) ?: GameInfo.fetchLatestMcpMappings()!!
+
     companion object {
         @JvmStatic
         val versionRegex = "(?<major>\\d+).(?<minor>\\d+).?(?<patch>\\d+)?".toRegex()

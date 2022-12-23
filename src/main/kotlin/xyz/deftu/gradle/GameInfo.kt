@@ -4,6 +4,35 @@ object GameInfo {
     val infoMap: Map<String, Map<Int, String>> = mapOf(
         "fabric_loader_version" to mapOf(
             0 to "0.14.12"
+        ), "fabric_api_version" to mapOf(
+            11903 to "0.69.1+1.19.3",
+            11902 to "0.69.0+1.19.2",
+            11901 to "0.58.5+1.19.1",
+            11900 to "0.58.0+1.19",
+
+            11802 to "0.67.0+1.18.2",
+            11801 to "0.46.6+1.18",
+            11800 to "0.46.6+1.18",
+
+            11701 to "0.46.1+1.17",
+            11700 to "0.46.1+1.17",
+
+            11605 to "0.42.0+1.16",
+            11604 to "0.42.0+1.16",
+            11603 to "0.42.0+1.16",
+            11602 to "0.42.0+1.16",
+            11601 to "0.42.0+1.16",
+            11600 to "0.42.0+1.16",
+
+            11502 to "0.28.5+1.15",
+            11501 to "0.28.5+1.15",
+            11500 to "0.28.5+1.15",
+
+            11404 to "0.28.5+1.14",
+            11403 to "0.28.5+1.14",
+            11402 to "0.28.5+1.14",
+            11401 to "0.28.5+1.14",
+            11400 to "0.28.5+1.14",
         ), "forge_version" to mapOf(
             11902 to "1.19.2-43.1.2",
             11901 to "1.19.1-42.0.9",
@@ -50,35 +79,6 @@ object GameInfo {
 
             10710 to "1.7.10-10.13.4.1614-1.7.10",
             10702 to "1.7.2-10.12.2.1161-mc172"
-        ), "fabric_api_version" to mapOf(
-            11903 to "0.69.1+1.19.3",
-            11902 to "0.69.0+1.19.2",
-            11901 to "0.58.5+1.19.1",
-            11900 to "0.58.0+1.19",
-
-            11802 to "0.67.0+1.18.2",
-            11801 to "0.46.6+1.18",
-            11800 to "0.46.6+1.18",
-
-            11701 to "0.46.1+1.17",
-            11700 to "0.46.1+1.17",
-
-            11605 to "0.42.0+1.16",
-            11604 to "0.42.0+1.16",
-            11603 to "0.42.0+1.16",
-            11602 to "0.42.0+1.16",
-            11601 to "0.42.0+1.16",
-            11600 to "0.42.0+1.16",
-
-            11502 to "0.28.5+1.15",
-            11501 to "0.28.5+1.15",
-            11500 to "0.28.5+1.15",
-
-            11404 to "0.28.5+1.14",
-            11403 to "0.28.5+1.14",
-            11402 to "0.28.5+1.14",
-            11401 to "0.28.5+1.14",
-            11400 to "0.28.5+1.14",
         ), "yarn_mappings" to mapOf(
             11903 to "1.19.3+build.5",
             11902 to "1.19.2+build.8",
@@ -144,10 +144,24 @@ object GameInfo {
 
     fun fetchFabricLoaderVersion(mcVersion: Int) =
         infoMap["fabric_loader_version"]?.get(mcVersion)
+
+    fun fetchLatestFabricApiVersion() =
+        infoMap["fabric_api_version"]?.get(0)
+    fun fetchFabricApiVersion(mcVersion: Int) =
+        infoMap["fabric_api_version"]?.get(mcVersion)
+
+    fun fetchLatestForgeVersion() =
+        infoMap["forge_version"]?.get(0)
     fun fetchForgeVersion(mcVersion: Int) =
         infoMap["forge_version"]?.get(mcVersion)
+
+    fun fetchLatestYarnMappings() =
+        infoMap["yarn_mappings"]?.get(0)
     fun fetchYarnMappings(mcVersion: Int) =
         infoMap["yarn_mappings"]?.get(mcVersion)
+
+    fun fetchLatestMcpMappings() =
+        infoMap["mcp_mappings"]?.get(0)
     fun fetchMcpMappings(mcVersion: Int) =
         infoMap["mcp_mappings"]?.get(mcVersion)
 }
