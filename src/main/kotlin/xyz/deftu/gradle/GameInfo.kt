@@ -3,7 +3,7 @@ package xyz.deftu.gradle
 object GameInfo {
     val infoMap: Map<String, Map<Int, String>> = mapOf(
         "fabric_loader_version" to mapOf(
-            0 to "0.14.9"
+            0 to "0.14.12"
         ), "forge_version" to mapOf(
             11902 to "1.19.2-43.1.2",
             11901 to "1.19.1-42.0.9",
