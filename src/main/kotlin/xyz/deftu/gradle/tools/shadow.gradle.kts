@@ -18,6 +18,7 @@ val fatJar = tasks.register<ShadowJar>("fatJar") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     configurations = listOf(shade)
     archiveVersion.set(project.version.toString())
+    archiveClassifier.set("all")
 
     val javaPlugin = project.convention.getPlugin(JavaPluginConvention::class.java)
     val jarTask = project.tasks.getByName("jar") as Jar

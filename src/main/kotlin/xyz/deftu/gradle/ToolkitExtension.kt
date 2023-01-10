@@ -43,6 +43,7 @@ abstract class ToolkitExtension(
         val dependency = "me.djtheredstoner:DevAuth-$module"
         val version = DependencyHelper.fetchLatestRelease(repo, dependency)
         project.dependencies.add("runtimeOnly", "$dependency:$version")
+        project.configurations.getByName("runtimeOnly").exclude(mapOf("module" to "fabric-loader"))
     }
 
     fun useUniCore(snapshots: Boolean = false) {
