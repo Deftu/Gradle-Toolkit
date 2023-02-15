@@ -1,4 +1,4 @@
-package xyz.deftu.gradle.tools
+package xyz.deftu.gradle.tools.minecraft
 
 enum class VersionType(
     val value: String

@@ -1,4 +1,4 @@
-package xyz.deftu.gradle.tools
+package xyz.deftu.gradle.tools.minecraft
 
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseExtension
 import com.github.breadmoirai.githubreleaseplugin.GithubReleasePlugin
@@ -6,7 +6,7 @@ import com.modrinth.minotaur.Minotaur
 import com.modrinth.minotaur.ModrinthExtension
 import gradle.kotlin.dsl.accessors._72efc76fad8c8cf3476d335fb6323bde.jar
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
-import org.gradle.kotlin.dsl.registering
+import org.gradle.kotlin.dsl.*
 import xyz.deftu.gradle.MCData
 import xyz.deftu.gradle.ModData
 import xyz.deftu.gradle.ProjectData

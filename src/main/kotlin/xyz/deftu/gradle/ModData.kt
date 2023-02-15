@@ -8,7 +8,8 @@ data class ModData(
     val name: String,
     val id: String,
     val version: String,
-    val group: String
+    val group: String,
+    val description: String
 ) {
     companion object {
         @JvmStatic
@@ -16,13 +17,14 @@ data class ModData(
             val extension = project.extensions.findByName("modData") as ModData?
             if (extension != null) return extension
 
-            if (!project.hasProperty("mod.id")) return ModData(false, "", "", "", "")
+            if (!project.hasProperty("mod.id")) return ModData(false, "", "", "", "", "")
 
             val name = project.propertyOr("mod.name", project.name, false)
             val id = project.propertyOr("mod.id", name.toLowerCase().replace(" ", "_"), false)
             val version = project.propertyOr("mod.version", project.version.toString(), false)
             val group = project.propertyOr("mod.group", project.group.toString(), false)
-            val data = ModData(true, name, id, version, group)
+            val description = project.propertyOr("mod.description", "", false)
+            val data = ModData(true, name, id, version, group, description)
             project.extensions.add("modData", data)
             return data
         }

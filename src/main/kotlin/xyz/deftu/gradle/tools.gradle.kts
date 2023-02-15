@@ -36,7 +36,7 @@ pluginManager.withPlugin("maven-publish") {
 }
 
 withLoom {
-    apply(plugin = "xyz.deftu.gradle.tools.loom")
+    apply(plugin = "xyz.deftu.gradle.tools.minecraft.loom")
 }
 
 // Perform our logic.

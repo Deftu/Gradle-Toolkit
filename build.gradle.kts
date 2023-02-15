@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version("1.6.21")
+    kotlin("jvm") version("1.8.10")
     `kotlin-dsl`
     `maven-publish`
 }
@@ -30,21 +30,21 @@ dependencies {
     implementation(kotlin("gradle-plugin"))
 
     // Architectury Loom
-    implementation("gg.essential:architectury-loom:0.10.0.4")
+    implementation("gg.essential:architectury-loom:0.10.0.5")
     implementation("dev.architectury:architectury-pack200:0.1.3")
 
     // Preprocessing/multi-versioning
-    implementation("com.github.replaymod:preprocessor:48e02ad")
+    implementation("com.github.replaymod:preprocessor:f14e81e")
 
     // Other
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.6.21")
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.7.20")
     implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
-    implementation("net.kyori:blossom:1.3.0")
+    implementation("net.kyori:blossom:1.3.1")
 
     // Publishing
-    implementation("com.modrinth.minotaur:Minotaur:2.4.2")
+    implementation("com.modrinth.minotaur:Minotaur:2.7.2")
     implementation("net.darkhax.curseforgegradle:CurseForgeGradle:1.0.11")
-    implementation("com.github.breadmoirai:github-release:2.2.12")
+    implementation("com.github.breadmoirai:github-release:2.4.1")
 }
 
 java {

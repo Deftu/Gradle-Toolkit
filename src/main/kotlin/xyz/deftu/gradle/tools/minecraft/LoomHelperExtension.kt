@@ -1,4 +1,4 @@
-package xyz.deftu.gradle.tools
+package xyz.deftu.gradle.tools.minecraft
 
 import net.fabricmc.loom.api.LoomGradleExtensionAPI
 import org.gradle.api.Project

@@ -10,7 +10,7 @@ plugins {
 val projectData = ProjectData.from(project)
 
 application {
-    if (projectData.mainClass == null)
+    if (projectData.mainClass.isBlank())
         throw IllegalArgumentException("No main class specified! This is required to use the `application` plugin.")
 
     mainClass.set(projectData.mainClass)

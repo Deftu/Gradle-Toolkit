@@ -1,6 +1,9 @@
 package xyz.deftu.gradle.tools
 
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.java
+import org.gradle.kotlin.dsl.withType
 import xyz.deftu.gradle.MCData
 import xyz.deftu.gradle.utils.propertyOr
 import kotlin.math.floor

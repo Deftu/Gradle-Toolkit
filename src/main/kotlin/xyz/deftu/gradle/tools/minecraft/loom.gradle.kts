@@ -1,4 +1,4 @@
-package xyz.deftu.gradle.tools
+package xyz.deftu.gradle.tools.minecraft
 
 import dev.architectury.pack200.java.Pack200Adapter
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.loom
@@ -6,6 +6,7 @@ import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.mappings
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.minecraft
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.modImplementation
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.extra
 import xyz.deftu.gradle.GameInfo.fetchFabricLoaderVersion
 import xyz.deftu.gradle.GameInfo.fetchForgeVersion
 import xyz.deftu.gradle.GameInfo.fetchMcpMappings
@@ -21,6 +22,15 @@ plugins {
 val mcData = MCData.from(project)
 extensions.create("loomHelper", LoomHelperExtension::class.java)
 extra.set("loom.platform", if (mcData.isFabric) "fabric" else "forge")
+
+loom {
+    runConfigs {
+        all {
+            isIdeConfigGenerated = true
+        }
+    }
+}
+
 dependencies {
     if (propertyBoolOr("loom.minecraft.use", true)) minecraft(propertyOr("loom.minecraft", "com.mojang:minecraft:${mcData.versionStr}"))
 

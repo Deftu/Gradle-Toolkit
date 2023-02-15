@@ -1,4 +1,4 @@
-package xyz.deftu.gradle.tools
+package xyz.deftu.gradle.tools.minecraft
 
 import com.modrinth.minotaur.dependencies.Dependency
 import net.darkhax.curseforgegradle.UploadArtifact
@@ -8,8 +8,6 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.bundling.Zip
-import org.gradle.jvm.tasks.Jar
-import org.gradle.kotlin.dsl.get
 import xyz.deftu.gradle.MCData
 import java.io.File
 
