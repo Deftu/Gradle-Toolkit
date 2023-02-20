@@ -18,9 +18,7 @@ configure<KotlinJvmProjectExtension> {
 if (mcData.present) {
     tasks.withType<KotlinCompile> {
         kotlinOptions {
-            jvmTarget = mcData.javaVersion.toString().let { version ->
-                if (version.startsWith("1.")) version.substring(2) else version
-            }
+            jvmTarget = mcData.javaVersion.toString()
         }
     }
 } else {
