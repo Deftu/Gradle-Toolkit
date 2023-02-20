@@ -29,7 +29,7 @@ afterEvaluate {
         publications {
             create<MavenPublication>("mavenJava") {
                 if (modData.present) {
-                    artifactId = if (isMultiversionProject()) "${modData.name}-${mcData.versionStr}" else modData.name
+                    artifactId = if (isMultiversionProject()) "${modData.name}-${mcData.versionStr}-${mcData.loader.name}" else modData.name
                     groupId = modData.group
                     version = modData.version
                 } else if (projectData.present) {
