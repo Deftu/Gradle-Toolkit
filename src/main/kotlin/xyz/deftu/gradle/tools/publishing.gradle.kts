@@ -57,12 +57,26 @@ afterEvaluate {
         }
 
         repositories {
-            if (project.hasProperty("deftu.publishing.username") && project.hasProperty("deftu.publishing.password")) {
+            mavenLocal()
+
+            fun getPublishingUsername(): String? {
+                val property = project.findProperty("deftu.publishing.username")
+                return property?.toString() ?: System.getenv("DEFTU_PUBLISHING_USERNAME")
+            }
+
+            fun getPublishingPassword(): String? {
+                val property = project.findProperty("deftu.publishing.password")
+                return property?.toString() ?: System.getenv("DEFTU_PUBLISHING_PASSWORD")
+            }
+
+            val publishingUsername = getPublishingUsername()
+            val publishingPassword = getPublishingPassword()
+            if (publishingUsername != null && publishingPassword != null) {
                 fun MavenArtifactRepository.applyCredentials() {
                     authentication.create<BasicAuthentication>("basic")
                     credentials {
-                        username = property("deftu.publishing.username")?.toString()
-                        password = property("deftu.publishing.password")?.toString()
+                        username = publishingUsername
+                        password = publishingPassword
                     }
                 }
 

@@ -7,7 +7,7 @@ import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.minecraft
 import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.modImplementation
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.extra
-import xyz.deftu.gradle.GameInfo.fetchFabricLoaderVersion
+import xyz.deftu.gradle.GameInfo.FABRIC_LOADER_VERSION
 import xyz.deftu.gradle.GameInfo.fetchForgeVersion
 import xyz.deftu.gradle.GameInfo.fetchMcpMappings
 import xyz.deftu.gradle.GameInfo.fetchYarnMappings
@@ -52,7 +52,7 @@ dependencies {
 
     if (propertyBoolOr("loom.loader.use", true)) {
         if (mcData.isFabric) {
-            modImplementation(propertyOr("loom.fabricloader", "net.fabricmc:fabric-loader:${fetchFabricLoaderVersion(0)}"))
+            modImplementation(propertyOr("loom.fabricloader", "net.fabricmc:fabric-loader:${FABRIC_LOADER_VERSION}"))
         } else {
             "forge"(propertyOr("loom.forge", "net.minecraftforge:forge:${fetchForgeVersion(mcData.version)}"))
             loom.forge.pack200Provider.set(Pack200Adapter())

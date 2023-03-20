@@ -1,16 +1,17 @@
 package xyz.deftu.gradle
 
 object GameInfo {
+    const val FABRIC_LOADER_VERSION = "0.14.17"
+
     val infoMap: Map<String, Map<Int, String>> = mapOf(
-        "fabric_loader_version" to mapOf(
-            0 to "0.14.12"
-        ), "fabric_api_version" to mapOf(
-            11903 to "0.69.1+1.19.3",
-            11902 to "0.69.0+1.19.2",
+        "fabric_api_version" to mapOf(
+            11904 to "0.76.0+1.19.4",
+            11903 to "0.76.0+1.19.3",
+            11902 to "0.76.0+1.19.2",
             11901 to "0.58.5+1.19.1",
             11900 to "0.58.0+1.19",
 
-            11802 to "0.67.0+1.18.2",
+            11802 to "0.76.0+1.18.2",
             11801 to "0.46.6+1.18",
             11800 to "0.46.6+1.18",
 
@@ -34,7 +35,8 @@ object GameInfo {
             11401 to "0.28.5+1.14",
             11400 to "0.28.5+1.14",
         ), "forge_version" to mapOf(
-            11903 to "1.19.3-44.1.17",
+            11904 to "1.19.4-45.0.9",
+            11903 to "1.19.3-44.1.23",
             11902 to "1.19.2-43.2.4",
             11901 to "1.19.1-42.0.9",
             11900 to "1.19-41.1.0",
@@ -81,6 +83,7 @@ object GameInfo {
             10710 to "1.7.10-10.13.4.1614-1.7.10",
             10702 to "1.7.2-10.12.2.1161-mc172"
         ), "yarn_mappings" to mapOf(
+            11904 to "1.19.4+build.1",
             11903 to "1.19.3+build.5",
             11902 to "1.19.2+build.8",
             11901 to "1.19.1+build.6",
@@ -140,9 +143,6 @@ object GameInfo {
             10702 to "stable:12-1.7.10"
         )
     )
-
-    fun fetchFabricLoaderVersion(mcVersion: Int) =
-        infoMap["fabric_loader_version"]?.get(mcVersion)
 
     fun fetchLatestFabricApiVersion() =
         infoMap["fabric_api_version"]?.get(0)
