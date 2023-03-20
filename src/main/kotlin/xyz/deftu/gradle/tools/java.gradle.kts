@@ -18,27 +18,23 @@ tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
 
-if (mcData.present) {
-    tasks.withType<JavaCompile> {
-        options.release.set(mcData.javaVersion.toString().let { version ->
-            if (version.startsWith("1.")) version.substring(2) else version
-        }.toDouble().toInt())
+fun set(version: Int) {
+    if (version > 9) {
+        tasks.withType<JavaCompile> {
+            options.release.set(version)
+        }
     }
 
     extensions.configure<JavaPluginExtension> {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(mcData.javaVersion.majorVersion))
+        toolchain.languageVersion.set(JavaLanguageVersion.of(version))
     }
-} else {
-    val javaVersion = floor(propertyOr("java.version", JavaVersion.current().toString(), prefix = false).let { version ->
-        if (version.startsWith("1.")) version.substring(2) else version
-    }.toDouble()).toInt()
-    if (javaVersion != 0) {
-        tasks.withType<JavaCompile> {
-            options.release.set(javaVersion)
-        }
+}
 
-        extensions.configure<JavaPluginExtension> {
-            toolchain.languageVersion.set(JavaLanguageVersion.of(javaVersion.toString()))
-        }
-    }
+val javaVersion = floor(propertyOr("java.version", if (mcData.present) {
+    mcData.javaVersion.toString()
+} else JavaVersion.current().toString(), prefix = false).let { version ->
+    if (version.startsWith("1.")) version.substring(2) else version
+}.toDouble()).toInt()
+if (javaVersion != 0) {
+    set(javaVersion)
 }
