@@ -33,7 +33,11 @@ fun set(version: Int) {
 val javaVersion = floor(propertyOr("java.version", if (mcData.present) {
     mcData.javaVersion.toString()
 } else JavaVersion.current().toString(), prefix = false).let { version ->
-    if (version.startsWith("1.")) version.substring(2) else version
+    if (version.startsWith("1.")) {
+        version.substring(2)
+    } else {
+        version
+    }.substringBefore(".")
 }.toDouble()).toInt()
 if (javaVersion != 0) {
     set(javaVersion)
