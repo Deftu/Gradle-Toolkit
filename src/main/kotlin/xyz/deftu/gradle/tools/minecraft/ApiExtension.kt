@@ -6,6 +6,7 @@ import net.fabricmc.loom.task.RemapJarTask
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.*
+import xyz.deftu.gradle.utils.withLoom
 
 abstract class ApiExtension(
     val project: Project
@@ -54,7 +55,7 @@ abstract class ApiExtension(
         setupTestSourceset()
         setupTestJar()
 
-        withLoom {
+        project.withLoom {
             runs {
                 create("testClient") {
                     client()
@@ -68,7 +69,7 @@ abstract class ApiExtension(
         setupTestSourceset()
         setupTestJar()
 
-        withLoom {
+        project.withLoom {
             runs {
                 create("testServer") {
                     server()
@@ -81,11 +82,5 @@ abstract class ApiExtension(
     fun setupTestWorkspace() {
         setupTestClient()
         setupTestServer()
-    }
-
-    private fun withLoom(block: LoomGradleExtensionAPI.() -> Unit) {
-        project.configure<LoomGradleExtensionAPI> {
-            block()
-        }
     }
 }

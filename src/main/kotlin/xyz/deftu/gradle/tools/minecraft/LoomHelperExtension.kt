@@ -8,6 +8,7 @@ import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.withType
 import xyz.deftu.gradle.MCData
 import xyz.deftu.gradle.utils.GameSide
+import xyz.deftu.gradle.utils.withLoom
 
 abstract class LoomHelperExtension(
     val project: Project
@@ -19,7 +20,7 @@ abstract class LoomHelperExtension(
     @JvmOverloads
     fun useForgeMixin(namespace: String, file: Boolean = false) {
         val value = if (file) namespace else "mixins.$namespace.json"
-        withLoom {
+        project.withLoom {
             forge {
                 mixinConfig(value)
             }
@@ -39,7 +40,7 @@ abstract class LoomHelperExtension(
     @JvmOverloads
     fun useMixinRefMap(namespace: String, file: Boolean = false) {
         val value = if (file) namespace else "mixins.$namespace.refmap.json"
-        withLoom {
+        project.withLoom {
             mixin.defaultRefmapName.set(value)
         }
     }
@@ -49,7 +50,7 @@ abstract class LoomHelperExtension(
      * argument.
      */
     fun useArgument(key: String, value: String, side: GameSide) = apply {
-        withLoom {
+        project.withLoom {
             when (side) {
                 GameSide.GLOBAL -> launchConfigs.all { arg(key, value) }
                 else -> launchConfigs[side.name.toLowerCase()].arg(key, value)
@@ -62,7 +63,7 @@ abstract class LoomHelperExtension(
      * property/environment variable.
      */
     fun useProperty(key: String, value: String, side: GameSide) = apply {
-        withLoom {
+        project.withLoom {
             when (side) {
                 GameSide.GLOBAL -> launchConfigs.all { property(key, value) }
                 else -> launchConfigs[side.name.toLowerCase()].property(key, value)
@@ -98,17 +99,11 @@ abstract class LoomHelperExtension(
      * the specified game state.
      */
     fun disableRunConfigs(side: GameSide) = apply {
-        withLoom {
+        project.withLoom {
             when (side) {
                 GameSide.GLOBAL -> runConfigs.all { isIdeConfigGenerated = false }
                 else -> runConfigs[side.name.toLowerCase()].isIdeConfigGenerated = false
             }
-        }
-    }
-
-    private fun withLoom(block: LoomGradleExtensionAPI.() -> Unit) {
-        project.configure<LoomGradleExtensionAPI> {
-            block()
         }
     }
 }

@@ -1,5 +1,6 @@
 package xyz.deftu.gradle.utils
 
+import net.fabricmc.loom.api.LoomGradleExtensionAPI
 import org.gradle.api.Action
 import org.gradle.api.GradleException
 import org.gradle.api.JavaVersion
@@ -42,9 +43,11 @@ fun Project.isLoomPresent() = loomIds.any { id ->
     pluginManager.hasPlugin(id)
 }
 
-fun Project.withLoom(action: Action<in AppliedPlugin>) {
+fun Project.withLoom(action: Action<LoomGradleExtensionAPI>) {
     loomIds.forEach { id ->
-        pluginManager.withPlugin(id, action)
+        if (pluginManager.hasPlugin(id)) {
+            pluginManager.withPlugin(id, action as Action<AppliedPlugin>)
+        }
     }
 }
 

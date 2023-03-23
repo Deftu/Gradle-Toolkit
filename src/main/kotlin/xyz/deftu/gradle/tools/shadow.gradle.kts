@@ -38,7 +38,7 @@ val fatJar = tasks.register<ShadowJar>("fatJar") {
     exclude("META-INF/INDEX.LIST", "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA", "module-info.class")
 }
 
-project.artifacts.add("shade", project.tasks.named("fatJar"))
+project.artifacts.add("shade", fatJar)
 
 pluginManager.withPlugin("java") {
     tasks["assemble"].dependsOn(fatJar)
