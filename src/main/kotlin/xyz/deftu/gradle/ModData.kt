@@ -24,7 +24,7 @@ data class ModData(
             val version = project.propertyOr("mod.version", project.version.toString(), false)
             val group = project.propertyOr("mod.group", project.group.toString(), false)
             val description = project.propertyOr("mod.description", "", false)
-            val data = ModData(true, name, id, version, group, description)
+            val data = ModData(true, name, id, GitData.transformVersion(project, version), group, description)
             project.extensions.add("modData", data)
             return data
         }

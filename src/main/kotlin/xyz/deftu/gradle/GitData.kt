@@ -2,11 +2,13 @@ package xyz.deftu.gradle
 
 import org.gradle.api.Project
 import xyz.deftu.gradle.utils.Constants
+import xyz.deftu.gradle.utils.propertyBoolOr
 import xyz.deftu.gradle.utils.propertyOr
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
 
 data class GitData(
+    val present: Boolean,
     val branch: String,
     val commit: String,
     val url: String
@@ -17,6 +19,20 @@ data class GitData(
         private val errorOutput: OutputStream?
             get() = if (debug) System.err else ByteArrayOutputStream()
 
+        val ciBuild: Boolean
+            get() = System.getenv("GITHUB_ACTIONS") == "true"
+
+        @JvmStatic
+        fun transformVersion(project: Project, version: String): String {
+            val shouldTransform = project.propertyBoolOr("git.version", true)
+            if (!shouldTransform && !ciBuild) return version
+
+            val gitData = from(project)
+            if (!gitData.present) return version
+
+            return "$version+${gitData.branch}-${gitData.commit}"
+        }
+
         @JvmStatic
         fun from(project: Project): GitData {
             val extension = project.extensions.findByName("gitData") as GitData?
@@ -25,7 +41,7 @@ data class GitData(
             val branch = project.propertyOr("GITHUB_REF_NAME", fetchCurrentBranch(project), false)
             val commit = project.propertyOr("GITHUB_SHA", fetchCurrentCommit(project), false)
             val url = fetchCurrentUrl(project) ?: "NONE"
-            val data = GitData(branch, commit, url)
+            val data = GitData(branch.isNotBlank() && commit.isNotBlank(), branch, commit, url)
             project.extensions.add("gitData", data)
             return data
         }

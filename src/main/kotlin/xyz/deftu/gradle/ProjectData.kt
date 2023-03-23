@@ -24,7 +24,7 @@ class ProjectData(
             val group = project.propertyOr("project.group", project.group.toString(), false)
             val description = project.propertyOr("project.description", "", false)
             val mainClass = project.propertyOr("project.mainClass", "", false)
-            val data = ProjectData(true, name, version, group, description, mainClass)
+            val data = ProjectData(true, name, GitData.transformVersion(project, version), group, description, mainClass)
             project.extensions.add("projectData", data)
             return data
         }
