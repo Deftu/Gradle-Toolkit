@@ -5,12 +5,12 @@ import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.maven
 import org.gradle.kotlin.dsl.repositories
 import xyz.deftu.gradle.DependencyInfo
-import xyz.deftu.gradle.utils.shadeOptional
+import xyz.deftu.gradle.utils.shadeOptionally
 
 repositories {
     maven("https://oss.sonatype.org/content/repositories/snapshots")
 }
 
 dependencies {
-    shadeOptional(implementation("dev.kord:kord-core:${DependencyInfo.fetchKordVersion()}")!!)
+    shadeOptionally(implementation("dev.kord:kord-core:${DependencyInfo.fetchKordVersion()}")!!)
 }

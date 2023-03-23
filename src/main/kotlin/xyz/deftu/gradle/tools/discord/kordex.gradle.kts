@@ -5,7 +5,7 @@ import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.maven
 import org.gradle.kotlin.dsl.repositories
 import xyz.deftu.gradle.DependencyInfo
-import xyz.deftu.gradle.utils.shadeOptional
+import xyz.deftu.gradle.utils.shadeOptionally
 
 plugins {
     id("xyz.deftu.gradle.tools.discord.kord")
@@ -16,5 +16,5 @@ repositories {
 }
 
 dependencies {
-    shadeOptional(implementation("com.kotlindiscord.kord.extensions:kord-extensions:${DependencyInfo.fetchKordExVersion()}")!!)
+    shadeOptionally(implementation("com.kotlindiscord.kord.extensions:kord-extensions:${DependencyInfo.fetchKordExVersion()}")!!)
 }

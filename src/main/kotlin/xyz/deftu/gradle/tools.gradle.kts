@@ -1,7 +1,7 @@
 package xyz.deftu.gradle
 
 import xyz.deftu.gradle.utils.checkJavaVersion
-import xyz.deftu.gradle.utils.shadeOptional
+import xyz.deftu.gradle.utils.shadeOptionally
 import xyz.deftu.gradle.utils.withLoom
 
 // Check if we're in a Java 17 environment.
@@ -15,7 +15,7 @@ apply(plugin = "xyz.deftu.gradle.tools.configure")
 apply(plugin = "xyz.deftu.gradle.tools.repo")
 
 // Add default configurations
-shadeOptional // Initialize the shadeOptional configuration.
+shadeOptionally // Initialize the shadeOptional configuration.
 
 pluginManager.withPlugin("java") {
     apply(plugin = "xyz.deftu.gradle.tools.java")

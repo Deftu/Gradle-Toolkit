@@ -2,7 +2,7 @@ package xyz.deftu.gradle.utils
 
 import org.gradle.api.Project
 
-val Project.shadeOptional: org.gradle.api.artifacts.Configuration
+val Project.shadeOptionally: org.gradle.api.artifacts.Configuration
     get() = try {
         configurations.getByName("shadeOptional")
     } catch (e: Throwable) {

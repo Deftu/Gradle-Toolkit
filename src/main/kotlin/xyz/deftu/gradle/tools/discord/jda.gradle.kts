@@ -6,7 +6,7 @@ import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.maven
 import org.gradle.kotlin.dsl.repositories
 import xyz.deftu.gradle.DependencyInfo
-import xyz.deftu.gradle.utils.shadeOptional
+import xyz.deftu.gradle.utils.shadeOptionally
 
 abstract class JdaExtension {
     abstract val beta: Property<Boolean>
@@ -23,5 +23,5 @@ repositories {
 }
 
 dependencies {
-    shadeOptional(implementation("net.dv8tion:JDA:${if (extension.beta.getOrElse(false)) DependencyInfo.fetchJdaBetaVersion() else DependencyInfo.fetchJdaVersion()}")!!)
+    shadeOptionally(implementation("net.dv8tion:JDA:${if (extension.beta.getOrElse(false)) DependencyInfo.fetchJdaBetaVersion() else DependencyInfo.fetchJdaVersion()}")!!)
 }
