@@ -8,28 +8,30 @@ import kotlin.math.floor
 
 val mcData = MCData.from(project)
 
-configure<KotlinJvmProjectExtension> {
-    jvmToolchain {
-        check(this is JavaToolchainSpec)
-        languageVersion.set(JavaLanguageVersion.of(mcData.javaVersion.majorVersion))
+fun set(version: Int) {
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = version.toString()
+        }
+    }
+
+    configure<KotlinJvmProjectExtension> {
+        jvmToolchain {
+            check(this is JavaToolchainSpec)
+            languageVersion.set(JavaLanguageVersion.of(version))
+        }
     }
 }
 
-if (mcData.present) {
-    tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = mcData.javaVersion.toString()
-        }
-    }
-} else {
-    val javaVersion = floor(propertyOr("java.version", JavaVersion.current().toString(), prefix = false).let { version ->
-        if (version.startsWith("1.")) version.substring(2) else version
-    }.toDouble()).toInt()
-    if (javaVersion != 0) {
-        tasks.withType<KotlinCompile> {
-            kotlinOptions {
-                jvmTarget = javaVersion.toString()
-            }
-        }
-    }
+val javaVersion = floor(propertyOr("java.version", if (mcData.present) {
+    mcData.javaVersion.toString()
+} else JavaVersion.current().toString(), prefix = false).let { version ->
+    if (version.startsWith("1.")) {
+        version.substring(2)
+    } else {
+        version
+    }.substringBefore(".")
+}.toDouble()).toInt()
+if (javaVersion != 0) {
+    set(javaVersion)
 }
