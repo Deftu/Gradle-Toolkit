@@ -22,59 +22,56 @@ data class GitData(
             val extension = project.extensions.findByName("gitData") as GitData?
             if (extension != null) return extension
 
-            val branch = project.propertyOr("GITHUB_REF_NAME", fetchCurrentBranch(project) ?: "LOCAL", false)
-            val commit = project.propertyOr("GITHUB_SHA", fetchCurrentCommit(project) ?: "LOCAL", false)
+            val branch = project.propertyOr("GITHUB_REF_NAME", fetchCurrentBranch(project), false)
+            val commit = project.propertyOr("GITHUB_SHA", fetchCurrentCommit(project), false)
             val url = fetchCurrentUrl(project) ?: "NONE"
             val data = GitData(branch, commit, url)
             project.extensions.add("gitData", data)
             return data
         }
 
+        private fun setupExecute(project: Project, vararg command: String): ByteArrayOutputStream {
+            val output = ByteArrayOutputStream()
+            project.exec {
+                commandLine(command)
+                isIgnoreExitValue = true
+                standardOutput = output
+                errorOutput = this@Companion.errorOutput
+            }
+
+            return output
+        }
+
         @JvmStatic
-        fun fetchCurrentBranch(project: Project): String? {
+        fun fetchCurrentBranch(project: Project): String {
             return try {
-                val output = ByteArrayOutputStream()
-                project.exec {
-                    commandLine("git", "rev-parse", "--abbrev-ref", "HEAD")
-                    standardOutput = output
-                    errorOutput = this@Companion.errorOutput
-                }
+                val output = setupExecute(project, "git", "rev-parse", "--abbrev-ref", "HEAD")
                 val string = output.toString().trim()
-                if (string.isEmpty() || string.startsWith("fatal")) null else string
+                if (string.isEmpty() || string.startsWith("fatal")) "" else string
             } catch (e: Exception) {
-                "LOCAL"
+                ""
             }
         }
 
         @JvmStatic
-        fun fetchCurrentCommit(project: Project): String? {
+        fun fetchCurrentCommit(project: Project): String {
             return try {
-                val output = ByteArrayOutputStream()
-                project.exec {
-                    commandLine("git", "rev-parse", "HEAD")
-                    standardOutput = output
-                    errorOutput = this@Companion.errorOutput
-                }
+                val output = setupExecute(project, "git", "rev-parse", "HEAD")
                 val string = output.toString().trim()
-                if (string.isEmpty() || string.startsWith("fatal")) "LOCAL" else string.substring(0, 7)
+                if (string.isEmpty() || string.startsWith("fatal")) "" else string.substring(0, 7)
             } catch (e: Exception) {
-                "LOCAL"
+                ""
             }
         }
 
         @JvmStatic
         fun fetchCurrentUrl(project: Project): String? {
             return try {
-                val output = ByteArrayOutputStream()
-                project.exec {
-                    commandLine("git", "config", "--get", "remote.origin.url")
-                    standardOutput = output
-                    errorOutput = this@Companion.errorOutput
-                }
+                val output = setupExecute(project, "git", "config", "--get", "remote.origin.url")
                 val string = output.toString().trim()
-                if (string.isEmpty() || string.startsWith("fatal")) "LOCAL" else string
+                if (string.isEmpty() || string.startsWith("fatal")) "" else string
             } catch (e: Exception) {
-                "LOCAL"
+                ""
             }
         }
     }
