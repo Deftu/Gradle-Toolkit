@@ -1,7 +1,6 @@
 package xyz.deftu.gradle.tools.minecraft
 
 import gradle.kotlin.dsl.accessors._2e7c48f5c5e053e2f48db1b0d2cf7734.sourceSets
-import net.fabricmc.loom.api.LoomGradleExtensionAPI
 import net.fabricmc.loom.task.RemapJarTask
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
