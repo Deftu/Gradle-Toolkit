@@ -5,8 +5,7 @@ import org.gradle.api.Action
 import org.gradle.api.GradleException
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.api.plugins.AppliedPlugin
-import org.gradle.util.GradleVersion
+import org.gradle.kotlin.dsl.configure
 import java.io.File
 
 private val loomIds = listOf(
@@ -46,7 +45,11 @@ fun Project.isLoomPresent() = loomIds.any { id ->
 fun Project.withLoom(action: Action<LoomGradleExtensionAPI>) {
     loomIds.forEach { id ->
         if (pluginManager.hasPlugin(id)) {
-            pluginManager.withPlugin(id, action as Action<AppliedPlugin>)
+            pluginManager.withPlugin(id) {
+                configure<LoomGradleExtensionAPI> {
+                    action.execute(this)
+                }
+            }
         }
     }
 }
