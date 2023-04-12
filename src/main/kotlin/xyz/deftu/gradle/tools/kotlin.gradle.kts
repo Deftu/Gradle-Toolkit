@@ -9,9 +9,10 @@ import kotlin.math.floor
 val mcData = MCData.from(project)
 
 fun set(version: Int) {
+    val javaVersion = JavaVersion.toVersion(version)
     tasks.withType<KotlinCompile> {
         kotlinOptions {
-            jvmTarget = version.toString()
+            jvmTarget = javaVersion.toString()
         }
     }
 
