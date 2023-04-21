@@ -56,17 +56,6 @@ afterEvaluate {
                 })
             }
 
-            filesMatching(listOf("*")) {
-                expand(mutableMapOf<String, Any>().apply {
-                    if (projectData.present) {
-                        put("project_version", projectData.version)
-                        put("project_group", projectData.group)
-                        put("project_name", projectData.name)
-                        put("project_description", projectData.description)
-                    }
-                })
-            }
-
             if (!mcData.isFabric) exclude("fabric.mod.json")
             if (!mcData.isModLauncher) exclude("META-INF/mods.toml")
             if (!mcData.isLegacyForge) exclude("mcmod.info")
