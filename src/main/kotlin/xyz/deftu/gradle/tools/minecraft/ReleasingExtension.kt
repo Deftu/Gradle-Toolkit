@@ -105,10 +105,13 @@ abstract class PublishingGitHubExtension(
     abstract val repository: Property<String>
     abstract val targetCommitish: Property<String>
     abstract val draft: Property<Boolean>
+    abstract val autogenerateReleaseNotes: Property<Boolean>
+
     init {
         owner.convention(project.rootProject.group.toString().substringAfterLast("."))
         repository.convention(project.rootProject.name)
         targetCommitish.convention("main")
         draft.convention(false)
+        autogenerateReleaseNotes.convention(false)
     }
 }

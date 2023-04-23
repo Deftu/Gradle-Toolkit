@@ -152,6 +152,7 @@ fun setupGitHub(token: String) {
         body.set(extension.changelog.get())
         draft.set(extension.github.draft.getOrElse(false))
         prerelease.set(extension.versionType.getOrElse(VersionType.RELEASE) != VersionType.RELEASE)
+        generateReleaseNotes.set(extension.github.autogenerateReleaseNotes.getOrElse(false))
 
         val usedAssets = mutableListOf<Any>()
         usedAssets.add(extension.file.getOrElse(tasks.jar.get()))
