@@ -56,7 +56,21 @@ afterEvaluate {
                 })
             }
 
-            filesMatching(listOf("*")) {
+            filesMatching(listOf(
+                "**/*.txt",
+                "**/*.json",
+                "**/*.properties",
+                "**/*.md",
+                "**/*.yml",
+                "**/*.yaml",
+                "**/*.toml",
+                "**/*.xml",
+                "**/*.info",
+                "**/*.cfg",
+                "**/*.conf",
+                "**/*.config",
+                "**/*.lang"
+            )) {
                 expand(mutableMapOf<String, Any>().apply {
                     if (projectData.present) {
                         put("project_version", projectData.version)
