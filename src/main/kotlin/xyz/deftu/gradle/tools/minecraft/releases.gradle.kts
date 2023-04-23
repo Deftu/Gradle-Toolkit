@@ -90,6 +90,8 @@ afterEvaluate {
         })
     }
 
+    if (mcData.isFabric && extension.describeFabricWithQuilt.get()) extension.loaders.add("Quilt")
+
     if (modData.present && modrinthToken.isNotBlank())
         setupModrinth(modrinthToken)
     if (modData.present && curseForgeApiKey.isNotBlank())
