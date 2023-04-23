@@ -62,9 +62,8 @@ withLoom {
         }
 
         remapJar {
-            dependsOn(fatJar)
-            archiveClassifier.set("")
             input.set(fatJar.get().archiveFile)
+            archiveClassifier.set("")
 
             val modData = ModData.from(project)
             archiveBaseName.set(modData.name)

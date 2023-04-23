@@ -44,11 +44,9 @@ fun Project.isLoomPresent() = loomIds.any { id ->
 
 fun Project.withLoom(action: Action<LoomGradleExtensionAPI>) {
     loomIds.forEach { id ->
-        if (pluginManager.hasPlugin(id)) {
-            pluginManager.withPlugin(id) {
-                configure<LoomGradleExtensionAPI> {
-                    action.execute(this)
-                }
+        pluginManager.withPlugin(id) {
+            configure<LoomGradleExtensionAPI> {
+                action.execute(this)
             }
         }
     }
