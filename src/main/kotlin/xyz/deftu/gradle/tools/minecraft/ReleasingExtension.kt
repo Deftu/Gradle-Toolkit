@@ -20,6 +20,7 @@ abstract class ReleasingExtension(
     abstract val loaders: ListProperty<String>
     abstract val file: Property<Zip>
 
+    abstract val describeFabricWithQuilt: Property<Boolean>
     abstract val releaseName: Property<String>
 
     abstract val useSourcesJar: Property<Boolean>
@@ -45,10 +46,10 @@ abstract class ReleasingExtension(
         versionType.convention(VersionType.RELEASE)
         gameVersions.convention(listOf(mcData.versionStr))
         loaders.convention(listOf(mcData.loader.name))
-        changelog.convention("No changelog provided.")
-
+        describeFabricWithQuilt.convention(false)
         useSourcesJar.convention(false)
         useJavadocJar.convention(false)
+        changelog.convention("No changelog provided.")
     }
 
     // Platform specific

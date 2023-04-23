@@ -7,6 +7,7 @@ import com.modrinth.minotaur.ModrinthExtension
 import gradle.kotlin.dsl.accessors._72efc76fad8c8cf3476d335fb6323bde.jar
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
 import org.gradle.kotlin.dsl.*
+import xyz.deftu.gradle.GitData
 import xyz.deftu.gradle.MCData
 import xyz.deftu.gradle.ModData
 import xyz.deftu.gradle.ProjectData
@@ -18,10 +19,56 @@ plugins {
     java
 }
 
+val gitData = GitData.from(project)
 val mcData = MCData.from(project)
 val modData = ModData.from(project)
 val projectData = ProjectData.from(project)
 val extension = extensions.create("releases", ReleasingExtension::class)
+
+fun ReleasingExtension.getReleaseName(): String {
+    val prefix = buildString {
+        append("[")
+        if (isMultiversionProject()) {
+            if (mcData.isFabric && extension.describeFabricWithQuilt.get()) {
+                append("Fabric/Quilt")
+            } else {
+                append(mcData.loader.name.capitalize())
+            }
+
+            append(" ").append(mcData.versionStr)
+        }
+
+        append("] ")
+    }
+
+    return "$prefix${modData.name} ${modData.version}"
+}
+
+fun ReleasingExtension.getReleaseVersion(): String {
+    val suffix = buildString {
+        var content = ""
+
+        if (gitData.present) {
+            content += gitData.branch
+            content += "-"
+            content += gitData.commit
+        }
+
+        if (isMultiversionProject()) {
+            if (gitData.present) content += "."
+            content += mcData.versionStr
+            content += "-"
+            content += mcData.loader.name
+        }
+
+        if (content.isNotBlank()) {
+            append("+")
+            append(content)
+        }
+    }
+
+    return "${modData.version}${suffix}"
+}
 
 afterEvaluate {
     val modrinthToken = propertyOr("publish.modrinth.token", "")
@@ -59,8 +106,8 @@ fun setupModrinth(token: String) {
         failSilently.set(true)
         this.token.set(token)
         this.projectId.set(projectId)
-        versionName.set(extension.releaseName.getOrElse("${if (isMultiversionProject()) "[${mcData.versionStr}] " else ""}${modData.name} ${modData.version}"))
-        versionNumber.set(extension.version.getOrElse(if (isMultiversionProject()) "${mcData.versionStr}-${modData.version}" else modData.version))
+        versionName.set(extension.getReleaseName())
+        versionNumber.set(extension.getReleaseVersion())
         versionType.set(extension.versionType.getOrElse(VersionType.RELEASE).value)
         uploadFile.set(extension.file.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get()))
 
@@ -101,7 +148,8 @@ fun setupCurseForge(apiKey: String) {
 
         upload(projectId, extension.file.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get())).apply {
             disableVersionDetection()
-            displayName = extension.releaseName.getOrElse("${if (isMultiversionProject()) "[${mcData.versionStr}] " else ""}${modData.name} ${modData.version}")
+            displayName = extension.getReleaseName()
+            version = extension.getReleaseVersion()
             releaseType = extension.versionType.getOrElse(VersionType.RELEASE).value
             changelog = extension.changelog.get()
             changelogType = extension.curseforge.changelogType.getOrElse("text")
@@ -138,17 +186,8 @@ fun setupGitHub(token: String) {
         setToken(token)
         this.owner.set(owner)
         this.repo.set(repo)
-        val version = extension.version.getOrElse(project.version.toString())
-        tagName.set(version)
-        releaseName.set(extension.releaseName.getOrElse(buildString {
-            if (mcData.present) {
-                append(if (isMultiversionProject()) "[${mcData.versionStr}] " else "" + modData.name + " " + modData.version)
-            }
-
-            if (projectData.present) {
-                append(projectData.name + " " + projectData.version)
-            }
-        }))
+        tagName.set(extension.getReleaseVersion())
+        releaseName.set(extension.getReleaseName())
         body.set(extension.changelog.get())
         draft.set(extension.github.draft.getOrElse(false))
         prerelease.set(extension.versionType.getOrElse(VersionType.RELEASE) != VersionType.RELEASE)
