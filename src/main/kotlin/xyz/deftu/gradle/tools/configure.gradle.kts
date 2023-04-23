@@ -1,5 +1,6 @@
 package xyz.deftu.gradle.tools
 
+import xyz.deftu.gradle.GitData
 import xyz.deftu.gradle.ModData
 import xyz.deftu.gradle.ProjectData
 import xyz.deftu.gradle.utils.isLoomPresent
@@ -12,9 +13,16 @@ plugins {
 val modData = ModData.from(project)
 val projectData = ProjectData.from(project)
 
+fun getVersionSuffix(): String {
+    val gitData = GitData.from(project)
+    if (!project.propertyBoolOr("gitdata.version", true) || !gitData.present) return ""
+
+    return "+${gitData.branch}-${gitData.commit}"
+}
+
 if (modData.present) {
     if (propertyBoolOr("mod.version.setup", true))
-        version = modData.version
+        version = modData.version + getVersionSuffix()
     if (propertyBoolOr("mod.group.setup", true))
         group = modData.group
     if (propertyBoolOr("mod.name.setup", true)) {
@@ -35,7 +43,7 @@ if (modData.present) {
 
 if (projectData.present) {
     if (propertyBoolOr("project.version.setup", true))
-        version = projectData.version
+        version = projectData.version + getVersionSuffix()
     if (propertyBoolOr("project.group.setup", true))
         group = projectData.group
     if (propertyBoolOr("project.name.setup", true)) {
