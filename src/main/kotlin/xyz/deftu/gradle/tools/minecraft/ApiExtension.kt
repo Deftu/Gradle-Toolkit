@@ -29,11 +29,13 @@ abstract class ApiExtension(
     fun setupTestJar() {
         val current = getTestSourceset() ?: throw IllegalStateException("Test sourceset not found")
 
+        val devLibsDir = project.layout.buildDirectory.dir("dev-libs")
+
         val testJar = project.tasks.register("testJar", Jar::class.java) {
             group = "build"
 
             archiveClassifier.set("test-mod-dev")
-            destinationDirectory.set(project.layout.buildDirectory.dir("dev-libs"))
+            destinationDirectory.set(devLibsDir)
             from(project.sourceSets["testMod"].output)
         }.get()
 
@@ -41,6 +43,7 @@ abstract class ApiExtension(
             group = "build"
 
             archiveClassifier.set("test-mod")
+            destinationDirectory.set(devLibsDir)
             input.set(testJar.archiveFile)
             classpath(current.compileClasspath)
         }.get()
