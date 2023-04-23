@@ -57,19 +57,19 @@ afterEvaluate {
             }
 
             filesMatching(listOf(
-                "**/*.txt",
-                "**/*.json",
-                "**/*.properties",
-                "**/*.md",
-                "**/*.yml",
-                "**/*.yaml",
-                "**/*.toml",
-                "**/*.xml",
-                "**/*.info",
-                "**/*.cfg",
-                "**/*.conf",
-                "**/*.config",
-                "**/*.lang"
+                "*.txt",
+                "*.json",
+                "*.properties",
+                "*.md",
+                "*.yml",
+                "*.yaml",
+                "*.toml",
+                "*.xml",
+                "*.info",
+                "*.cfg",
+                "*.conf",
+                "*.config",
+                "*.lang"
             )) {
                 expand(mutableMapOf<String, Any>().apply {
                     if (projectData.present) {
