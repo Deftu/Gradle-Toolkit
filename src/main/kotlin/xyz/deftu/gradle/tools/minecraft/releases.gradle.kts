@@ -63,6 +63,19 @@ fun setupModrinth(token: String) {
         versionNumber.set(extension.version.getOrElse(if (isMultiversionProject()) "${mcData.versionStr}-${modData.version}" else modData.version))
         versionType.set(extension.versionType.getOrElse(VersionType.RELEASE).value)
         uploadFile.set(extension.file.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get()))
+
+        if (extension.useSourcesJar.get()) {
+            extension.sourcesJar.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").get()).let { sourcesJar ->
+                additionalFiles.add(sourcesJar)
+            }
+        }
+
+        if (extension.useJavadocJar.get()) {
+            extension.javadocJar.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("javadocJar").get()).let { javadocJar ->
+                additionalFiles.add(javadocJar)
+            }
+        }
+
         changelog.set(extension.changelog.get())
         gameVersions.addAll(extension.gameVersions.getOrElse(listOf(mcData.versionStr)))
         loaders.addAll(extension.loaders.getOrElse(listOf(mcData.loader.name)))
@@ -97,6 +110,18 @@ fun setupCurseForge(apiKey: String) {
             extension.curseforge.relations.getOrElse(listOf()).forEach { relation ->
                 relation.applyTo(this)
             }
+
+            if (extension.useSourcesJar.get()) {
+                extension.sourcesJar.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").get()).let { sourcesJar ->
+                    withAdditionalFile(sourcesJar)
+                }
+            }
+
+            if (extension.useJavadocJar.get()) {
+                extension.javadocJar.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("javadocJar").get()).let { javadocJar ->
+                    withAdditionalFile(javadocJar)
+                }
+            }
         }
     }
 
@@ -127,7 +152,19 @@ fun setupGitHub(token: String) {
         body.set(extension.changelog.get())
         draft.set(extension.github.draft.getOrElse(false))
         prerelease.set(extension.versionType.getOrElse(VersionType.RELEASE) != VersionType.RELEASE)
-        releaseAssets(extension.file.getOrElse(tasks.jar.get()))
+
+        val usedAssets = mutableListOf<Any>()
+        usedAssets.add(extension.file.getOrElse(tasks.jar.get()))
+
+        if (extension.useSourcesJar.get()) {
+            usedAssets.add(extension.sourcesJar.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").get()))
+        }
+
+        if (extension.useJavadocJar.get()) {
+            usedAssets.add(extension.javadocJar.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("javadocJar").get()))
+        }
+
+        releaseAssets(*usedAssets.toTypedArray())
     }
 
     val publishToGitHubRelease by tasks.registering {

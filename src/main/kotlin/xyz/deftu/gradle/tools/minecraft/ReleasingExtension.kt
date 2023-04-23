@@ -22,6 +22,11 @@ abstract class ReleasingExtension(
 
     abstract val releaseName: Property<String>
 
+    abstract val useSourcesJar: Property<Boolean>
+    abstract val sourcesJar: Property<Zip>
+    abstract val useJavadocJar: Property<Boolean>
+    abstract val javadocJar: Property<Zip>
+
     // Changelog
     abstract val changelog: Property<String>
     abstract val changelogFile: Property<File>
@@ -41,6 +46,9 @@ abstract class ReleasingExtension(
         gameVersions.convention(listOf(mcData.versionStr))
         loaders.convention(listOf(mcData.loader.name))
         changelog.convention("No changelog provided.")
+
+        useSourcesJar.convention(false)
+        useJavadocJar.convention(false)
     }
 
     // Platform specific
