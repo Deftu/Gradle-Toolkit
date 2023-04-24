@@ -18,6 +18,12 @@ val mcData = MCData.from(project)
 val modData = ModData.from(project)
 val projectData = ProjectData.from(project)
 
+val extension = extensions.create("toolkitPublishing", PublishingExtension::class)
+
+fun PublishingExtension.getArtifactName(
+    isMod: Boolean
+) = artifactName.getOrElse(if (isMod) modData.name else projectData.name)
+
 pluginManager.withPlugin("java") {
     java {
         withSourcesJar()
@@ -29,11 +35,11 @@ afterEvaluate {
         publications {
             create<MavenPublication>("mavenJava") {
                 if (modData.present) {
-                    artifactId = if (isMultiversionProject()) "${modData.name}-${mcData.versionStr}-${mcData.loader.name}" else modData.name
+                    artifactId = if (isMultiversionProject()) "${extension.getArtifactName(true)}-${mcData.versionStr}-${mcData.loader.name}" else extension.getArtifactName(true)
                     groupId = modData.group
                     version = modData.version
                 } else if (projectData.present) {
-                    artifactId = projectData.name
+                    artifactId = extension.getArtifactName(false)
                     groupId = projectData.group
                     version = projectData.version
                 }
