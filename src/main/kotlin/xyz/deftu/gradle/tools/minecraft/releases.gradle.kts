@@ -6,12 +6,13 @@ import com.modrinth.minotaur.Minotaur
 import com.modrinth.minotaur.ModrinthExtension
 import gradle.kotlin.dsl.accessors._72efc76fad8c8cf3476d335fb6323bde.jar
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
+import org.gradle.configurationcache.extensions.capitalized
 import org.gradle.kotlin.dsl.*
 import xyz.deftu.gradle.GitData
 import xyz.deftu.gradle.MCData
 import xyz.deftu.gradle.ModData
-import xyz.deftu.gradle.ProjectData
 import xyz.deftu.gradle.utils.isMultiversionProject
+import xyz.deftu.gradle.utils.propertyBoolOr
 import xyz.deftu.gradle.utils.propertyOr
 import java.nio.charset.StandardCharsets
 
@@ -22,14 +23,16 @@ plugins {
 val gitData = GitData.from(project)
 val mcData = MCData.from(project)
 val modData = ModData.from(project)
-val projectData = ProjectData.from(project)
 val extension = extensions.create("releases", ReleasingExtension::class)
 
 fun ReleasingExtension.getReleaseName(): String {
+    val configuredReleaseName = releaseName.orNull
+    if (!configuredReleaseName.isNullOrBlank()) return configuredReleaseName
+
     val prefix = buildString {
         append("[")
         if (isMultiversionProject()) {
-            if (mcData.isFabric && extension.describeFabricWithQuilt.get()) {
+            if (mcData.isFabric && describeFabricWithQuilt.get()) {
                 append("Fabric/Quilt")
             } else {
                 append(mcData.loader.name.capitalize())
@@ -48,17 +51,22 @@ fun ReleasingExtension.getReleaseVersion(): String {
     val suffix = buildString {
         var content = ""
 
-        if (gitData.present) {
-            content += gitData.branch
-            content += "-"
-            content += gitData.commit
+        val includingGitData = gitData.shouldAppendVersion(project)
+        if (includingGitData) {
+            content += buildString {
+                append(gitData.branch)
+                append("-")
+                append(gitData.commit)
+            }
         }
 
         if (isMultiversionProject()) {
-            if (gitData.present) content += "."
-            content += mcData.versionStr
-            content += "-"
-            content += mcData.loader.name
+            content += buildString {
+                if (includingGitData) append(".")
+                append(mcData.versionStr)
+                append("-")
+                append(mcData.loader.name)
+            }
         }
 
         if (content.isNotBlank()) {
@@ -67,16 +75,31 @@ fun ReleasingExtension.getReleaseVersion(): String {
         }
     }
 
-    return "${modData.version}${suffix}"
+    return "${version.getOrElse(modData.version)}${suffix}"
 }
+
+fun ReleasingExtension.getUploadFile() = file.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get())
+
+fun ReleasingExtension.getGameVersions() = gameVersions.getOrElse(listOf(mcData.versionStr))
+fun ReleasingExtension.getLoaders(capitalized: Boolean) = loaders.getOrElse(listOf(mcData.loader.name)).map { loader ->
+    if (capitalized) loader.capitalize() else loader
+}
+
+fun ReleasingExtension.getVersionType() = versionType.getOrElse(VersionType.RELEASE)
+
+fun ReleasingExtension.shouldAddSourcesJar() = useSourcesJar.getOrElse(false) && tasks.findByName("sourcesJar") != null
+fun ReleasingExtension.shouldAddJavadocJar() = useJavadocJar.getOrElse(false) && tasks.findByName("javadocJar") != null
+
+fun ReleasingExtension.getSourcesJar() = sourcesJar.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").get())
+fun ReleasingExtension.getJavadocJar() = javadocJar.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("javadocJar").get())
 
 afterEvaluate {
     val modrinthToken = propertyOr("publish.modrinth.token", "")
     val curseForgeApiKey = propertyOr("publish.curseforge.apikey", "")
     val githubToken = propertyOr("publish.github.token", "")
 
-    val releaseProject by tasks.registering { group = "publishing" }
-    releaseProject.get().dependsOn(tasks["build"])
+    val publishProject by tasks.registering { group = "publishing" }
+    publishProject.get().dependsOn(tasks["build"])
 
     if (extension.changelogFile.isPresent) {
         val changelogFile = extension.changelogFile.get()
@@ -90,14 +113,13 @@ afterEvaluate {
         })
     }
 
-    if (mcData.isFabric && extension.describeFabricWithQuilt.get()) extension.loaders.add("Quilt")
+    if (mcData.isFabric && extension.describeFabricWithQuilt.get()) extension.loaders.add("quilt")
 
-    if (modData.present && modrinthToken.isNotBlank())
-        setupModrinth(modrinthToken)
-    if (modData.present && curseForgeApiKey.isNotBlank())
-        setupCurseForge(curseForgeApiKey)
-    if ((modData.present || projectData.present) && githubToken.isNotBlank())
-        setupGitHub(githubToken)
+    if (modData.present) {
+        if (modrinthToken.isNotBlank()) setupModrinth(modrinthToken)
+        if (curseForgeApiKey.isNotBlank()) setupCurseForge(curseForgeApiKey)
+        if (githubToken.isNotBlank()) setupGitHub(githubToken)
+    }
 }
 
 fun setupModrinth(token: String) {
@@ -106,28 +128,22 @@ fun setupModrinth(token: String) {
     apply<Minotaur>()
     configure<ModrinthExtension> {
         failSilently.set(true)
+        detectLoaders.set(false)
+        debugMode.set(extension.modrinth.debug.getOrElse(false))
+
         this.token.set(token)
         this.projectId.set(projectId)
         versionName.set(extension.getReleaseName())
         versionNumber.set(extension.getReleaseVersion())
-        versionType.set(extension.versionType.getOrElse(VersionType.RELEASE).value)
-        uploadFile.set(extension.file.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get()))
+        versionType.set(extension.getVersionType().value)
+        uploadFile.set(extension.getUploadFile())
 
-        if (extension.useSourcesJar.get()) {
-            extension.sourcesJar.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").get()).let { sourcesJar ->
-                additionalFiles.add(sourcesJar)
-            }
-        }
-
-        if (extension.useJavadocJar.get()) {
-            extension.javadocJar.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("javadocJar").get()).let { javadocJar ->
-                additionalFiles.add(javadocJar)
-            }
-        }
+        if (extension.shouldAddSourcesJar()) additionalFiles.add(extension.getSourcesJar())
+        if (extension.shouldAddJavadocJar()) additionalFiles.add(extension.getJavadocJar())
 
         changelog.set(extension.changelog.get())
-        gameVersions.addAll(extension.gameVersions.getOrElse(listOf(mcData.versionStr)))
-        loaders.addAll(extension.loaders.getOrElse(listOf(mcData.loader.name)))
+        gameVersions.addAll(extension.getGameVersions())
+        loaders.addAll(extension.getLoaders(false))
         dependencies.addAll(extension.modrinth.dependencies.getOrElse(listOf()))
     }
 
@@ -136,7 +152,7 @@ fun setupModrinth(token: String) {
         dependsOn("modrinth")
     }
 
-    tasks["releaseProject"].dependsOn(publishToModrinth)
+    tasks["publishProject"].dependsOn(publishToModrinth)
     publishToModrinth.get().mustRunAfter(tasks["build"])
 }
 
@@ -152,30 +168,21 @@ fun setupCurseForge(apiKey: String) {
             disableVersionDetection()
             displayName = extension.getReleaseName()
             version = extension.getReleaseVersion()
-            releaseType = extension.versionType.getOrElse(VersionType.RELEASE).value
+            releaseType = extension.getVersionType().value
             changelog = extension.changelog.get()
             changelogType = extension.curseforge.changelogType.getOrElse("text")
-            extension.loaders.getOrElse(listOf(mcData.loader.name)).forEach(this::addModLoader)
-            extension.gameVersions.getOrElse(listOf(mcData.versionStr)).forEach(this::addGameVersion)
+            extension.getLoaders(true).forEach(this::addModLoader)
+            extension.getGameVersions().forEach(this::addGameVersion)
             extension.curseforge.relations.getOrElse(listOf()).forEach { relation ->
                 relation.applyTo(this)
             }
 
-            if (extension.useSourcesJar.get()) {
-                extension.sourcesJar.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").get()).let { sourcesJar ->
-                    withAdditionalFile(sourcesJar)
-                }
-            }
-
-            if (extension.useJavadocJar.get()) {
-                extension.javadocJar.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("javadocJar").get()).let { javadocJar ->
-                    withAdditionalFile(javadocJar)
-                }
-            }
+            if (extension.shouldAddSourcesJar()) withAdditionalFile(extension.getSourcesJar())
+            if (extension.shouldAddJavadocJar()) withAdditionalFile(extension.getJavadocJar())
         }
     }
 
-    tasks["releaseProject"].dependsOn(publishToCurseForge)
+    tasks["publishProject"].dependsOn(publishToCurseForge)
     publishToCurseForge.get().mustRunAfter(tasks["build"])
 }
 
@@ -192,19 +199,14 @@ fun setupGitHub(token: String) {
         releaseName.set(extension.getReleaseName())
         body.set(extension.changelog.get())
         draft.set(extension.github.draft.getOrElse(false))
-        prerelease.set(extension.versionType.getOrElse(VersionType.RELEASE) != VersionType.RELEASE)
+        prerelease.set(extension.getVersionType() != VersionType.RELEASE)
         generateReleaseNotes.set(extension.github.autogenerateReleaseNotes.getOrElse(false))
 
         val usedAssets = mutableListOf<Any>()
-        usedAssets.add(extension.file.getOrElse(tasks.jar.get()))
+        usedAssets.add(extension.getUploadFile())
 
-        if (extension.useSourcesJar.get()) {
-            usedAssets.add(extension.sourcesJar.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").get()))
-        }
-
-        if (extension.useJavadocJar.get()) {
-            usedAssets.add(extension.javadocJar.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("javadocJar").get()))
-        }
+        if (extension.shouldAddSourcesJar()) usedAssets.add(extension.getSourcesJar())
+        if (extension.shouldAddJavadocJar()) usedAssets.add(extension.getJavadocJar())
 
         releaseAssets(*usedAssets.toTypedArray())
     }
@@ -214,6 +216,6 @@ fun setupGitHub(token: String) {
         dependsOn("githubRelease")
     }
 
-    tasks["releaseProject"].dependsOn(publishToGitHubRelease)
+    tasks["publishProject"].dependsOn(publishToGitHubRelease)
     publishToGitHubRelease.get().mustRunAfter(tasks["build"])
 }

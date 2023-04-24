@@ -42,7 +42,6 @@ abstract class ReleasingExtension(
 
     init {
         val mcData = MCData.from(project)
-        version.convention(project.version.toString())
         versionType.convention(VersionType.RELEASE)
         gameVersions.convention(listOf(mcData.versionStr))
         loaders.convention(listOf(mcData.loader.name))
@@ -61,9 +60,12 @@ abstract class ReleasingExtension(
 abstract class PublishingModrinthExtension {
     abstract val projectId: Property<String>
     abstract val dependencies: ListProperty<Dependency>
+    abstract val debug: Property<Boolean>
+
     init {
         projectId.convention("")
         dependencies.convention(listOf())
+        debug.convention(false)
     }
 }
 
