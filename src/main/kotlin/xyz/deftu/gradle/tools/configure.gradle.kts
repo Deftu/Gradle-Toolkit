@@ -15,7 +15,7 @@ val projectData = ProjectData.from(project)
 
 fun getVersionSuffix(): String {
     val gitData = GitData.from(project)
-    if (!project.propertyBoolOr("gitdata.version", true) || !gitData.present) return ""
+    if (!gitData.shouldAppendVersion(project)) return ""
 
     return "+${gitData.branch}-${gitData.commit}"
 }

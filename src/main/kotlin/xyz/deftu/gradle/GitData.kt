@@ -13,6 +13,10 @@ data class GitData(
     val commit: String,
     val url: String
 ) {
+    fun shouldAppendVersion(project: Project): Boolean {
+        return present && project.propertyBoolOr("gitdata.version", false)
+    }
+
     companion object {
         private val debug: Boolean
             get() = Constants.debug || System.getProperty("dgt.debug.git", "false").toBoolean()
