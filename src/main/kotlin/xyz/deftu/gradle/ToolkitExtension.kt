@@ -44,30 +44,4 @@ abstract class ToolkitExtension(
         val version = DependencyHelper.fetchLatestRelease(repo, dependency)
         project.dependencies.add("modRuntimeOnly", "$dependency:$version")
     }
-
-    fun useUniCore(snapshots: Boolean = false) {
-        val repo = "https://maven.deftu.xyz/" + if (snapshots) "snapshots" else "releases"
-        val mcData = MCData.from(project)
-
-        // Loader
-        val loaderModule = if (mcData.isFabric) "fabric" else if (mcData.isForge && mcData.version <= 11202) "forge-legacy" else "forge-modern"
-        val loaderDependency = "xyz.deftu:UniCore-Loader-$loaderModule"
-        val loaderVersion = DependencyHelper.fetchLatestRelease(repo, loaderDependency)
-
-        if (mcData.isFabric) {
-            // JiJ (Jar-in-Jar) the loader
-            project.dependencies.add("include", "$loaderDependency:$loaderVersion")
-        } else {
-            // Embed the loader
-            val usingShadow = project.pluginManager.hasPlugin("xyz.deftu.gradle.tools.shadow")
-            project.dependencies.add(if (usingShadow) "shade" else "implementation", "$loaderDependency:$loaderVersion")
-            if (!usingShadow) project.logger.warn("It is recommended to use DGT Shadow to embed the UniCore loader inside your built mod JAR.")
-        }
-
-
-        // API
-        val apiDependency = "xyz.deftu:UniCore-${mcData.versionStr}-${mcData.loader.name}"
-        val apiVersion = DependencyHelper.fetchLatestRelease(repo, apiDependency)
-        project.dependencies.add("runtimeOnly", "$apiDependency:$apiVersion")
-    }
 }
