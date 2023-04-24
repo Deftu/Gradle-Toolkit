@@ -42,8 +42,7 @@ abstract class ToolkitExtension(
         val module = if (mcData.isFabric) "fabric" else if (mcData.isForge && mcData.version <= 11202) "forge-legacy" else "forge-latest"
         val dependency = "me.djtheredstoner:DevAuth-$module"
         val version = DependencyHelper.fetchLatestRelease(repo, dependency)
-        project.dependencies.add("runtimeOnly", "$dependency:$version")
-        project.configurations.getByName("runtimeOnly").exclude(mapOf("module" to "fabric-loader"))
+        project.dependencies.add("modRuntimeOnly", "$dependency:$version")
     }
 
     fun useUniCore(snapshots: Boolean = false) {
