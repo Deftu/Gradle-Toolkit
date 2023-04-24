@@ -16,7 +16,7 @@ abstract class JdaExtension {
     }
 }
 
-val extension = extensions.create("jda", JdaExtension::class.java)
+val extension = extensions.create("toolkitJda", JdaExtension::class.java)
 
 repositories {
     maven("https://oss.sonatype.org/content/repositories/snapshots")

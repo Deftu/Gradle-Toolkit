@@ -23,7 +23,7 @@ plugins {
 val gitData = GitData.from(project)
 val mcData = MCData.from(project)
 val modData = ModData.from(project)
-val extension = extensions.create("releases", ReleasingExtension::class)
+val extension = extensions.create("toolkitReleases", ReleasingExtension::class)
 
 fun ReleasingExtension.getReleaseName(): String {
     val configuredReleaseName = releaseName.orNull

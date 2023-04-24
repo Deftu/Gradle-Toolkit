@@ -4,4 +4,4 @@ plugins {
     id("gg.essential.loom")
 }
 
-val extension = extensions.create("loomApi", ApiExtension::class)
+val extension = extensions.create("toolkitLoomApi", ApiExtension::class)

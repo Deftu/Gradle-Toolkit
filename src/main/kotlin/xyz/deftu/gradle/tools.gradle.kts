@@ -40,4 +40,4 @@ withLoom {
 }
 
 // Perform our logic.
-extensions.create<ToolkitExtension>("deftu")
+extensions.create<ToolkitExtension>("toolkit")
