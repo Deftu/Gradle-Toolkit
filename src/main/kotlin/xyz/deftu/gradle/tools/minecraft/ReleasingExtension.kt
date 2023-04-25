@@ -9,6 +9,7 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.bundling.Zip
 import xyz.deftu.gradle.MCData
+import xyz.deftu.gradle.utils.VersionType
 import java.io.File
 
 abstract class ReleasingExtension(
@@ -37,8 +38,6 @@ abstract class ReleasingExtension(
         @Nested get
     abstract val curseforge: PublishingCurseForgeExtension
         @Nested get
-    abstract val github: PublishingGitHubExtension
-        @Nested get
 
     init {
         val mcData = MCData.from(project)
@@ -54,7 +53,6 @@ abstract class ReleasingExtension(
     // Platform specific
     fun modrinth(action: Action<PublishingModrinthExtension>) = action.execute(modrinth)
     fun curseforge(action: Action<PublishingCurseForgeExtension>) = action.execute(curseforge)
-    fun github(action: Action<PublishingGitHubExtension>) = action.execute(github)
 }
 
 abstract class PublishingModrinthExtension {
@@ -98,23 +96,5 @@ data class CurseRelation(
             CurseRelationType.TOOL -> task.addTool(name)
             CurseRelationType.OPTIONAL -> task.addOptional(name)
         }
-    }
-}
-
-abstract class PublishingGitHubExtension(
-    project: Project
-) {
-    abstract val owner: Property<String>
-    abstract val repository: Property<String>
-    abstract val targetCommitish: Property<String>
-    abstract val draft: Property<Boolean>
-    abstract val autogenerateReleaseNotes: Property<Boolean>
-
-    init {
-        owner.convention(project.rootProject.group.toString().substringAfterLast("."))
-        repository.convention(project.rootProject.name)
-        targetCommitish.convention("main")
-        draft.convention(false)
-        autogenerateReleaseNotes.convention(false)
     }
 }
