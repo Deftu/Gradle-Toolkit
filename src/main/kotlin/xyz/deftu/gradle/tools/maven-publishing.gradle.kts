@@ -18,9 +18,9 @@ val mcData = MCData.from(project)
 val modData = ModData.from(project)
 val projectData = ProjectData.from(project)
 
-val extension = extensions.create("toolkitPublishing", PublishingExtension::class)
+val extension = extensions.create("toolkitMavenPublishing", MavenPublishingExtension::class)
 
-fun PublishingExtension.getArtifactName(
+fun MavenPublishingExtension.getArtifactName(
     isMod: Boolean
 ) = artifactName.getOrElse(if (isMod) modData.name else projectData.name)
 
