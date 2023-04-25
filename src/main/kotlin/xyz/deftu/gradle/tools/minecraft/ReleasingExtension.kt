@@ -43,8 +43,8 @@ abstract class ReleasingExtension(
     init {
         val mcData = MCData.from(project)
         versionType.convention(VersionType.RELEASE)
-        gameVersions.convention(listOf(mcData.versionStr))
-        loaders.convention(listOf(mcData.loader.name))
+        gameVersions.set(listOf(mcData.versionStr))
+        loaders.set(listOf(mcData.loader.name))
         describeFabricWithQuilt.convention(false)
         useSourcesJar.convention(false)
         useJavadocJar.convention(false)
