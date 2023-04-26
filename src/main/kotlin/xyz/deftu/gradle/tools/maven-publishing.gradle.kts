@@ -32,70 +32,74 @@ pluginManager.withPlugin("java") {
 
 afterEvaluate {
     publishing {
-        publications {
-            create<MavenPublication>("mavenJava") {
-                if (modData.present) {
-                    artifactId = if (isMultiversionProject()) "${extension.getArtifactName(true)}-${mcData.versionStr}-${mcData.loader.name}" else extension.getArtifactName(true)
-                    groupId = modData.group
-                    version = modData.version
-                } else if (projectData.present) {
-                    artifactId = extension.getArtifactName(false)
-                    groupId = projectData.group
-                    version = projectData.version
-                }
-
-                if (pluginManager.hasPlugin("xyz.deftu.gradle.tools.shadow")) {
-                    val fatJar by tasks.getting
-                    artifact(fatJar) {
-                        classifier = null
+        if (extension.setupPublication.getOrElse(true)) {
+            publications {
+                create<MavenPublication>("mavenJava") {
+                    if (modData.present) {
+                        artifactId = if (isMultiversionProject()) "${extension.getArtifactName(true)}-${mcData.versionStr}-${mcData.loader.name}" else extension.getArtifactName(true)
+                        groupId = modData.group
+                        version = modData.version
+                    } else if (projectData.present) {
+                        artifactId = extension.getArtifactName(false)
+                        groupId = projectData.group
+                        version = projectData.version
                     }
-                    val sourcesJar by tasks.getting
-                    artifact(sourcesJar)
 
-                    pluginManager.withPlugin("java") {
-                        val javadocJar = project.tasks.findByName("javadocJar") as Jar?
-                        if (javadocJar != null && javadocJar.enabled) {
-                            artifact(javadocJar)
+                    if (pluginManager.hasPlugin("xyz.deftu.gradle.tools.shadow")) {
+                        val fatJar by tasks.getting
+                        artifact(fatJar) {
+                            classifier = null
                         }
-                    }
-                } else from(components["java"])
+                        val sourcesJar by tasks.getting
+                        artifact(sourcesJar)
+
+                        pluginManager.withPlugin("java") {
+                            val javadocJar = project.tasks.findByName("javadocJar") as Jar?
+                            if (javadocJar != null && javadocJar.enabled) {
+                                artifact(javadocJar)
+                            }
+                        }
+                    } else from(components["java"])
+                }
             }
         }
 
-        repositories {
-            mavenLocal()
+        if (extension.setupRepositories.getOrElse(true)) {
+            repositories {
+                mavenLocal()
 
-            fun getPublishingUsername(): String? {
-                val property = project.findProperty("deftu.publishing.username")
-                return property?.toString() ?: System.getenv("DEFTU_PUBLISHING_USERNAME")
-            }
+                fun getPublishingUsername(): String? {
+                    val property = project.findProperty("deftu.publishing.username")
+                    return property?.toString() ?: System.getenv("DEFTU_PUBLISHING_USERNAME")
+                }
 
-            fun getPublishingPassword(): String? {
-                val property = project.findProperty("deftu.publishing.password")
-                return property?.toString() ?: System.getenv("DEFTU_PUBLISHING_PASSWORD")
-            }
+                fun getPublishingPassword(): String? {
+                    val property = project.findProperty("deftu.publishing.password")
+                    return property?.toString() ?: System.getenv("DEFTU_PUBLISHING_PASSWORD")
+                }
 
-            val publishingUsername = getPublishingUsername()
-            val publishingPassword = getPublishingPassword()
-            if (publishingUsername != null && publishingPassword != null) {
-                fun MavenArtifactRepository.applyCredentials() {
-                    authentication.create<BasicAuthentication>("basic")
-                    credentials {
-                        username = publishingUsername
-                        password = publishingPassword
+                val publishingUsername = getPublishingUsername()
+                val publishingPassword = getPublishingPassword()
+                if (publishingUsername != null && publishingPassword != null) {
+                    fun MavenArtifactRepository.applyCredentials() {
+                        authentication.create<BasicAuthentication>("basic")
+                        credentials {
+                            username = publishingUsername
+                            password = publishingPassword
+                        }
                     }
-                }
 
-                maven {
-                    name = "DeftuReleases"
-                    url = uri("https://maven.deftu.xyz/releases")
-                    applyCredentials()
-                }
+                    maven {
+                        name = "DeftuReleases"
+                        url = uri("https://maven.deftu.xyz/releases")
+                        applyCredentials()
+                    }
 
-                maven {
-                    name = "DeftuSnapshots"
-                    url = uri("https://maven.deftu.xyz/snapshots")
-                    applyCredentials()
+                    maven {
+                        name = "DeftuSnapshots"
+                        url = uri("https://maven.deftu.xyz/snapshots")
+                        applyCredentials()
+                    }
                 }
             }
         }
