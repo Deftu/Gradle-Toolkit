@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm") version("1.6.21")
     `kotlin-dsl`
-    val dgt = "1.12.1"
+    val dgt = "1.12.3"
     id("xyz.deftu.gradle.tools.repo") version(dgt)
     id("xyz.deftu.gradle.tools.configure") version(dgt)
     id("xyz.deftu.gradle.tools.maven-publishing") version(dgt)
@@ -13,6 +13,10 @@ toolkitGitHubPublishing {
     repository.set("Gradle-Toolkit")
     automaticallyGenerateReleaseNotes.set(true)
     useSourcesJar.set(true)
+}
+
+toolkitMavenPublishing {
+    setupPublication.set(false)
 }
 
 repositories {
