@@ -123,6 +123,7 @@ afterEvaluate {
         prerelease.set(extension.versionType.getOrElse(VersionType.RELEASE) != VersionType.RELEASE)
         generateReleaseNotes.set(extension.automaticallyGenerateReleaseNotes.getOrElse(false))
         body.set(extension.changelog.get())
+        if (extension.targetCommitish.isPresent) targetCommitish.set(extension.targetCommitish.get())
 
         val usedAssets = mutableListOf<Zip>()
         usedAssets.add(extension.getUploadFile())

@@ -22,6 +22,7 @@ abstract class GitHubPublishingExtension(
 
     abstract val owner: Property<String>
     abstract val repository: Property<String>
+    abstract val targetCommitish: Property<String>
 
     abstract val file: Property<Zip>
 
