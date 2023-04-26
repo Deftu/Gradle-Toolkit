@@ -24,7 +24,6 @@ repositories {
     maven("https://maven.fabricmc.net/")
     maven("https://maven.minecraftforge.net/")
     maven("https://maven.architectury.dev/")
-    maven("https://repo.essential.gg/repository/maven-public/")
 
     mavenCentral()
     gradlePluginPortal()
@@ -53,11 +52,6 @@ dependencies {
     implementation("com.modrinth.minotaur:Minotaur:2.7.2")
     implementation("net.darkhax.curseforgegradle:CurseForgeGradle:1.0.11")
     implementation("com.github.breadmoirai:github-release:2.4.1")
-}
-
-java {
-    withSourcesJar()
-    withJavadocJar()
 }
 
 tasks {
