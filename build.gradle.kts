@@ -1,15 +1,19 @@
 plugins {
     kotlin("jvm") version("1.6.21")
     `kotlin-dsl`
-    `maven-publish`
+    val dgt = "1.12.1"
+    id("xyz.deftu.gradle.tools.repo") version(dgt)
+    id("xyz.deftu.gradle.tools.configure") version(dgt)
+    id("xyz.deftu.gradle.tools.maven-publishing") version(dgt)
+    id("xyz.deftu.gradle.tools.github-publishing") version(dgt)
 }
 
-val projectName: String by project
-val projectVersion: String by project
-val projectGroup: String by project
-
-version = projectVersion
-group = projectGroup
+toolkitGitHubPublishing {
+    owner.set("Deftu")
+    repository.set("Gradle-Toolkit")
+    automaticallyGenerateReleaseNotes.set(true)
+    useSourcesJar.set(true)
+}
 
 repositories {
     maven("https://jitpack.io/")
@@ -54,36 +58,6 @@ java {
 
 tasks {
     named<Jar>("jar") {
-        archiveBaseName.set(projectName)
         from("LICENSE")
-    }
-}
-
-afterEvaluate {
-    publishing {
-        repositories {
-            mavenLocal()
-            if (project.hasProperty("deftu.publishing.username") && project.hasProperty("deftu.publishing.password")) {
-                fun MavenArtifactRepository.applyCredentials() {
-                    authentication.create<BasicAuthentication>("basic")
-                    credentials {
-                        username = property("deftu.publishing.username")?.toString()
-                        password = property("deftu.publishing.password")?.toString()
-                    }
-                }
-
-                maven {
-                    name = "DeftuReleases"
-                    url = uri("https://maven.deftu.xyz/releases")
-                    applyCredentials()
-                }
-
-                maven {
-                    name = "DeftuSnapshots"
-                    url = uri("https://maven.deftu.xyz/snapshots")
-                    applyCredentials()
-                }
-            }
-        }
     }
 }
