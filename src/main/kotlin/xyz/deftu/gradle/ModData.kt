@@ -2,6 +2,7 @@ package xyz.deftu.gradle
 
 import org.gradle.api.Project
 import xyz.deftu.gradle.utils.propertyOr
+import java.util.*
 
 data class ModData(
     val present: Boolean,
@@ -20,7 +21,7 @@ data class ModData(
             if (!project.hasProperty("mod.id")) return ModData(false, "", "", "", "", "")
 
             val name = project.propertyOr("mod.name", project.name, false)
-            val id = project.propertyOr("mod.id", name.toLowerCase().replace(" ", "_"), false)
+            val id = project.propertyOr("mod.id", name.toLowerCase(Locale.US).replace(" ", "_"), false)
             val version = project.propertyOr("mod.version", project.version.toString(), false)
             val group = project.propertyOr("mod.group", project.group.toString(), false)
             val description = project.propertyOr("mod.description", "", false)

@@ -9,6 +9,7 @@ import org.gradle.kotlin.dsl.withType
 import xyz.deftu.gradle.MCData
 import xyz.deftu.gradle.utils.GameSide
 import xyz.deftu.gradle.utils.withLoom
+import java.util.*
 
 abstract class LoomHelperExtension(
     val project: Project
@@ -53,7 +54,7 @@ abstract class LoomHelperExtension(
         project.withLoom {
             when (side) {
                 GameSide.GLOBAL -> launchConfigs.all { arg(key, value) }
-                else -> launchConfigs[side.name.toLowerCase()].arg(key, value)
+                else -> launchConfigs[side.name.toLowerCase(Locale.US)].arg(key, value)
             }
         }
     }
@@ -66,7 +67,7 @@ abstract class LoomHelperExtension(
         project.withLoom {
             when (side) {
                 GameSide.GLOBAL -> launchConfigs.all { property(key, value) }
-                else -> launchConfigs[side.name.toLowerCase()].property(key, value)
+                else -> launchConfigs[side.name.toLowerCase(Locale.US)].property(key, value)
             }
         }
     }
@@ -102,7 +103,7 @@ abstract class LoomHelperExtension(
         project.withLoom {
             when (side) {
                 GameSide.GLOBAL -> runConfigs.all { isIdeConfigGenerated = false }
-                else -> runConfigs[side.name.toLowerCase()].isIdeConfigGenerated = false
+                else -> runConfigs[side.name.toLowerCase(Locale.US)].isIdeConfigGenerated = false
             }
         }
     }
