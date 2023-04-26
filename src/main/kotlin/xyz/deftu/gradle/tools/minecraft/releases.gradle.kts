@@ -28,18 +28,22 @@ fun ReleasingExtension.getReleaseName(): String {
     if (!configuredReleaseName.isNullOrBlank()) return configuredReleaseName
 
     val prefix = buildString {
-        append("[")
+        var content = ""
         if (isMultiversionProject()) {
-            if (mcData.isFabric && describeFabricWithQuilt.get()) {
-                append("Fabric/Quilt")
-            } else {
-                append(mcData.loader.name.capitalize())
-            }
+            content += buildString {
+                if (mcData.isFabric && describeFabricWithQuilt.get()) {
+                    append("Fabric/Quilt")
+                } else {
+                    append(mcData.loader.name.capitalize())
+                }
 
-            append(" ").append(mcData.versionStr)
+                append(" ").append(mcData.versionStr)
+            }
         }
 
-        append("] ")
+        if (content.isNotBlank()) {
+            append("[").append(content).append("] ")
+        }
     }
 
     return "$prefix${modData.name} ${modData.version}"

@@ -28,18 +28,22 @@ fun GitHubPublishingExtension.getReleaseName(): String {
     if (!configuredReleaseName.isNullOrBlank()) return configuredReleaseName
 
     val prefix = buildString {
-        append("[")
+        var content = ""
         if (isMultiversionProject()) {
-            if (mcData.isFabric && minecraft.describeFabricWithQuilt.get()) {
-                append("Fabric/Quilt")
-            } else {
-                append(mcData.loader.name.capitalize())
-            }
+            content += buildString {
+                if (mcData.isFabric && minecraft.describeFabricWithQuilt.get()) {
+                    append("Fabric/Quilt")
+                } else {
+                    append(mcData.loader.name.capitalize())
+                }
 
-            append(" ").append(mcData.versionStr)
+                append(" ").append(mcData.versionStr)
+            }
         }
 
-        append("] ")
+        if (content.isNotBlank()) {
+            append("[").append(content).append("] ")
+        }
     }
 
     val backupName = if (modData.present) modData.name else projectData.name
@@ -96,11 +100,6 @@ afterEvaluate {
     val token = propertyOr("publish.github.token", "")
     if (token.isBlank()) return@afterEvaluate
 
-    tasks.register(taskName) {
-        group = "publishing"
-        dependsOn("build")
-    }
-
     if (extension.changelogFile.isPresent) {
         val changelogFile = extension.changelogFile.get()
         logger.info("Setting GitHub publishing changelog to contents of ${changelogFile.name}")
@@ -132,5 +131,10 @@ afterEvaluate {
         if (extension.shouldAddJavadocJar()) usedAssets.add(extension.getJavadocJar())
 
         releaseAssets(*usedAssets.toTypedArray())
+    }
+
+    tasks.register(taskName) {
+        group = "publishing"
+        dependsOn("build", "githubRelease")
     }
 }

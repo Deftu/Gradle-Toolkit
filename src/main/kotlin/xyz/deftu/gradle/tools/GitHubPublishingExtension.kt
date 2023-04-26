@@ -36,6 +36,7 @@ abstract class GitHubPublishingExtension(
     init {
         draft.convention(false)
         automaticallyGenerateReleaseNotes.convention(false)
+        changelog.convention("")
         useSourcesJar.convention(false)
         useJavadocJar.convention(false)
     }
