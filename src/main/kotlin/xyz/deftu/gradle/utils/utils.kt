@@ -17,6 +17,8 @@ private val loomIds = listOf(
 private val preprocessorIds = listOf(
     "com.replaymod.preprocess-root",
     "com.replaymod.preprocess",
+    "com.jab125.preprocessor.preprocess-root",
+    "com.jab125.preprocessor.preprocess",
     "xyz.deftu.gradle.multiversion-root",
     "xyz.deftu.gradle.multiversion"
 )

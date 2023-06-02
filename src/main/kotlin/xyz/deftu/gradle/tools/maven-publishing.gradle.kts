@@ -5,6 +5,7 @@ import gradle.kotlin.dsl.accessors._89edf7476531f98eff64d602eb448354.signing
 import gradle.kotlin.dsl.accessors._ca59d7b33a587bae1dcf00e1f22a5064.java
 import xyz.deftu.gradle.MCData
 import xyz.deftu.gradle.ModData
+import xyz.deftu.gradle.ModLoader
 import xyz.deftu.gradle.ProjectData
 import xyz.deftu.gradle.utils.isMultiversionProject
 
@@ -13,6 +14,9 @@ plugins {
     signing
     java
 }
+
+val RELEASES_REPO_NAME = "DeftuReleases"
+val SNAPSHOT_REPO_NAME = "DeftuSnapshots"
 
 val mcData = MCData.from(project)
 val modData = ModData.from(project)
@@ -90,13 +94,13 @@ afterEvaluate {
                     }
 
                     maven {
-                        name = "DeftuReleases"
+                        name = RELEASES_REPO_NAME
                         url = uri("https://maven.deftu.xyz/releases")
                         applyCredentials()
                     }
 
                     maven {
-                        name = "DeftuSnapshots"
+                        name = SNAPSHOT_REPO_NAME
                         url = uri("https://maven.deftu.xyz/snapshots")
                         applyCredentials()
                     }
@@ -108,6 +112,28 @@ afterEvaluate {
     if (project.hasProperty("signing.password")) {
         signing {
             publishing.publications.forEach(::sign)
+        }
+    }
+
+    if (isMultiversionProject()) {
+        publishing.repositories.names.map {
+            "${it}Repository"
+        }.forEach { repo ->
+            val name = "publishAllModVersionsTo$repo"
+            if (rootProject.tasks.any { task ->
+                return@any task.name == name
+            }) return@forEach
+
+            val task = rootProject.tasks.create(name) {
+                group = "publishing"
+                project.subprojects.map(Project::getName).filter { name ->
+                    ModLoader.all.any { loader ->
+                        name.endsWith("-${loader.name}", true)
+                    }
+                }.forEach { version ->
+                    dependsOn(":$version:publishAllPublicationsTo$repo")
+                }
+            }
         }
     }
 }

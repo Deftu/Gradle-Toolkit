@@ -66,7 +66,7 @@ fun GitHubPublishingExtension.getReleaseVersion(): String {
 
         if (isMultiversionProject()) {
             content += buildString {
-                if (includingGitData) append(".")
+                if (includingGitData) append("+")
                 append(mcData.versionStr)
                 append("-")
                 append(mcData.loader.name)

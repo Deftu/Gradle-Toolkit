@@ -87,6 +87,9 @@ data class ModLoader(
         val other = ModLoader("other")
 
         @JvmStatic
+        val all = listOf(forge, fabric, other)
+
+        @JvmStatic
         fun from(input: String, multiversion: Boolean): ModLoader {
             return when {
                 input.contains("forge") -> forge

@@ -2,7 +2,6 @@ package xyz.deftu.gradle
 
 import com.replaymod.gradle.preprocess.PreprocessExtension
 import com.replaymod.gradle.preprocess.PreprocessPlugin
-import net.fabricmc.loom.api.LoomGradleExtensionAPI
 import net.fabricmc.loom.bootstrap.LoomGradlePluginBootstrap
 
 plugins {

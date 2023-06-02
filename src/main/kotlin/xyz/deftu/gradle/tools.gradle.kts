@@ -27,17 +27,5 @@ pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
     apply(plugin = "xyz.deftu.gradle.tools.resources")
 }
 
-pluginManager.withPlugin("net.kyori.blossom") {
-    apply(plugin = "xyz.deftu.gradle.tools.blossom")
-}
-
-pluginManager.withPlugin("maven-publish") {
-    apply(plugin = "xyz.deftu.gradle.tools.publishing")
-}
-
-withLoom {
-    apply(plugin = "xyz.deftu.gradle.tools.minecraft.loom")
-}
-
 // Perform our logic.
 extensions.create<ToolkitExtension>("toolkit")

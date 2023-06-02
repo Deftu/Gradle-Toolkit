@@ -24,6 +24,7 @@ repositories {
     maven("https://maven.fabricmc.net/")
     maven("https://maven.minecraftforge.net/")
     maven("https://maven.architectury.dev/")
+    maven("https://maven.jab125.dev/")
 
     mavenCentral()
     gradlePluginPortal()
@@ -41,7 +42,7 @@ dependencies {
     implementation("dev.architectury:architectury-pack200:0.1.3")
 
     // Preprocessing/multi-versioning
-    implementation("com.github.replaymod:preprocessor:f14e81e")
+    implementation("com.jab125.preprocessor:preprocessor:0.1.1")
 
     // Other
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.6.21")
