@@ -19,6 +19,8 @@ private val preprocessorIds = listOf(
     "com.replaymod.preprocess",
     "com.jab125.preprocessor.preprocess-root",
     "com.jab125.preprocessor.preprocess",
+    "xyz.deftu.gradle.preprocess",
+    "xyz.deftu.gradle.preprocess-root",
     "xyz.deftu.gradle.multiversion-root",
     "xyz.deftu.gradle.multiversion"
 )

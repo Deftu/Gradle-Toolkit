@@ -75,9 +75,12 @@ abstract class LoomHelperExtension(
     /**
      * Appends a tweaker to your mod.
      */
-    fun useTweaker(value: String) = apply {
+    fun useTweaker(
+        value: String,
+        side: GameSide = GameSide.CLIENT
+    ) = apply {
         val mcData = MCData.from(project)
-        useArgument("--tweakClass", value, GameSide.CLIENT)
+        useArgument("--tweakClass", value, side)
         project.pluginManager.withPlugin("java") {
             project.tasks.withType<Jar> {
                 manifest {
@@ -87,7 +90,30 @@ abstract class LoomHelperExtension(
                     if (mcData.isLegacyForge) theAttributes.apply {
                         this["ForceLoadAsMod"] = true
                         this["TweakOrder"] = "0"
-                        this["ModSide"] = "CLIENT"
+                        if (side != GameSide.GLOBAL) this["Side"] = side.name.toLowerCase(Locale.US)
+                    }
+                    attributes(theAttributes)
+                }
+            }
+        }
+    }
+
+    fun useCoreMod(
+        value: String,
+        side: GameSide = GameSide.CLIENT
+    ) = apply {
+        val mcData = MCData.from(project)
+        useProperty("fml.coreMods.load", value, side)
+        project.pluginManager.withPlugin("java") {
+            project.tasks.withType<Jar> {
+                manifest {
+                    val theAttributes = mutableMapOf<String, Any>(
+                        "FMLCorePlugin" to value
+                    )
+                    if (mcData.isLegacyForge) theAttributes.apply {
+                        this["ForceLoadAsMod"] = true
+                        this["FMLCorePluginContainsFMLMod"] = true
+                        if (side != GameSide.GLOBAL) this["Side"] = side.name.toLowerCase(Locale.US)
                     }
                     attributes(theAttributes)
                 }

@@ -42,7 +42,7 @@ dependencies {
     implementation("dev.architectury:architectury-pack200:0.1.3")
 
     // Preprocessing/multi-versioning
-    implementation("com.jab125.preprocessor:preprocessor:0.1.1")
+    implementation("xyz.deftu:preprocessor:0.1.0")
 
     // Other
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.6.21")
