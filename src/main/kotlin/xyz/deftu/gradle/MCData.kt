@@ -40,6 +40,8 @@ data class MCData(
 
     val fabricApiVersion: String
         get() = GameInfo.fetchFabricApiVersion(version) ?: GameInfo.fetchLatestFabricApiVersion()!!
+    val fabricLanguageKotlinVersion: String
+        get() = GameInfo.FABRIC_LANGUAGE_KOTLIN_VERSION
     val modMenuDependency: String
         get() {
             val (group, version) = GameInfo.fetchModMenuVersion(version) ?: GameInfo.fetchLatestModMenuVersion()!!
