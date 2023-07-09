@@ -1,11 +1,14 @@
 package xyz.deftu.gradle.tools.minecraft
 
+import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.modImplementation
 import net.fabricmc.loom.api.LoomGradleExtensionAPI
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.withType
+import xyz.deftu.gradle.GameInfo
 import xyz.deftu.gradle.MCData
 import xyz.deftu.gradle.utils.GameSide
 import xyz.deftu.gradle.utils.withLoom
@@ -14,6 +17,9 @@ import java.util.*
 abstract class LoomHelperExtension(
     val project: Project
 ) {
+    internal var usingKotlinForForge = false
+        private set
+
     /**
      * Sets a Mixin config for
      * Forge to use.
@@ -117,6 +123,23 @@ abstract class LoomHelperExtension(
                     }
                     attributes(theAttributes)
                 }
+            }
+        }
+    }
+
+    @JvmOverloads
+    fun useKotlinForForge(notation: String = "thedarkcolour:kotlinforforge:") = apply {
+        project.afterEvaluate {
+            val mcData = MCData.from(this)
+            if (mcData.present) {
+                val version = GameInfo.fetchKotlinForForgeVersion(mcData.version)
+
+                project.dependencies {
+                    val finalNotation = if (notation.endsWith(':')) notation else "$notation:"
+                    add("modImplementation", "$finalNotation$version")
+                }
+
+                usingKotlinForForge = true
             }
         }
     }
