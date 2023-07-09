@@ -1,8 +1,10 @@
 package xyz.deftu.gradle.tools
 
+import xyz.deftu.gradle.GameInfo
 import xyz.deftu.gradle.MCData
 import xyz.deftu.gradle.ModData
 import xyz.deftu.gradle.ProjectData
+import xyz.deftu.gradle.tools.minecraft.LoomHelperExtension
 
 plugins {
     java
@@ -11,9 +13,19 @@ plugins {
 afterEvaluate {
     allprojects {
         tasks.processResources {
+            val loomHelperExtension = extensions.findByType<LoomHelperExtension>()
             val mcData = MCData.from(project)
             val modData = ModData.from(project)
             val projectData = ProjectData.from(project)
+
+            val forgeLoaderVersion: String? = run {
+                if (!mcData.present || loomHelperExtension == null || !loomHelperExtension.usingKotlinForForge)
+                    return@run null
+
+                val version = GameInfo.fetchKotlinForForgeVersion(mcData.version)
+                val majorVersion = version.split(".")[0]
+                "[$majorVersion,)"
+            }
 
             if (mcData.present) {
                 inputs.property("mc_version", mcData.versionStr)
@@ -29,6 +41,7 @@ afterEvaluate {
                 inputs.property("mod_group", modData.group)
                 inputs.property("mod_description", modData.description)
                 inputs.property("file.jarVersion", modData.version.let { if (it[0].isDigit()) it else "0.$it" })
+                if (forgeLoaderVersion != null) inputs.property("forge_loader_version", forgeLoaderVersion)
             }
 
             if (projectData.present) {
@@ -54,6 +67,7 @@ afterEvaluate {
                         put("mod_group", modData.group)
                         put("mod_description", modData.description)
                         put("file.jarVersion", modData.version.let { if (it[0].isDigit()) it else "0.$it" })
+                        if (forgeLoaderVersion != null) put("forge_loader_version", forgeLoaderVersion)
                     }
                 })
             }
