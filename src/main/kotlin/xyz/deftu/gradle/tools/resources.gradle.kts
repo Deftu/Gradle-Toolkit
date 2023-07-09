@@ -26,6 +26,7 @@ afterEvaluate {
                 inputs.property("mod_version", modData.version)
                 inputs.property("mod_id", modData.id)
                 inputs.property("mod_name", modData.name)
+                inputs.property("mod_group", modData.group)
                 inputs.property("mod_description", modData.description)
                 inputs.property("file.jarVersion", modData.version.let { if (it[0].isDigit()) it else "0.$it" })
             }
@@ -37,7 +38,7 @@ afterEvaluate {
                 inputs.property("project_description", projectData.description)
             }
 
-            filesMatching(listOf("mcmod.info", "fabric.mod.json", "META-INF/mods.toml", "mixins.*.json", "*.mixins.json")) {
+            filesMatching(listOf("mcmod.info", "fabric.mod.json", "quilt.mod.json", "META-INF/mods.toml", "mixins.*.json", "*.mixins.json")) {
                 expand(mutableMapOf<String, Any>().apply {
                     if (mcData.present) {
                         put("mc_version", mcData.versionStr)
@@ -50,6 +51,7 @@ afterEvaluate {
                         put("mod_version", modData.version)
                         put("mod_id", modData.id)
                         put("mod_name", modData.name)
+                        put("mod_group", modData.group)
                         put("mod_description", modData.description)
                         put("file.jarVersion", modData.version.let { if (it[0].isDigit()) it else "0.$it" })
                     }
