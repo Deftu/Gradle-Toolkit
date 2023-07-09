@@ -45,7 +45,7 @@ data class MCData(
     val modMenuDependency: String
         get() {
             val (group, version) = GameInfo.fetchModMenuVersion(version) ?: GameInfo.fetchLatestModMenuVersion()!!
-            return "$group:$version"
+            return "$group$version"
         }
 
     val forgeVersion: String
