@@ -40,6 +40,12 @@ data class MCData(
 
     val fabricApiVersion: String
         get() = GameInfo.fetchFabricApiVersion(version) ?: GameInfo.fetchLatestFabricApiVersion()!!
+    val modMenuDependency: String
+        get() {
+            val (group, version) = GameInfo.fetchModMenuVersion(version) ?: GameInfo.fetchLatestModMenuVersion()!!
+            return "$group:$version"
+        }
+
     val forgeVersion: String
         get() = GameInfo.fetchForgeVersion(version) ?: GameInfo.fetchLatestForgeVersion()!!
     val yarnMappings: String

@@ -37,6 +37,15 @@ object GameInfo {
         1_14_01 to "0.28.5+1.14",
         1_14_00 to "0.28.5+1.14",
     )
+
+    private val modMenuVersions: Map<Int, Pair<String, String>> = mapOf(
+        1_19_04 to ("com.terraformersmc:modmenu:" to "6.2.2"),
+        1_19_03 to ("com.terraformersmc:modmenu:" to "5.0.2"),
+        1_19_02 to ("com.terraformersmc:modmenu:" to "4.1.2"),
+        1_18_02 to ("com.terraformersmc:modmenu:" to "3.2.5"),
+        1_17_01 to ("com.terraformersmc:modmenu:" to "2.0.17"),
+        1_16_05 to ("com.terraformersmc:modmenu:" to "1.16.23"),
+        1_14_04 to ("io.github.prospector:modmenu:" to "1.7.17+build.1"),
     )
 
     private val yarnVersions: Map<Int, String> = mapOf(
@@ -162,6 +171,11 @@ object GameInfo {
         fabricApiVersions[0]
     fun fetchFabricApiVersion(mcVersion: Int) =
         fabricApiVersions[mcVersion]
+
+    fun fetchLatestModMenuVersion() =
+        modMenuVersions[0]
+    fun fetchModMenuVersion(mcVersion: Int) =
+        modMenuVersions[mcVersion]
 
     fun fetchLatestForgeVersion() =
         forgeVersions[0]
