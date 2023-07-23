@@ -82,18 +82,18 @@ fun Project.getFixedSourcesJarTask() = if (isLoomPresent()) {
 
 fun Project.propertyBoolOr(
     key: String,
-    default: Boolean = false,
+    default: Boolean? = null,
     prefix: Boolean = true
-) = propertyOr(key, default.toString(), prefix).toBoolean()
+) = propertyOr(key, default?.toString(), prefix).toBoolean()
 
 fun Project.propertyIntOr(
     key: String,
-    default: Int = 0,
+    default: Int? = null,
     prefix: Boolean = true
-) = propertyOr(key, default.toString(), prefix).toInt()
+) = propertyOr(key, default?.toString(), prefix).toInt()
 
 fun Project.propertyDoubleOr(
     key: String,
-    default: Double = 0.0,
+    default: Double? = null,
     prefix: Boolean = true
-) = propertyOr(key, default.toString(), prefix).toDouble()
+) = propertyOr(key, default?.toString(), prefix).toDouble()
