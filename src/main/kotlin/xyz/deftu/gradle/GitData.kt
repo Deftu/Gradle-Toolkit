@@ -14,7 +14,7 @@ data class GitData(
     val url: String
 ) {
     fun shouldAppendVersion(project: Project): Boolean {
-        return present && project.propertyBoolOr("gitdata.version", false)
+        return present && project.propertyBoolOr("gitdata.version", default = false, prefix = false)
     }
 
     companion object {
@@ -28,7 +28,7 @@ data class GitData(
 
         @JvmStatic
         fun transformVersion(project: Project, version: String): String {
-            val shouldTransform = project.propertyBoolOr("git.version", true)
+            val shouldTransform = project.propertyBoolOr("gitdata.version", true)
             if (!shouldTransform && !ciBuild) return version
 
             val gitData = from(project)
@@ -53,7 +53,7 @@ data class GitData(
         private fun setupExecute(project: Project, vararg command: String): ByteArrayOutputStream {
             val output = ByteArrayOutputStream()
             project.exec {
-                commandLine(command)
+                commandLine(*command)
                 isIgnoreExitValue = true
                 standardOutput = output
                 errorOutput = this@Companion.errorOutput
@@ -69,6 +69,8 @@ data class GitData(
                 val string = output.toString().trim()
                 if (string.isEmpty() || string.startsWith("fatal")) "" else string
             } catch (e: Exception) {
+                project.logger.error("Failed to fetch git branch", e)
+
                 ""
             }
         }
@@ -80,6 +82,8 @@ data class GitData(
                 val string = output.toString().trim()
                 if (string.isEmpty() || string.startsWith("fatal")) "" else string.substring(0, 7)
             } catch (e: Exception) {
+                project.logger.error("Failed to fetch git commit", e)
+
                 ""
             }
         }
@@ -91,6 +95,8 @@ data class GitData(
                 val string = output.toString().trim()
                 if (string.isEmpty() || string.startsWith("fatal")) "" else string
             } catch (e: Exception) {
+                project.logger.error("Failed to fetch git url", e)
+
                 ""
             }
         }
