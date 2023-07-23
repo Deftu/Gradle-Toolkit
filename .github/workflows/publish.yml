@@ -39,9 +39,9 @@ jobs:
         env:
           DEFTU_PUBLISHING_USERNAME: ${{ secrets.DEFTU_PUBLISHING_USERNAME }}
           DEFTU_PUBLISHING_PASSWORD: ${{ secrets.DEFTU_PUBLISHING_PASSWORD }}
-        run: ./gradlew publishAllPublicationsToDeftu${{ github.event.inputs.repository }}Repository -Pgitdata.version=${{ github.event.inputs.git-versioning == 'Yes' }}
+        run: ./gradlew publishAllPublicationsToDeftu${{ github.event.inputs.repository }}Repository -Dgitdata.version=${{ github.event.inputs.git-versioning == 'Yes' }}
 
       - name: Publish to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew publishProjectToGitHub -Pgitdata.version=${{ github.event.inputs.git-versioning == 'Yes' }}
+        run: ./gradlew publishProjectToGitHub -Dgitdata.version=${{ github.event.inputs.git-versioning == 'Yes' }}
