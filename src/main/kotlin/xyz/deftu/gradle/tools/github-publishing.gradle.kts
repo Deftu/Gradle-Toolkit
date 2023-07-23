@@ -96,9 +96,14 @@ fun GitHubPublishingExtension.shouldAddJavadocJar() = useJavadocJar.getOrElse(fa
 fun GitHubPublishingExtension.getSourcesJar() = sourcesJar.getOrElse(getFixedSourcesJarTask().get())
 fun GitHubPublishingExtension.getJavadocJar() = javadocJar.getOrElse(tasks.named<Jar>("javadocJar").get())
 
+fun getGitHubToken(): String? {
+    val property = project.findProperty("publish.github.token")
+    return property?.toString() ?: System.getenv("GITHUB_TOKEN")
+}
+
 afterEvaluate {
-    val token = propertyOr("publish.github.token", "")
-    if (token.isBlank()) return@afterEvaluate
+    val token = getGitHubToken()
+    if (token.isNullOrBlank()) return@afterEvaluate
 
     if (extension.changelogFile.isPresent) {
         val changelogFile = extension.changelogFile.get()
