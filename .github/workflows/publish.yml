@@ -4,13 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       repository:
-        description: "The repository to publish to"
+        description: "Which repository should be published to?"
         required: true
         default: "releases"
         type: choice
         options:
-          - "releases"
-          - "snapshots"
+          - "Releases"
+          - "Snapshots"
 
 jobs:
   build:
