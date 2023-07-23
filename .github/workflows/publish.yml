@@ -11,6 +11,14 @@ on:
         options:
           - "Releases"
           - "Snapshots"
+      git-versioning:
+        description: "Should the version be updated with Git information?"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "Yes"
+          - "No"
 
 jobs:
   build:
@@ -31,9 +39,9 @@ jobs:
         env:
           DEFTU_PUBLISHING_USERNAME: ${{ secrets.DEFTU_PUBLISHING_USERNAME }}
           DEFTU_PUBLISHING_PASSWORD: ${{ secrets.DEFTU_PUBLISHING_PASSWORD }}
-        run: ./gradlew publishAllPublicationsToDeftu${{ github.event.inputs.repository }}Repository -Pgitdata.version=true
+        run: ./gradlew publishAllPublicationsToDeftu${{ github.event.inputs.repository }}Repository -Pgitdata.version=${{ github.event.inputs.git-versioning == 'Yes' }}
 
       - name: Publish to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew publishProjectToGitHub -Pgitdata.version=true
+        run: ./gradlew publishProjectToGitHub -Pgitdata.version=${{ github.event.inputs.git-versioning == 'Yes' }}
