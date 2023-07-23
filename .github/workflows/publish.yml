@@ -20,10 +20,15 @@ on:
           - "Yes"
           - "No"
 
+env:
+  DEFTU_PUBLISHING_USERNAME: ${{ secrets.DEFTU_PUBLISHING_USERNAME }}
+  DEFTU_PUBLISHING_PASSWORD: ${{ secrets.DEFTU_PUBLISHING_PASSWORD }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
-    name: Build with Gradle
+    name: Publish with Gradle
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -36,12 +41,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Publish to Maven
-        env:
-          DEFTU_PUBLISHING_USERNAME: ${{ secrets.DEFTU_PUBLISHING_USERNAME }}
-          DEFTU_PUBLISHING_PASSWORD: ${{ secrets.DEFTU_PUBLISHING_PASSWORD }}
-        run: ./gradlew publishAllPublicationsToDeftu${{ github.event.inputs.repository }}Repository -Dgitdata.version=${{ github.event.inputs.git-versioning == 'Yes' }}
+        run: ./gradlew -Dgitdata.version=${{ github.event.inputs.git-versioning == 'Yes' }} publishAllPublicationsToDeftu${{ github.event.inputs.repository }}Repository
 
       - name: Publish to GitHub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew publishProjectToGitHub -Dgitdata.version=${{ github.event.inputs.git-versioning == 'Yes' }}
+        run: ./gradlew -Dgitdata.version=${{ github.event.inputs.git-versioning == 'Yes' }} publishProjectToGitHub
