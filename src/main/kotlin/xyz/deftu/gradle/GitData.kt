@@ -27,17 +27,6 @@ data class GitData(
             get() = System.getenv("GITHUB_ACTIONS") == "true"
 
         @JvmStatic
-        fun transformVersion(project: Project, version: String): String {
-            val shouldTransform = project.propertyBoolOr("gitdata.version", default = false, prefix = false)
-            if (!shouldTransform && !ciBuild) return version
-
-            val gitData = from(project)
-            if (!gitData.present) return version
-
-            return "$version+${gitData.branch}-${gitData.commit}"
-        }
-
-        @JvmStatic
         fun from(project: Project): GitData {
             val extension = project.extensions.findByName("gitData") as GitData?
             if (extension != null) return extension
