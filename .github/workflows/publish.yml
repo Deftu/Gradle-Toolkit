@@ -27,5 +27,15 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew build
+      - name: Publish to Maven
+        if: secrets.DEFTU_PUBLISHING_USERNAME != '' && secrets.DEFTU_PUBLISHING_PASSWORD != ''
+        env:
+          DEFTU_PUBLISHING_USERNAME: ${{ secrets.DEFTU_PUBLISHING_USERNAME }}
+          DEFTU_PUBLISHING_PASSWORD: ${{ secrets.DEFTU_PUBLISHING_PASSWORD }}
+        run: ./gradlew publishAllPublicationsToDeftu${{ github.event.inputs.repository }}Repository -Pgitdata.version=true
+
+      - name: Publish to GitHub
+        if: secrets.GITHUB_TOKEN != ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew publishProjectToGitHub -Pgitdata.version=true
