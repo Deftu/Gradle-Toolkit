@@ -71,7 +71,6 @@ if (modData.present) {
 }
 
 if (projectData.present) {
-    println("hello")
     if (propertyBoolOr("project.version.setup", true))
         version = getFixedVersion()
     if (propertyBoolOr("project.group.setup", true))
