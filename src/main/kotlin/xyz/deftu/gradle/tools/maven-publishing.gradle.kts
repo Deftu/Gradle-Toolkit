@@ -7,6 +7,7 @@ import xyz.deftu.gradle.MCData
 import xyz.deftu.gradle.ModData
 import xyz.deftu.gradle.ModLoader
 import xyz.deftu.gradle.ProjectData
+import xyz.deftu.gradle.utils.getFixedSourcesJarTask
 import xyz.deftu.gradle.utils.isMultiversionProject
 
 plugins {
@@ -54,8 +55,8 @@ afterEvaluate {
                         artifact(fatJar) {
                             classifier = null
                         }
-                        val sourcesJar by tasks.getting
-                        artifact(sourcesJar)
+
+                        artifact(getFixedSourcesJarTask())
 
                         pluginManager.withPlugin("java") {
                             val javadocJar = project.tasks.findByName("javadocJar") as Jar?

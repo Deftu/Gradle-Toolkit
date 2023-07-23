@@ -7,9 +7,7 @@ import org.gradle.kotlin.dsl.*
 import xyz.deftu.gradle.GitData
 import xyz.deftu.gradle.MCData
 import xyz.deftu.gradle.ModData
-import xyz.deftu.gradle.utils.VersionType
-import xyz.deftu.gradle.utils.isMultiversionProject
-import xyz.deftu.gradle.utils.propertyOr
+import xyz.deftu.gradle.utils.*
 import java.nio.charset.StandardCharsets
 
 plugins {
@@ -80,7 +78,7 @@ fun ReleasingExtension.getReleaseVersion(): String {
     return "${version.getOrElse(modData.version)}${suffix}"
 }
 
-fun ReleasingExtension.getUploadFile() = file.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get())
+fun ReleasingExtension.getUploadFile() = file.getOrElse(tasks.named<Jar>("remapJar").get())
 
 fun ReleasingExtension.getGameVersions() = gameVersions.getOrElse(listOf(mcData.versionStr))
 fun ReleasingExtension.getLoaders(capitalized: Boolean) = loaders.getOrElse(listOf(mcData.loader.name)).map { loader ->
@@ -92,8 +90,8 @@ fun ReleasingExtension.getVersionType() = versionType.getOrElse(VersionType.RELE
 fun ReleasingExtension.shouldAddSourcesJar() = useSourcesJar.getOrElse(false) && tasks.findByName("sourcesJar") != null
 fun ReleasingExtension.shouldAddJavadocJar() = useJavadocJar.getOrElse(false) && tasks.findByName("javadocJar") != null
 
-fun ReleasingExtension.getSourcesJar() = sourcesJar.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").get())
-fun ReleasingExtension.getJavadocJar() = javadocJar.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("javadocJar").get())
+fun ReleasingExtension.getSourcesJar() = sourcesJar.getOrElse(getFixedSourcesJarTask().get())
+fun ReleasingExtension.getJavadocJar() = javadocJar.getOrElse(tasks.named<Jar>("javadocJar").get())
 
 afterEvaluate {
     val modrinthToken = propertyOr("publish.modrinth.token", "")

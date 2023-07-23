@@ -5,8 +5,8 @@ import xyz.deftu.gradle.GitData
 import xyz.deftu.gradle.MCData
 import xyz.deftu.gradle.ModData
 import xyz.deftu.gradle.ProjectData
-import xyz.deftu.gradle.tools.minecraft.ReleasingExtension
 import xyz.deftu.gradle.utils.VersionType
+import xyz.deftu.gradle.utils.getFixedSourcesJarTask
 import xyz.deftu.gradle.utils.isMultiversionProject
 import xyz.deftu.gradle.utils.propertyOr
 import java.nio.charset.StandardCharsets
@@ -93,8 +93,8 @@ fun GitHubPublishingExtension.getUploadFile(): Zip {
 fun GitHubPublishingExtension.shouldAddSourcesJar() = useSourcesJar.getOrElse(false) && tasks.findByName("sourcesJar") != null
 fun GitHubPublishingExtension.shouldAddJavadocJar() = useJavadocJar.getOrElse(false) && tasks.findByName("javadocJar") != null
 
-fun GitHubPublishingExtension.getSourcesJar() = sourcesJar.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").get())
-fun GitHubPublishingExtension.getJavadocJar() = javadocJar.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("javadocJar").get())
+fun GitHubPublishingExtension.getSourcesJar() = sourcesJar.getOrElse(getFixedSourcesJarTask().get())
+fun GitHubPublishingExtension.getJavadocJar() = javadocJar.getOrElse(tasks.named<Jar>("javadocJar").get())
 
 afterEvaluate {
     val token = propertyOr("publish.github.token", "")
