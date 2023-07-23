@@ -28,7 +28,7 @@ data class GitData(
 
         @JvmStatic
         fun transformVersion(project: Project, version: String): String {
-            val shouldTransform = project.propertyBoolOr("gitdata.version", true)
+            val shouldTransform = project.propertyBoolOr("gitdata.version", default = false, prefix = false)
             if (!shouldTransform && !ciBuild) return version
 
             val gitData = from(project)
