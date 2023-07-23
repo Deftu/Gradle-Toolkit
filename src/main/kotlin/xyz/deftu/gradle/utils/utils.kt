@@ -5,7 +5,9 @@ import org.gradle.api.Action
 import org.gradle.api.GradleException
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.named
 import java.io.File
 
 private val loomIds = listOf(
@@ -70,6 +72,12 @@ fun Project.propertyOr(
         ?: System.getProperty(key)
         ?: default) as String?
         ?: throw GradleException("No default property for key \"$key\" found. Set it in gradle.properties, environment variables or in the system properties.")
+}
+
+fun Project.getFixedSourcesJarTask() = if (isLoomPresent()) {
+    tasks.named<Jar>("remapSources")
+} else {
+    tasks.named<Jar>("sourcesJar")
 }
 
 fun Project.propertyBoolOr(
