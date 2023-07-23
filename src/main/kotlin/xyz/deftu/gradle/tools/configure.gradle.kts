@@ -1,28 +1,57 @@
 package xyz.deftu.gradle.tools
 
 import xyz.deftu.gradle.GitData
+import xyz.deftu.gradle.MCData
 import xyz.deftu.gradle.ModData
 import xyz.deftu.gradle.ProjectData
 import xyz.deftu.gradle.utils.isLoomPresent
+import xyz.deftu.gradle.utils.isMultiversionProject
 import xyz.deftu.gradle.utils.propertyBoolOr
 
 plugins {
     java
 }
 
-val modData = ModData.from(project)
+val gitData = GitData.from(project)
+val mcData = MCData.from(project)
 val projectData = ProjectData.from(project)
+val modData = ModData.from(project)
 
-fun getVersionSuffix(): String {
-    val gitData = GitData.from(project)
-    if (!gitData.shouldAppendVersion(project)) return ""
+fun Project.getFixedVersion(): String {
+    val suffix = buildString {
+        var content = ""
 
-    return "+${gitData.branch}-${gitData.commit}"
+        val includingGitData = gitData.shouldAppendVersion(project)
+        if (includingGitData) {
+            content += buildString {
+                append(gitData.branch)
+                append("-")
+                append(gitData.commit)
+            }
+        }
+
+        if (isMultiversionProject()) {
+            content += buildString {
+                if (includingGitData) append("+")
+                append(mcData.versionStr)
+                append("-")
+                append(mcData.loader.name)
+            }
+        }
+
+        if (content.isNotBlank()) {
+            append("+")
+            append(content)
+        }
+    }
+
+    val version = if (modData.present) modData.version else if (projectData.present) projectData.version else project.version
+    return "$version$suffix"
 }
 
 if (modData.present) {
     if (propertyBoolOr("mod.version.setup", true))
-        version = modData.version + getVersionSuffix()
+        version = getFixedVersion()
     if (propertyBoolOr("mod.group.setup", true))
         group = modData.group
     if (propertyBoolOr("mod.name.setup", true)) {
@@ -42,8 +71,9 @@ if (modData.present) {
 }
 
 if (projectData.present) {
+    println("hello")
     if (propertyBoolOr("project.version.setup", true))
-        version = projectData.version + getVersionSuffix()
+        version = getFixedVersion()
     if (propertyBoolOr("project.group.setup", true))
         group = projectData.group
     if (propertyBoolOr("project.name.setup", true)) {
