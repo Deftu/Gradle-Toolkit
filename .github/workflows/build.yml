@@ -36,10 +36,13 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --no-daemon
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build
-          path: build/libs
+          path: |
+            build/libs/*.jar
+            versions/*/build/libs/*.jar
+          if-no-files-found: "error"
