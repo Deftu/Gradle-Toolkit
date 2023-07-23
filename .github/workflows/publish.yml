@@ -41,7 +41,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Publish to Maven
-        run: ./gradlew "-Dgitdata.version=${{ github.event.inputs.git-versioning == 'Yes' }}" publishAllPublicationsToDeftu${{ github.event.inputs.repository }}Repository
+        run: ./gradlew "-Pgitdata.version=${{ github.event.inputs.git-versioning == 'Yes' }}" publishAllPublicationsToDeftu${{ github.event.inputs.repository }}Repository
 
       - name: Publish to GitHub
-        run: ./gradlew "-Dgitdata.version=${{ github.event.inputs.git-versioning == 'Yes' }}" publishProjectToGitHub
+        run: ./gradlew "-Pgitdata.version=${{ github.event.inputs.git-versioning == 'Yes' }}" publishProjectToGitHub
