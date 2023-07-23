@@ -6,7 +6,7 @@ on:
       repository:
         description: "Which repository should be published to?"
         required: true
-        default: "releases"
+        default: "Snapshots"
         type: choice
         options:
           - "Releases"
