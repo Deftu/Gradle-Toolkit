@@ -8,8 +8,7 @@ object DependencyHelper {
     fun fetchLatestRelease(repository: String, group: String, artifact: String): String {
         val url = "$repository/${group.replace('.', '/')}/$artifact/maven-metadata.xml"
         val response = URL(url).readText()
-        if (Constants.debug)
-            println("DependencyHelper#fetchLatestRelease:\n$response")
+        if (Constants.debug) println("DependencyHelper#fetchLatestRelease:\n$response")
 
         val match = latestReleaseRegex.find(response)
         return match!!.groupValues[1]
