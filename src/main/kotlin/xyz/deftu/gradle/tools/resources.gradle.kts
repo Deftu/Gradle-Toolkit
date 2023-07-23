@@ -31,7 +31,7 @@ afterEvaluate {
                 inputs.property("mc_version", mcData.versionStr)
                 inputs.property("minor_mc_version", mcData.minorVersionStr)
                 inputs.property("format_mc_version", mcData.version)
-                inputs.property("java_version", if (mcData.javaVersion.isJava8) "JAVA_8" else if (mcData.javaVersion.isCompatibleWith(JavaVersion.VERSION_16)) "JAVA_16" else "JAVA_17")
+                inputs.property("java_version", if (mcData.javaVersion.isJava8) "JAVA_8" else if (mcData.javaVersion.isCompatibleWith(JavaVersion.VERSION_17)) "JAVA_17" else "JAVA_16")
             }
 
             if (modData.present) {
