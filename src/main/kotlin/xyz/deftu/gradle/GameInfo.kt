@@ -6,7 +6,7 @@ object GameInfo {
 
     private val fabricApiVersions: Map<Int, String> = mapOf(
         1_20_01 to "0.85.0+1.20.1",
-        1_20_01 to "0.83.0+1.20",
+        1_20_00 to "0.83.0+1.20",
 
         1_19_04 to "0.82.0+1.19.4",
         1_19_03 to "0.76.1+1.19.3",

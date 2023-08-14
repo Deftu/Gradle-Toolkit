@@ -97,7 +97,7 @@ fun GitHubPublishingExtension.getSourcesJar() = sourcesJar.getOrElse(getFixedSou
 fun GitHubPublishingExtension.getJavadocJar() = javadocJar.getOrElse(tasks.named<Jar>("javadocJar").get())
 
 fun getGitHubToken(): String? {
-    val property = project.findProperty("publish.github.token")
+    val property = project.findProperty("dgt.publish.github.token")
     return property?.toString() ?: System.getenv("GITHUB_TOKEN")
 }
 
