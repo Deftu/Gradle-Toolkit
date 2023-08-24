@@ -40,6 +40,8 @@ object GameInfo {
     )
 
     private val modMenuVersions: Map<Int, Pair<String, String>> = mapOf(
+        1_20_01 to ("com.terraformersmc:modmenu:" to "7.1.0"),
+        1_20_00 to ("com.terraformersmc:modmenu:" to "7.0.1"),
         1_19_04 to ("com.terraformersmc:modmenu:" to "6.2.2"),
         1_19_03 to ("com.terraformersmc:modmenu:" to "5.0.2"),
         1_19_02 to ("com.terraformersmc:modmenu:" to "4.1.2"),

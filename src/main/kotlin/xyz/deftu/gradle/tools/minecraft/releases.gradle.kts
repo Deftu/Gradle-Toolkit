@@ -78,7 +78,7 @@ fun ReleasingExtension.getReleaseVersion(): String {
     return "${version.getOrElse(modData.version)}${suffix}"
 }
 
-fun ReleasingExtension.getUploadFile() = file.getOrElse(tasks.named<Jar>("remapJar").get())
+fun ReleasingExtension.getUploadFile() = file.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get())
 
 fun ReleasingExtension.getGameVersions() = gameVersions.getOrElse(listOf(mcData.versionStr))
 fun ReleasingExtension.getLoaders(capitalized: Boolean) = loaders.getOrElse(listOf(mcData.loader.name)).map { loader ->
