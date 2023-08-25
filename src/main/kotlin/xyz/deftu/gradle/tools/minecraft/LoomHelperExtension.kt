@@ -58,8 +58,8 @@ abstract class LoomHelperExtension(
     fun useArgument(key: String, value: String, side: GameSide) = apply {
         project.withLoom {
             when (side) {
-                GameSide.GLOBAL -> launchConfigs.all { arg(key, value) }
-                else -> launchConfigs[side.name.toLowerCase(Locale.US)].arg(key, value)
+                GameSide.GLOBAL -> runConfigs.all { programArgs(key, value) }
+                else -> runConfigs[side.name.lowercase(Locale.US)].programArgs(key, value)
             }
         }
     }
@@ -71,8 +71,8 @@ abstract class LoomHelperExtension(
     fun useProperty(key: String, value: String, side: GameSide) = apply {
         project.withLoom {
             when (side) {
-                GameSide.GLOBAL -> launchConfigs.all { property(key, value) }
-                else -> launchConfigs[side.name.toLowerCase(Locale.US)].property(key, value)
+                GameSide.GLOBAL -> runConfigs.all { property(key, value) }
+                else -> runConfigs[side.name.lowercase(Locale.US)].property(key, value)
             }
         }
     }
