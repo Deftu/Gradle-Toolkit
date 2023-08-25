@@ -1,6 +1,6 @@
 package xyz.deftu.gradle.tools.minecraft
 
-import gradle.kotlin.dsl.accessors._2e7c48f5c5e053e2f48db1b0d2cf7734.sourceSets
+import gradle.kotlin.dsl.accessors._175fcbe9e04105e3219d6e2795d7218e.sourceSets
 import net.fabricmc.loom.task.RemapJarTask
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
@@ -45,7 +45,7 @@ abstract class ApiExtension(
             archiveClassifier.set("test-mod")
             destinationDirectory.set(devLibsDir)
             input.set(testJar.archiveFile)
-            classpath(current.compileClasspath)
+//            classpath(current.compileClasspath)
         }.get()
 
         project.tasks.named("build").configure {

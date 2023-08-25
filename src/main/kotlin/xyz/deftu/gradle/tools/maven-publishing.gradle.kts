@@ -1,8 +1,8 @@
 package xyz.deftu.gradle.tools
 
-import gradle.kotlin.dsl.accessors._89edf7476531f98eff64d602eb448354.publishing
-import gradle.kotlin.dsl.accessors._89edf7476531f98eff64d602eb448354.signing
-import gradle.kotlin.dsl.accessors._ca59d7b33a587bae1dcf00e1f22a5064.java
+import gradle.kotlin.dsl.accessors._175fcbe9e04105e3219d6e2795d7218e.publishing
+import gradle.kotlin.dsl.accessors._175fcbe9e04105e3219d6e2795d7218e.signing
+import gradle.kotlin.dsl.accessors._8eaad88f99c255f0ca90801b5b69f5d7.java
 import xyz.deftu.gradle.MCData
 import xyz.deftu.gradle.ModData
 import xyz.deftu.gradle.ModLoader

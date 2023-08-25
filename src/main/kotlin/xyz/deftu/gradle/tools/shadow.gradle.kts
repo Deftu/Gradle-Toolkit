@@ -1,7 +1,7 @@
 package xyz.deftu.gradle.tools
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.remapJar
+import gradle.kotlin.dsl.accessors._e453d737b2e0a36dae3d829967a3e2e0.remapJar
 import org.gradle.jvm.tasks.Jar
 import xyz.deftu.gradle.ModData
 import xyz.deftu.gradle.utils.withLoom

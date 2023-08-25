@@ -1,10 +1,10 @@
 package xyz.deftu.gradle.tools.minecraft
 
 import dev.architectury.pack200.java.Pack200Adapter
-import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.loom
-import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.mappings
-import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.minecraft
-import gradle.kotlin.dsl.accessors._11d1d69a77e50fb2b4b174f119312f10.modImplementation
+import gradle.kotlin.dsl.accessors._e453d737b2e0a36dae3d829967a3e2e0.loom
+import gradle.kotlin.dsl.accessors._e453d737b2e0a36dae3d829967a3e2e0.mappings
+import gradle.kotlin.dsl.accessors._e453d737b2e0a36dae3d829967a3e2e0.minecraft
+import gradle.kotlin.dsl.accessors._e453d737b2e0a36dae3d829967a3e2e0.modImplementation
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.extra
 import xyz.deftu.gradle.GameInfo.FABRIC_LOADER_VERSION

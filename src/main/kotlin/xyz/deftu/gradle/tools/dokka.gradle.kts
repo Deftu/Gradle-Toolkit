@@ -1,7 +1,7 @@
 package xyz.deftu.gradle.tools
 
-import gradle.kotlin.dsl.accessors._ca59d7b33a587bae1dcf00e1f22a5064.dokkaJavadoc
-import gradle.kotlin.dsl.accessors._ca59d7b33a587bae1dcf00e1f22a5064.java
+import gradle.kotlin.dsl.accessors._8eaad88f99c255f0ca90801b5b69f5d7.dokkaJavadoc
+import gradle.kotlin.dsl.accessors._8eaad88f99c255f0ca90801b5b69f5d7.java
 
 plugins {
     java

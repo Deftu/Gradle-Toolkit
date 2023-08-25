@@ -1,6 +1,6 @@
 package xyz.deftu.gradle.tools
 
-import gradle.kotlin.dsl.accessors._2e7c48f5c5e053e2f48db1b0d2cf7734.application
+import gradle.kotlin.dsl.accessors._fa7f94d12aa30f8de9950944bf07b9ca.application
 import xyz.deftu.gradle.ProjectData
 
 plugins {
