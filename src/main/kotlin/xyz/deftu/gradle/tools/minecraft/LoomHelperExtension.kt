@@ -95,7 +95,7 @@ abstract class LoomHelperExtension(
                     if (mcData.isLegacyForge) theAttributes.apply {
                         this["ForceLoadAsMod"] = true
                         this["TweakOrder"] = "0"
-                        if (side != GameSide.GLOBAL) this["Side"] = side.name.toLowerCase(Locale.US)
+                        if (side != GameSide.GLOBAL) this["Side"] = side.name.lowercase(Locale.US)
                     }
                     attributes(theAttributes)
                 }
@@ -118,7 +118,7 @@ abstract class LoomHelperExtension(
                     if (mcData.isLegacyForge) theAttributes.apply {
                         this["ForceLoadAsMod"] = true
                         this["FMLCorePluginContainsFMLMod"] = true
-                        if (side != GameSide.GLOBAL) this["Side"] = side.name.toLowerCase(Locale.US)
+                        if (side != GameSide.GLOBAL) this["Side"] = side.name.lowercase(Locale.US)
                     }
                     attributes(theAttributes)
                 }
@@ -149,7 +149,7 @@ abstract class LoomHelperExtension(
         project.withLoom {
             when (side) {
                 GameSide.GLOBAL -> runConfigs.all { isIdeConfigGenerated = false }
-                else -> runConfigs[side.name.toLowerCase(Locale.US)].isIdeConfigGenerated = false
+                else -> runConfigs[side.name.lowercase(Locale.US)].isIdeConfigGenerated = false
             }
         }
     }
