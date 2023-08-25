@@ -50,7 +50,7 @@ dependencies {
 
     // Publishing
     implementation("com.modrinth.minotaur:Minotaur:2.8.2")
-    implementation("net.darkhax.curseforgegradle:CurseForgeGradle:1.0.11")
+    implementation("net.darkhax.curseforgegradle:CurseForgeGradle:1.1.16")
     implementation("com.github.breadmoirai:github-release:2.4.1")
 }
 
