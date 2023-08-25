@@ -44,7 +44,7 @@ abstract class ApiExtension(
 
             archiveClassifier.set("test-mod")
             destinationDirectory.set(devLibsDir)
-            input.set(testJar.archiveFile)
+            inputFile.set(testJar.archiveFile)
         }.get()
 
         project.tasks.named("build").configure {

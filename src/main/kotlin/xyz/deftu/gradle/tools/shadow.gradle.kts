@@ -62,7 +62,7 @@ withLoom {
         }
 
         remapJar {
-            input.set(fatJar.get().archiveFile)
+            inputFile.set(fatJar.get().archiveFile)
             archiveClassifier.set("")
 
             val modData = ModData.from(project)
