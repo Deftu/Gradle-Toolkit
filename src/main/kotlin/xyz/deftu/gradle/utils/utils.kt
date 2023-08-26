@@ -75,7 +75,7 @@ fun Project.propertyOr(
 }
 
 fun Project.getFixedSourcesJarTask() = if (isLoomPresent()) {
-    tasks.named<Jar>("remapSources")
+    tasks.named<Jar>("remapSourcesJar")
 } else {
     tasks.named<Jar>("sourcesJar")
 }

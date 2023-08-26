@@ -9,6 +9,7 @@ import xyz.deftu.gradle.MCData
 import xyz.deftu.gradle.ModData
 import xyz.deftu.gradle.utils.*
 import java.nio.charset.StandardCharsets
+import java.util.*
 
 plugins {
     java
@@ -82,7 +83,7 @@ fun ReleasingExtension.getUploadFile() = file.getOrElse(tasks.named<org.gradle.j
 
 fun ReleasingExtension.getGameVersions() = gameVersions.getOrElse(listOf(mcData.versionStr))
 fun ReleasingExtension.getLoaders(capitalized: Boolean) = loaders.getOrElse(listOf(mcData.loader.name)).map { loader ->
-    if (capitalized) loader.capitalize() else loader
+    if (capitalized) loader.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.US) else it.toString() } else loader
 }
 
 fun ReleasingExtension.getVersionType() = versionType.getOrElse(VersionType.RELEASE)
