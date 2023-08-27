@@ -41,7 +41,7 @@ dependencies {
     implementation("gg.essential:architectury-loom:1.3.11")
 
     // Preprocessing/multi-versioning
-    implementation("xyz.deftu:preprocessor:0.3.0")
+    implementation("xyz.deftu:preprocessor:0.4.1")
 
     // Other
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.6.21")
