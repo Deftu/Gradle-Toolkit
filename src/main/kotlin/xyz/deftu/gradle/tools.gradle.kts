@@ -19,12 +19,10 @@ shadeOptionally // Initialize the shadeOptional configuration.
 
 pluginManager.withPlugin("java") {
     apply(plugin = "xyz.deftu.gradle.tools.java")
-    apply(plugin = "xyz.deftu.gradle.tools.resources")
 }
 
 pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
     apply(plugin = "xyz.deftu.gradle.tools.kotlin")
-    apply(plugin = "xyz.deftu.gradle.tools.resources")
 }
 
 // Perform our logic.
