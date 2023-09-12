@@ -19,7 +19,7 @@ plugins {
 }
 
 val mcData = MCData.from(project)
-extensions.create("toolkitLoomHelper", LoomHelperExtension::class.java)
+extensions.create("toolkitLoomHelper", LoomHelperExtension::class)
 extra.set("loom.platform", if (mcData.isFabric) "fabric" else "forge")
 
 loom {
