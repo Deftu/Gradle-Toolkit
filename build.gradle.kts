@@ -38,7 +38,7 @@ dependencies {
     implementation(kotlin("gradle-plugin"))
 
     // Architectury Loom
-    implementation("gg.essential:architectury-loom:1.3.11")
+    implementation("gg.essential:architectury-loom:1.3.12")
 
     // Preprocessing/multi-versioning
     implementation("xyz.deftu:preprocessor:0.4.1")
