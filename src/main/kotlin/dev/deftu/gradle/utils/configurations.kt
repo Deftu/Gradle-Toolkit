@@ -7,7 +7,7 @@ val Project.shadeOptionally: org.gradle.api.artifacts.Configuration
         configurations.getByName("shadeOptional")
     } catch (e: Throwable) {
         val configuration = configurations.create("shadeOptional")
-        pluginManager.withPlugin("xyz.deftu.gradle.tools.shadow") {
+        pluginManager.withPlugin("dev.deftu.gradle.tools.shadow") {
             configuration.extendsFrom(configurations.getByName("shade"))
         }
 

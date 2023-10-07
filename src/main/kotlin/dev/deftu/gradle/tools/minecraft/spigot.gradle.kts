@@ -5,7 +5,7 @@ import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.registering
 import org.gradle.kotlin.dsl.repositories
-import xyz.deftu.gradle.MCData
+import dev.deftu.gradle.MCData
 
 val mcData = MCData.from(project)
 

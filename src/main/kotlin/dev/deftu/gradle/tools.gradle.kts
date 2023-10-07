@@ -1,8 +1,7 @@
 package dev.deftu.gradle
 
-import xyz.deftu.gradle.utils.checkJavaVersion
-import xyz.deftu.gradle.utils.shadeOptionally
-import xyz.deftu.gradle.utils.withLoom
+import dev.deftu.gradle.utils.checkJavaVersion
+import dev.deftu.gradle.utils.shadeOptionally
 
 // Check if we're in a Java 17 environment.
 checkJavaVersion(JavaVersion.VERSION_17)
@@ -11,18 +10,18 @@ checkJavaVersion(JavaVersion.VERSION_17)
 GitData.from(project)
 
 // Apply default plugins.
-apply(plugin = "xyz.deftu.gradle.tools.configure")
-apply(plugin = "xyz.deftu.gradle.tools.repo")
+apply(plugin = "dev.deftu.gradle.tools.configure")
+apply(plugin = "dev.deftu.gradle.tools.repo")
 
 // Add default configurations
 shadeOptionally // Initialize the shadeOptional configuration.
 
 pluginManager.withPlugin("java") {
-    apply(plugin = "xyz.deftu.gradle.tools.java")
+    apply(plugin = "dev.deftu.gradle.tools.java")
 }
 
 pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
-    apply(plugin = "xyz.deftu.gradle.tools.kotlin")
+    apply(plugin = "dev.deftu.gradle.tools.kotlin")
 }
 
 // Perform our logic.

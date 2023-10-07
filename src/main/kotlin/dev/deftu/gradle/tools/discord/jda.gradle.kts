@@ -5,8 +5,8 @@ import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.maven
 import org.gradle.kotlin.dsl.repositories
-import xyz.deftu.gradle.DependencyInfo
-import xyz.deftu.gradle.utils.shadeOptionally
+import dev.deftu.gradle.DependencyInfo
+import dev.deftu.gradle.utils.shadeOptionally
 
 abstract class JdaExtension {
     abstract val beta: Property<Boolean>

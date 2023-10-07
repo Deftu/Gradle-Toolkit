@@ -1,14 +1,11 @@
 package dev.deftu.gradle.tools
 
-import gradle.kotlin.dsl.accessors._175fcbe9e04105e3219d6e2795d7218e.publishing
-import gradle.kotlin.dsl.accessors._175fcbe9e04105e3219d6e2795d7218e.signing
-import gradle.kotlin.dsl.accessors._8eaad88f99c255f0ca90801b5b69f5d7.java
-import xyz.deftu.gradle.MCData
-import xyz.deftu.gradle.ModData
-import xyz.deftu.gradle.ModLoader
-import xyz.deftu.gradle.ProjectData
-import xyz.deftu.gradle.utils.getFixedSourcesJarTask
-import xyz.deftu.gradle.utils.isMultiversionProject
+import dev.deftu.gradle.MCData
+import dev.deftu.gradle.ModData
+import dev.deftu.gradle.ModLoader
+import dev.deftu.gradle.ProjectData
+import dev.deftu.gradle.utils.getFixedSourcesJarTask
+import dev.deftu.gradle.utils.isMultiversionProject
 
 plugins {
     `maven-publish`
@@ -50,7 +47,7 @@ afterEvaluate {
                         version = projectData.version
                     }
 
-                    if (pluginManager.hasPlugin("xyz.deftu.gradle.tools.shadow")) {
+                    if (pluginManager.hasPlugin("dev.deftu.gradle.tools.shadow")) {
                         val fatJar by tasks.getting
                         artifact(fatJar) {
                             classifier = null

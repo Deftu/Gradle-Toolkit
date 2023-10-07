@@ -1,7 +1,6 @@
 package dev.deftu.gradle.tools
 
-import xyz.deftu.gradle.utils.isLoomPresent
-import xyz.deftu.gradle.utils.propertyBoolOr
+import dev.deftu.gradle.utils.propertyBoolOr
 
 repositories {
     mavenCentral()

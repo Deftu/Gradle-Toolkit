@@ -1,9 +1,9 @@
 package dev.deftu.gradle
 
 import org.gradle.api.Project
-import xyz.deftu.gradle.utils.Constants
-import xyz.deftu.gradle.utils.propertyBoolOr
-import xyz.deftu.gradle.utils.propertyOr
+import dev.deftu.gradle.utils.Constants
+import dev.deftu.gradle.utils.propertyBoolOr
+import dev.deftu.gradle.utils.propertyOr
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
 

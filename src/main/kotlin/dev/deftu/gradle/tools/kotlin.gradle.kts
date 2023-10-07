@@ -2,8 +2,8 @@ package dev.deftu.gradle.tools
 
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import xyz.deftu.gradle.MCData
-import xyz.deftu.gradle.utils.propertyOr
+import dev.deftu.gradle.MCData
+import dev.deftu.gradle.utils.propertyOr
 import kotlin.math.floor
 
 val mcData = MCData.from(project)

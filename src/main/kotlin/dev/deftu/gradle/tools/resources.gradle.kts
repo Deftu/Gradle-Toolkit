@@ -1,11 +1,11 @@
 package dev.deftu.gradle.tools
 
-import xyz.deftu.gradle.GameInfo
-import xyz.deftu.gradle.MCData
-import xyz.deftu.gradle.ModData
-import xyz.deftu.gradle.ProjectData
-import xyz.deftu.gradle.tools.minecraft.LoomHelperExtension
-import xyz.deftu.gradle.utils.Constants
+import dev.deftu.gradle.GameInfo
+import dev.deftu.gradle.MCData
+import dev.deftu.gradle.ModData
+import dev.deftu.gradle.ProjectData
+import dev.deftu.gradle.tools.minecraft.LoomHelperExtension
+import dev.deftu.gradle.utils.Constants
 
 plugins {
     java

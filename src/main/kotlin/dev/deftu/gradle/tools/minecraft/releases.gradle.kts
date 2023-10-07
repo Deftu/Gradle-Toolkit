@@ -4,10 +4,10 @@ import com.modrinth.minotaur.Minotaur
 import com.modrinth.minotaur.ModrinthExtension
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
 import org.gradle.kotlin.dsl.*
-import xyz.deftu.gradle.GitData
-import xyz.deftu.gradle.MCData
-import xyz.deftu.gradle.ModData
-import xyz.deftu.gradle.utils.*
+import dev.deftu.gradle.GitData
+import dev.deftu.gradle.MCData
+import dev.deftu.gradle.ModData
+import dev.deftu.gradle.utils.*
 import java.nio.charset.StandardCharsets
 import java.util.*
 

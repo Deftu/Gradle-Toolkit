@@ -1,7 +1,7 @@
 package dev.deftu.gradle
 
 import org.gradle.api.Project
-import xyz.deftu.gradle.utils.DependencyHelper
+import dev.deftu.gradle.utils.DependencyHelper
 
 @Suppress("unused")
 abstract class ToolkitExtension(
@@ -22,7 +22,7 @@ abstract class ToolkitExtension(
             project.dependencies.add("include", "$loaderDependency:$loaderVersion")
         } else {
             // Embed the loader
-            val usingShadow = project.pluginManager.hasPlugin("xyz.deftu.gradle.tools.shadow")
+            val usingShadow = project.pluginManager.hasPlugin("dev.deftu.gradle.tools.shadow")
             project.dependencies.add(if (usingShadow) "shade" else "implementation", "$loaderDependency:$loaderVersion")
             if (!usingShadow) project.logger.warn("It is recommended to use DGT Shadow to embed the Essential loader inside your built mod JAR.")
         }

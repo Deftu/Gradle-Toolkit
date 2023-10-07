@@ -8,8 +8,8 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.bundling.Zip
-import xyz.deftu.gradle.MCData
-import xyz.deftu.gradle.utils.VersionType
+import dev.deftu.gradle.MCData
+import dev.deftu.gradle.utils.VersionType
 import java.io.File
 
 abstract class ReleasingExtension(

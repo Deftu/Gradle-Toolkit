@@ -1,7 +1,7 @@
 package dev.deftu.gradle
 
 import org.gradle.api.Project
-import xyz.deftu.gradle.utils.propertyOr
+import dev.deftu.gradle.utils.propertyOr
 import java.util.*
 
 data class ModData(

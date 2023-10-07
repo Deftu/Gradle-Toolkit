@@ -3,8 +3,8 @@ package dev.deftu.gradle
 import groovy.lang.MissingPropertyException
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import xyz.deftu.gradle.utils.isMultiversionProject
-import xyz.deftu.gradle.utils.propertyOr
+import dev.deftu.gradle.utils.isMultiversionProject
+import dev.deftu.gradle.utils.propertyOr
 
 data class MCData(
     val present: Boolean,

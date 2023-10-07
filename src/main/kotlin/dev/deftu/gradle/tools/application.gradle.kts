@@ -1,7 +1,7 @@
 package dev.deftu.gradle.tools
 
 import gradle.kotlin.dsl.accessors._fa7f94d12aa30f8de9950944bf07b9ca.application
-import xyz.deftu.gradle.ProjectData
+import dev.deftu.gradle.ProjectData
 
 plugins {
     application

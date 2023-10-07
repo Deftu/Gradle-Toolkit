@@ -1,14 +1,14 @@
 package dev.deftu.gradle.tools
 
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseExtension
-import xyz.deftu.gradle.GitData
-import xyz.deftu.gradle.MCData
-import xyz.deftu.gradle.ModData
-import xyz.deftu.gradle.ProjectData
-import xyz.deftu.gradle.utils.VersionType
-import xyz.deftu.gradle.utils.getFixedSourcesJarTask
-import xyz.deftu.gradle.utils.isMultiversionProject
-import xyz.deftu.gradle.utils.propertyOr
+import dev.deftu.gradle.GitData
+import dev.deftu.gradle.MCData
+import dev.deftu.gradle.ModData
+import dev.deftu.gradle.ProjectData
+import dev.deftu.gradle.utils.VersionType
+import dev.deftu.gradle.utils.getFixedSourcesJarTask
+import dev.deftu.gradle.utils.isMultiversionProject
+import dev.deftu.gradle.utils.propertyOr
 import java.nio.charset.StandardCharsets
 
 plugins {

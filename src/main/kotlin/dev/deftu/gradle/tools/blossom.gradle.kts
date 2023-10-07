@@ -1,9 +1,9 @@
 package dev.deftu.gradle.tools
 
-import xyz.deftu.gradle.GitData
-import xyz.deftu.gradle.MCData
-import xyz.deftu.gradle.ModData
-import xyz.deftu.gradle.ProjectData
+import dev.deftu.gradle.GitData
+import dev.deftu.gradle.MCData
+import dev.deftu.gradle.ModData
+import dev.deftu.gradle.ProjectData
 
 plugins {
     java

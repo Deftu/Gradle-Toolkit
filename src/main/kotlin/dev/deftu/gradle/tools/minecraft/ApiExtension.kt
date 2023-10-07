@@ -5,7 +5,7 @@ import net.fabricmc.loom.task.RemapJarTask
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.*
-import xyz.deftu.gradle.utils.withLoom
+import dev.deftu.gradle.utils.withLoom
 
 abstract class ApiExtension(
     val project: Project

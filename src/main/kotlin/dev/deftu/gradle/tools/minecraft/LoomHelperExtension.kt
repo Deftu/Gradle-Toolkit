@@ -7,10 +7,10 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.withType
-import xyz.deftu.gradle.GameInfo
-import xyz.deftu.gradle.MCData
-import xyz.deftu.gradle.utils.GameSide
-import xyz.deftu.gradle.utils.withLoom
+import dev.deftu.gradle.GameInfo
+import dev.deftu.gradle.MCData
+import dev.deftu.gradle.utils.GameSide
+import dev.deftu.gradle.utils.withLoom
 import java.util.*
 
 abstract class LoomHelperExtension(
