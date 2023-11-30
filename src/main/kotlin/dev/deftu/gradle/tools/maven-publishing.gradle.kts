@@ -93,13 +93,13 @@ afterEvaluate {
 
                     maven {
                         name = RELEASES_REPO_NAME
-                        url = uri("https://maven.deftu.xyz/releases")
+                        url = uri("https://maven.deftu.dev/releases")
                         applyCredentials()
                     }
 
                     maven {
                         name = SNAPSHOT_REPO_NAME
-                        url = uri("https://maven.deftu.xyz/snapshots")
+                        url = uri("https://maven.deftu.dev/snapshots")
                         applyCredentials()
                     }
                 }
