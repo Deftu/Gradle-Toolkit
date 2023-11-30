@@ -200,12 +200,14 @@ object GameInfo {
         mcpMappings[mcVersion]
 
     fun fetchKotlinForForgeVersion(mcVersion: Int): String {
-        return if (mcVersion >= 1_19_02) {
-            "4.3.0"
-        } else if (mcVersion >= 1_17_00) {
+        return if (mcVersion >= 1_19_03) {
+            "4.7.0"
+        } else if (mcVersion >= 1_18_00) {
             "3.12.0"
+        } else if (mcVersion >= 1_17_00) {
+            "2.2.0"
         } else if (mcVersion >= 1_14_04) {
-            "2.0.1"
-        } else "1.16.0"
+            "1.17.0"
+        } else error("Kotlin for Forge is not supported for $mcVersion")
     }
 }
