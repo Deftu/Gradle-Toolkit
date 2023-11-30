@@ -34,7 +34,7 @@ afterEvaluate {
                 return@run null
             }
 
-            if (loomHelperExtension == null) {
+            if (loomHelperExtension === null) {
                 if (Constants.debug) logger.warn("Forge loader version not provided for ${project.name} because LoomHelperExtension is not present!")
                 return@run null
             }
@@ -78,12 +78,12 @@ afterEvaluate {
 
         filesMatching(
             listOf(
-                "mcmod.info",
-                "fabric.mod.json",
-                "quilt.mod.json",
-                "META-INF/mods.toml",
-                "mixins.*.json",
-                "*.mixins.json"
+                "**/mcmod.info",
+                "**/fabric.mod.json",
+                "**/quilt.mod.json",
+                "**/META-INF/mods.toml",
+                "**/mixins.*.json",
+                "**/*.mixins.json"
             )
         ) {
             expand(mutableMapOf<String, Any>().apply {
