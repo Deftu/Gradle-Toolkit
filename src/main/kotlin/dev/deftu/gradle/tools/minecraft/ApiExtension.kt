@@ -10,19 +10,31 @@ import dev.deftu.gradle.utils.withLoom
 abstract class ApiExtension(
     val project: Project
 ) {
-    private fun getTestSourceset() = project.sourceSets.findByName("testMod")
+    companion object {
+        const val SOURCESET_NAME = "testMod"
+    }
+
+    private fun getTestSourceset() = project.sourceSets.findByName(SOURCESET_NAME)
 
     fun setupTestSourceset() {
         val current = getTestSourceset()
         if (current != null) return
 
-        project.sourceSets.create("testMod") {
-            compileClasspath += project.sourceSets["main"].compileClasspath
-            runtimeClasspath += project.sourceSets["main"].runtimeClasspath
+        val mainSourceset = project.sourceSets["main"]
+        if (mainSourceset == null) {
+            project.logger.warn("Main sourceset not found, skipping test sourceset setup")
+            return
+        }
+
+        project.sourceSets.create(SOURCESET_NAME) {
+            compileClasspath += mainSourceset.compileClasspath
+            runtimeClasspath += mainSourceset.runtimeClasspath
         }
 
         project.dependencies {
-            "testModImplementation"(project.sourceSets["main"].output)
+            "${SOURCESET_NAME}Implementation"(mainSourceset.output)
+            "${SOURCESET_NAME}RuntimeOnly"(mainSourceset.output)
+            "${SOURCESET_NAME}CompileOnly"(mainSourceset.output)
         }
     }
 
@@ -36,7 +48,7 @@ abstract class ApiExtension(
 
             archiveClassifier.set("test-mod-dev")
             destinationDirectory.set(devLibsDir)
-            from(project.sourceSets["testMod"].output)
+            from(project.sourceSets[SOURCESET_NAME].output)
         }.get()
 
         val remapTestJar = project.tasks.register("remapTestJar", RemapJarTask::class.java) {
@@ -45,6 +57,7 @@ abstract class ApiExtension(
             archiveClassifier.set("test-mod")
             destinationDirectory.set(devLibsDir)
             inputFile.set(testJar.archiveFile)
+            classpath.setFrom(current.compileClasspath)
         }.get()
 
         project.tasks.named("build").configure {
@@ -60,7 +73,7 @@ abstract class ApiExtension(
             runs {
                 create("testClient") {
                     client()
-                    source(project.sourceSets["testMod"])
+                    source(project.sourceSets[SOURCESET_NAME])
                 }
             }
         }
@@ -74,7 +87,7 @@ abstract class ApiExtension(
             runs {
                 create("testServer") {
                     server()
-                    source(project.sourceSets["testMod"])
+                    source(project.sourceSets[SOURCESET_NAME])
                 }
             }
         }
