@@ -5,17 +5,19 @@ object GameInfo {
     const val FABRIC_LANGUAGE_KOTLIN_VERSION = "1.7.4+kotlin.1.6.21"
 
     private val fabricApiVersions: Map<Int, String> = mapOf(
-        1_20_02 to "0.89.3+1.20.2",
-        1_20_01 to "0.89.3+1.20.1",
+        1_20_04 to "0.91.2+1.20.4",
+        1_20_03 to "0.91.1+1.20.3",
+        1_20_02 to "0.91.2+1.20.2",
+        1_20_01 to "0.91.0+1.20.1",
         1_20_00 to "0.83.0+1.20",
 
         1_19_04 to "0.82.0+1.19.4",
         1_19_03 to "0.76.1+1.19.3",
-        1_19_02 to "0.76.0+1.19.2",
+        1_19_02 to "0.77.0+1.19.2",
         1_19_01 to "0.58.5+1.19.1",
         1_19_00 to "0.58.0+1.19",
 
-        1_18_02 to "0.76.0+1.18.2",
+        1_18_02 to "0.77.0+1.18.2",
         1_18_01 to "0.46.6+1.18",
         1_18_00 to "0.46.6+1.18",
 
@@ -41,6 +43,8 @@ object GameInfo {
     )
 
     private val modMenuVersions: Map<Int, Pair<String, String>> = mapOf(
+        1_20_04 to ("com.terraformersmc:modmenu:" to "9.0.0-pre.1"),
+        1_20_03 to ("com.terraformersmc:modmenu:" to "9.0.0-pre.1"),
         1_20_02 to ("com.terraformersmc:modmenu:" to "8.0.0"),
         1_20_01 to ("com.terraformersmc:modmenu:" to "7.2.2"),
         1_20_00 to ("com.terraformersmc:modmenu:" to "7.0.1"),
@@ -54,6 +58,8 @@ object GameInfo {
     )
 
     private val yarnVersions: Map<Int, String> = mapOf(
+        1_20_04 to "1.20.4+build.2",
+        1_20_03 to "1.20.3+build.1",
         1_20_02 to "1.20.2+build.4",
         1_20_01 to "1.20.1+build.10",
         1_20_00 to "1.20+build.1",
