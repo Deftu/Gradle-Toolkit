@@ -5,7 +5,10 @@ Deftu's Gradle toolkit, used to create, improve and manage projects.
 
 </div>
 
-![Repository badge](https://maven.deftu.xyz/api/badge/latest/releases/xyz/deftu/gradle/gradle-toolkit?color=c33f3f&name=Gradle+Toolkit)
+# NeoForged support is coming soon!
+Please do not create any issues regarding the support of NeoForged and future versions for the Forge Loader. Support for Forge will be dropped as of 1.20.3 in favour of NeoForged. Sorry for any inconvenience this may cause.
+
+![Repository badge](https://maven.deftu.dev/api/badge/latest/releases/dev/deftu/gradle/gradle-toolkit?color=c33f3f&name=Gradle+Toolkit)
 
 ---
 
