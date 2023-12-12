@@ -134,7 +134,7 @@ abstract class LoomHelperExtension(
 
             project.dependencies {
                 val finalNotation = if (notation.endsWith(':')) notation else "$notation:"
-                add("modImplementation", "$finalNotation$version")
+                add("implementation", "$finalNotation$version")
             }
 
             usingKotlinForForge = true
