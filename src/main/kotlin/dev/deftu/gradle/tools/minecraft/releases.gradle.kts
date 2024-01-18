@@ -164,6 +164,7 @@ fun setupCurseForge(apiKey: String) {
     val publishToCurseForge by tasks.registering(TaskPublishCurseForge::class) {
         group = "publishing"
         this.apiToken = apiKey
+        this.debugMode = extension.curseforge.debug.getOrElse(false)
 
         upload(projectId, extension.getUploadFile()).apply {
             disableVersionDetection()

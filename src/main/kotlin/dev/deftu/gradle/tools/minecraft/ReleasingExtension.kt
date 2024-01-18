@@ -71,8 +71,11 @@ abstract class PublishingCurseForgeExtension {
     abstract val projectId: Property<String>
     abstract val relations: ListProperty<CurseRelation>
     abstract val changelogType: Property<String>
+    abstract val debug: Property<Boolean>
+
     init {
         changelogType.convention("text")
+        debug.convention(false)
     }
 }
 

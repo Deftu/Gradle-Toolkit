@@ -39,6 +39,7 @@ dependencies {
 
     // Architectury Loom
     implementation("gg.essential:architectury-loom:1.3.12")
+    implementation("dev.architectury:architectury-pack200:0.1.3")
 
     // Preprocessing/multi-versioning
     implementation("dev.deftu:preprocessor:0.4.2")
@@ -49,8 +50,8 @@ dependencies {
     implementation("net.kyori:blossom:1.3.1")
 
     // Publishing
-    implementation("com.modrinth.minotaur:Minotaur:2.8.2")
-    implementation("net.darkhax.curseforgegradle:CurseForgeGradle:1.1.16")
+    implementation("com.modrinth.minotaur:Minotaur:2.8.7")
+    implementation("net.darkhax.curseforgegradle:CurseForgeGradle:1.1.17")
     implementation("com.github.breadmoirai:github-release:2.4.1")
 }
 

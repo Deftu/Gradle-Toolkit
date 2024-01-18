@@ -28,6 +28,12 @@ loom {
             isIdeConfigGenerated = true
         }
     }
+
+    if (mcData.isLegacyForge) {
+        forge {
+            pack200Provider.set(dev.architectury.pack200.java.Pack200Adapter())
+        }
+    }
 }
 
 dependencies {

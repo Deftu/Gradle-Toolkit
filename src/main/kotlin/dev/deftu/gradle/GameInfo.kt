@@ -1,7 +1,7 @@
 package dev.deftu.gradle
 
 object GameInfo {
-    const val FABRIC_LOADER_VERSION = "0.15.1"
+    const val FABRIC_LOADER_VERSION = "0.15.2"
     const val FABRIC_LANGUAGE_KOTLIN_VERSION = "1.7.4+kotlin.1.6.21"
 
     private val fabricApiVersions: Map<Int, String> = mapOf(
