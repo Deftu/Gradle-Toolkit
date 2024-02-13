@@ -3,14 +3,13 @@ package dev.deftu.gradle.tools.minecraft
 import net.fabricmc.loom.api.LoomGradleExtensionAPI
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
-import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.get
-import org.gradle.kotlin.dsl.withType
 import dev.deftu.gradle.GameInfo
 import dev.deftu.gradle.MCData
 import dev.deftu.gradle.utils.GameSide
 import dev.deftu.gradle.utils.withLoom
+import org.gradle.api.provider.Property
+import org.gradle.kotlin.dsl.*
+import org.jetbrains.kotlin.gradle.utils.property
 import java.util.*
 
 abstract class LoomHelperExtension(
@@ -18,6 +17,12 @@ abstract class LoomHelperExtension(
 ) {
     internal var usingKotlinForForge = false
         private set
+
+    abstract val appleSiliconFix: Property<Boolean>
+
+    init {
+        appleSiliconFix.convention(true)
+    }
 
     /**
      * Sets a Mixin config for
@@ -131,6 +136,10 @@ abstract class LoomHelperExtension(
         val mcData = MCData.from(project)
         if (mcData.present) {
             val version = GameInfo.fetchKotlinForForgeVersion(mcData.version)
+
+            project.repositories {
+                maven("https://thedarkcolour.github.io/KotlinForForge/")
+            }
 
             project.dependencies {
                 val finalNotation = if (notation.endsWith(':')) notation else "$notation:"

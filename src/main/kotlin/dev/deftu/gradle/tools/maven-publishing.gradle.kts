@@ -4,8 +4,7 @@ import dev.deftu.gradle.MCData
 import dev.deftu.gradle.ModData
 import dev.deftu.gradle.ModLoader
 import dev.deftu.gradle.ProjectData
-import dev.deftu.gradle.utils.getFixedSourcesJarTask
-import dev.deftu.gradle.utils.isMultiversionProject
+import dev.deftu.gradle.utils.*
 
 plugins {
     `maven-publish`
@@ -15,6 +14,7 @@ plugins {
 
 val RELEASES_REPO_NAME = "DeftuReleases"
 val SNAPSHOT_REPO_NAME = "DeftuSnapshots"
+val INTERNAL_REPO_NAME = "DeftuInternal"
 
 val mcData = MCData.from(project)
 val modData = ModData.from(project)
@@ -70,37 +70,25 @@ afterEvaluate {
             repositories {
                 mavenLocal()
 
-                fun getPublishingUsername(): String? {
-                    val property = project.findProperty("deftu.publishing.username")
-                    return property?.toString() ?: System.getenv("DEFTU_PUBLISHING_USERNAME")
-                }
-
-                fun getPublishingPassword(): String? {
-                    val property = project.findProperty("deftu.publishing.password")
-                    return property?.toString() ?: System.getenv("DEFTU_PUBLISHING_PASSWORD")
-                }
-
-                val publishingUsername = getPublishingUsername()
-                val publishingPassword = getPublishingPassword()
+                val publishingUsername = getDgtPublishingUsername()
+                val publishingPassword = getDgtPublishingPassword()
                 if (publishingUsername != null && publishingPassword != null) {
-                    fun MavenArtifactRepository.applyCredentials() {
-                        authentication.create<BasicAuthentication>("basic")
-                        credentials {
-                            username = publishingUsername
-                            password = publishingPassword
-                        }
-                    }
-
                     maven {
                         name = RELEASES_REPO_NAME
                         url = uri("https://maven.deftu.dev/releases")
-                        applyCredentials()
+                        applyBasicCredentials(publishingUsername, publishingPassword)
                     }
 
                     maven {
                         name = SNAPSHOT_REPO_NAME
                         url = uri("https://maven.deftu.dev/snapshots")
-                        applyCredentials()
+                        applyBasicCredentials(publishingUsername, publishingPassword)
+                    }
+
+                    maven {
+                        name = INTERNAL_REPO_NAME
+                        url = uri("https://maven.deftu.dev/internal")
+                        applyBasicCredentials(publishingUsername, publishingPassword)
                     }
                 }
             }

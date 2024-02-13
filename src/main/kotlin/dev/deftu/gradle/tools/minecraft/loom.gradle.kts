@@ -19,7 +19,7 @@ plugins {
 }
 
 val mcData = MCData.from(project)
-extensions.create("toolkitLoomHelper", LoomHelperExtension::class)
+val extension = extensions.create("toolkitLoomHelper", LoomHelperExtension::class)
 extra.set("loom.platform", if (mcData.isFabric) "fabric" else "forge")
 
 loom {
@@ -72,5 +72,30 @@ if (mcData.isModLauncher) {
         mavenPom()
         artifact()
         ignoreGradleMetadataRedirection()
+    }
+}
+
+afterEvaluate {
+    if (extension.appleSiliconFix.get()) {
+        if (
+            System.getProperty("os.arch") == "aarch64" &&
+            System.getProperty("os.name") == "Mac OS X"
+        ) {
+            val lwjglVersion = if (mcData.version >= 1_19_00) "3.3.1" else "3.3.0"
+            val lwjglNatives = "natives-macos-arm64"
+            logger.error("Apple Silicon for Minecraft ${mcData.versionStr} ($lwjglVersion, $lwjglNatives)")
+
+            configurations.all {
+                resolutionStrategy {
+                    force("org.lwjgl:lwjgl:$lwjglVersion")
+                    force("org.lwjgl:lwjgl-openal:$lwjglVersion")
+                    force("org.lwjgl:lwjgl-opengl:$lwjglVersion")
+                    force("org.lwjgl:lwjgl-jemalloc:$lwjglVersion")
+                    force("org.lwjgl:lwjgl-glfw:$lwjglVersion")
+                    force("org.lwjgl:lwjgl-stb:$lwjglVersion")
+                    force("org.lwjgl:lwjgl-tinyfd:$lwjglVersion")
+                }
+            }
+        }
     }
 }

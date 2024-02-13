@@ -32,6 +32,10 @@ val javaVersion = floor(propertyOr("java.version", if (mcData.present) {
     } else {
         version
     }.substringBefore(".")
+}.let { version ->
+    Regex("[^0-9]").replace(version, "").ifEmpty {
+        throw IllegalArgumentException("Invalid java version: $version")
+    }
 }.toDouble()).toInt()
 if (javaVersion != 0) {
     set(javaVersion)

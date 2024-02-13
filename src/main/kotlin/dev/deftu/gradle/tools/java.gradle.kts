@@ -19,8 +19,10 @@ tasks.withType<JavaCompile> {
 }
 
 fun set(version: Int) {
-    if (version > 9) {
-        tasks.withType<JavaCompile> {
+    tasks.withType<JavaCompile> {
+        targetCompatibility = version.toString()
+
+        if (version > 9) {
             options.release.set(version)
         }
     }
@@ -38,6 +40,10 @@ val javaVersion = floor(propertyOr("java.version", if (mcData.present) {
     } else {
         version
     }.substringBefore(".")
+}.let { version ->
+    Regex("[^0-9]").replace(version, "").ifEmpty {
+        throw IllegalArgumentException("Invalid java version: $version")
+    }
 }.toDouble()).toInt()
 if (javaVersion != 0) {
     set(javaVersion)
