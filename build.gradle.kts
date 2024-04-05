@@ -44,15 +44,18 @@ dependencies {
     // Preprocessing/multi-versioning
     implementation("dev.deftu:preprocessor:0.4.2")
 
-    // Other
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.6.21")
-    implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
-    implementation("net.kyori:blossom:1.3.1")
+    // Documentation
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.9.10")
+    implementation("org.jetbrains.dokka:dokka-base:1.9.10")
 
     // Publishing
     implementation("com.modrinth.minotaur:Minotaur:2.8.7")
     implementation("net.darkhax.curseforgegradle:CurseForgeGradle:1.1.17")
     implementation("com.github.breadmoirai:github-release:2.4.1")
+
+    // Other
+    implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
+    implementation("net.kyori:blossom:1.3.1")
 }
 
 tasks {
