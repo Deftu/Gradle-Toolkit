@@ -33,8 +33,9 @@ data class MCData(
 
     val javaVersion: JavaVersion
         get() = when {
-            version >= 11800 -> JavaVersion.VERSION_17
-            version >= 11700 -> JavaVersion.VERSION_16
+            version >= 1_20_06 -> JavaVersion.VERSION_21
+            version >= 1_18_00 -> JavaVersion.VERSION_17
+            version >= 1_17_00 -> JavaVersion.VERSION_16
             else -> JavaVersion.VERSION_1_8
         }
 
