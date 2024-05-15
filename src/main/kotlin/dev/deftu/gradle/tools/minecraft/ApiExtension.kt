@@ -1,11 +1,11 @@
 package dev.deftu.gradle.tools.minecraft
 
-import gradle.kotlin.dsl.accessors._175fcbe9e04105e3219d6e2795d7218e.sourceSets
 import net.fabricmc.loom.task.RemapJarTask
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.*
 import dev.deftu.gradle.utils.withLoom
+import gradle.kotlin.dsl.accessors._8c47cae829ea3d03260d5ff13fb2398e.sourceSets
 
 abstract class ApiExtension(
     val project: Project

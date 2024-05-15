@@ -1,8 +1,8 @@
 package dev.deftu.gradle.tools
 
-import gradle.kotlin.dsl.accessors._175fcbe9e04105e3219d6e2795d7218e.implementation
 import dev.deftu.gradle.DependencyInfo
 import dev.deftu.gradle.utils.shadeOptionally
+import gradle.kotlin.dsl.accessors._8c47cae829ea3d03260d5ff13fb2398e.implementation
 
 dependencies {
     shadeOptionally(implementation("io.sentry:sentry:${DependencyInfo.fetchSentryVersion()}")!!)

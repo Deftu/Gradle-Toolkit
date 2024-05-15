@@ -1,9 +1,5 @@
 package dev.deftu.gradle.tools.minecraft
 
-import gradle.kotlin.dsl.accessors._e453d737b2e0a36dae3d829967a3e2e0.loom
-import gradle.kotlin.dsl.accessors._e453d737b2e0a36dae3d829967a3e2e0.mappings
-import gradle.kotlin.dsl.accessors._e453d737b2e0a36dae3d829967a3e2e0.minecraft
-import gradle.kotlin.dsl.accessors._e453d737b2e0a36dae3d829967a3e2e0.modImplementation
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.extra
 import dev.deftu.gradle.GameInfo.FABRIC_LOADER_VERSION
@@ -13,6 +9,10 @@ import dev.deftu.gradle.GameInfo.fetchYarnMappings
 import dev.deftu.gradle.MCData
 import dev.deftu.gradle.utils.propertyBoolOr
 import dev.deftu.gradle.utils.propertyOr
+import gradle.kotlin.dsl.accessors._0935894d714bf6b98fac60b9fc45a2f5.loom
+import gradle.kotlin.dsl.accessors._0935894d714bf6b98fac60b9fc45a2f5.mappings
+import gradle.kotlin.dsl.accessors._0935894d714bf6b98fac60b9fc45a2f5.minecraft
+import gradle.kotlin.dsl.accessors._0935894d714bf6b98fac60b9fc45a2f5.modImplementation
 
 plugins {
     id("gg.essential.loom")
