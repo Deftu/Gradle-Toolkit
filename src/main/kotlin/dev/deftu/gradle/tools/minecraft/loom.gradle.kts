@@ -50,7 +50,9 @@ dependencies {
             if (this == "official") {
                 mappings(loom.officialMojangMappings())
             } else {
-                mappings(this)
+                mappings(this) {
+                    exclude(module = "fabric-loader")
+                }
             }
         }
     }
