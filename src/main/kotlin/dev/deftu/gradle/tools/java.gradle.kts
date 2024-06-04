@@ -4,47 +4,47 @@ import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.java
 import org.gradle.kotlin.dsl.withType
-import dev.deftu.gradle.MCData
-import dev.deftu.gradle.utils.propertyOr
-import kotlin.math.floor
+import dev.deftu.gradle.utils.getJavaVersionAsInt
+import gradle.kotlin.dsl.accessors._8c47cae829ea3d03260d5ff13fb2398e.compileJava
+import gradle.kotlin.dsl.accessors._8c47cae829ea3d03260d5ff13fb2398e.java
 
 plugins {
     java
 }
 
-val mcData = MCData.from(project)
-
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
 
-fun set(version: Int) {
-    tasks.withType<JavaCompile> {
-        targetCompatibility = version.toString()
+val version = getJavaVersionAsInt()
+if (version != 0) {
+    val javaVersion = JavaVersion.toVersion(version)
 
-        if (version > 9) {
-            options.release.set(version)
+    java {
+        targetCompatibility = javaVersion
+        sourceCompatibility = javaVersion
+    }
+
+    tasks {
+        fun applyCompilerOptions(compileOptions: JavaCompile) {
+            compileOptions.targetCompatibility = version.toString()
+            compileOptions.sourceCompatibility = version.toString()
+
+            if (version > 9) {
+                compileOptions.options.release.set(version)
+            }
+        }
+
+        compileJava {
+            applyCompilerOptions(this)
+        }
+
+        withType<JavaCompile> {
+            applyCompilerOptions(this)
         }
     }
 
     extensions.configure<JavaPluginExtension> {
         toolchain.languageVersion.set(JavaLanguageVersion.of(version))
     }
-}
-
-val javaVersion = floor(propertyOr("java.version", if (mcData.present) {
-    mcData.javaVersion.toString()
-} else JavaVersion.current().toString(), prefix = false).let { version ->
-    if (version.startsWith("1.")) {
-        version.substring(2)
-    } else {
-        version
-    }.substringBefore(".")
-}.let { version ->
-    Regex("[^0-9]").replace(version, "").ifEmpty {
-        throw IllegalArgumentException("Invalid java version: $version")
-    }
-}.toDouble()).toInt()
-if (javaVersion != 0) {
-    set(javaVersion)
 }

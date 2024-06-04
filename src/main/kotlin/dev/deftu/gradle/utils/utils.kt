@@ -1,5 +1,6 @@
 package dev.deftu.gradle.utils
 
+import dev.deftu.gradle.MCData
 import net.fabricmc.loom.api.LoomGradleExtensionAPI
 import org.gradle.api.Action
 import org.gradle.api.GradleException
@@ -9,6 +10,7 @@ import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.named
 import java.io.File
+import kotlin.math.floor
 
 private val loomIds = listOf(
     "fabric-loom",
@@ -42,6 +44,23 @@ fun checkJavaVersion(minVersion: JavaVersion) {
             },
         ).joinToString("\n"))
     }
+}
+
+fun Project.getJavaVersionAsInt(): Int {
+    val mcData = MCData.from(this)
+    return floor(propertyOr("java.version", if (mcData.present) {
+        mcData.javaVersion.toString()
+    } else JavaVersion.current().toString()).let { version ->
+        if (version.startsWith("1.")) {
+            version.substring(2)
+        } else {
+            version
+        }.substringBefore(".")
+    }.let { version ->
+        Regex("[^0-9]").replace(version, "").ifEmpty {
+            throw IllegalArgumentException("Invalid java version: $version")
+        }
+    }.toDouble()).toInt()
 }
 
 fun Project.isLoomPresent() = loomIds.any { id ->
