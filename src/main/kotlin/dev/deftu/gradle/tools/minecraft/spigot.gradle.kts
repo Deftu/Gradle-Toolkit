@@ -6,6 +6,9 @@ import org.gradle.kotlin.dsl.registering
 import org.gradle.kotlin.dsl.repositories
 import dev.deftu.gradle.MCData
 import gradle.kotlin.dsl.accessors._8c47cae829ea3d03260d5ff13fb2398e.implementation
+import java.net.URI
+import java.nio.file.Files
+import java.nio.file.Paths
 
 val mcData = MCData.from(project)
 
@@ -16,7 +19,7 @@ val setupSpigot by tasks.registering {
     // run BuildTools.jar with java -jar BuildTools.jar --rev mcData.versionStr
     // copy the generated jar to a test server folder
 
-    val buildToolsJar = project.buildDir.resolve("BuildTools.jar")
+    val buildToolsJar = project.layout.buildDirectory.file("BuildTools.jar").get().asFile
     val serverFolder = project.projectDir.resolve("server")
     val serverJar = serverFolder.resolve("spigot-${mcData.versionStr}.jar")
 
@@ -25,7 +28,7 @@ val setupSpigot by tasks.registering {
             project.logger.lifecycle("Downloading BuildTools...")
             buildToolsJar.parentFile.mkdirs()
             buildToolsJar.createNewFile()
-            val url = java.net.URL("https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar")
+            val url = URI.create("https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar").toURL()
             val connection = url.openConnection()
             val totalSize = connection.contentLengthLong
             var downloadedSize = 0L
@@ -51,7 +54,7 @@ val setupSpigot by tasks.registering {
             project.logger.lifecycle("Copying server JAR...")
             serverFolder.mkdirs()
             serverJar.createNewFile()
-            serverJar.writeBytes(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(project.buildDir.absolutePath, "spigot-${mcData.versionStr}.jar")))
+            serverJar.writeBytes(Files.readAllBytes(Paths.get(project.layout.buildDirectory.get().asFile.toString(), "spigot-${mcData.versionStr}.jar")))
         }
 
         if (serverJar.exists()) copyServerJar()
@@ -117,7 +120,7 @@ val startSpigot by tasks.registering {
         val inputThread = Thread({
             println("Spigot input thread started.")
             while (true) {
-                val line = readLine() ?: break
+                val line = readlnOrNull() ?: break
                 println("[Spigot] $line")
                 process.outputStream.write(line.toByteArray())
             }
@@ -132,7 +135,7 @@ val startSpigot by tasks.registering {
 }
 
 val hasSpigotSetup: Boolean
-    get() = project.buildDir.resolve("spigot-${mcData.versionStr}.jar").exists()
+    get() = project.layout.buildDirectory.file("spigot-${mcData.versionStr}.jar").get().asFile.exists()
 
 repositories {
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
@@ -141,6 +144,6 @@ repositories {
 dependencies {
     implementation("org.spigotmc:spigot-api:${mcData.versionStr}+")
     if (hasSpigotSetup) {
-        implementation(files(project.buildDir.resolve("spigot-${mcData.versionStr}.jar")))
+        implementation(files(project.layout.buildDirectory.file("spigot-${mcData.versionStr}.jar")))
     }
 }

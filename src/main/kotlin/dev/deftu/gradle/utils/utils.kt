@@ -86,11 +86,11 @@ fun Project.propertyOr(
     default: String? = null,
     prefix: Boolean = true
 ): String {
-    val key = if (prefix) "dgt.$key" else key
-    return (project.findProperty(key)
-        ?: System.getProperty(key)
+    val newKey = if (prefix) "dgt.$key" else key
+    return (project.findProperty(newKey)
+        ?: System.getProperty(newKey)
         ?: default) as String?
-        ?: throw GradleException("No default property for key \"$key\" found. Set it in gradle.properties, environment variables or in the system properties.")
+        ?: throw GradleException("No default property for key \"$newKey\" found. Set it in gradle.properties, environment variables or in the system properties.")
 }
 
 fun Project.getFixedSourcesJarTask() = if (isLoomPresent()) {

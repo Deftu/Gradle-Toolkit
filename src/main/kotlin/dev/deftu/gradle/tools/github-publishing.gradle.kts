@@ -10,6 +10,7 @@ import dev.deftu.gradle.utils.getFixedSourcesJarTask
 import dev.deftu.gradle.utils.isMultiversionProject
 import dev.deftu.gradle.utils.propertyOr
 import java.nio.charset.StandardCharsets
+import java.util.*
 
 plugins {
     id("com.github.breadmoirai.github-release")
@@ -34,7 +35,7 @@ fun GitHubPublishingExtension.getReleaseName(): String {
                 if (mcData.isFabric && minecraft.describeFabricWithQuilt.get()) {
                     append("Fabric/Quilt")
                 } else {
-                    append(mcData.loader.name.capitalize())
+                    append(mcData.loader.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.US) else it.toString() })
                 }
 
                 append(" ").append(mcData.versionStr)

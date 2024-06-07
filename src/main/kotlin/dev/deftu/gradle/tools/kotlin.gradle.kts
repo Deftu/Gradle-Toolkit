@@ -16,7 +16,6 @@ if (version != 0) {
 
     configure<KotlinJvmProjectExtension> {
         jvmToolchain {
-            check(this is JavaToolchainSpec)
             languageVersion.set(JavaLanguageVersion.of(version))
         }
     }

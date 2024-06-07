@@ -10,7 +10,7 @@ plugins {
     java
 }
 
-val shade by configurations.creating { }
+val shade: Configuration by configurations.creating { }
 
 val fatJar = tasks.register<ShadowJar>("fatJar") {
     group = "deftu"
@@ -20,7 +20,7 @@ val fatJar = tasks.register<ShadowJar>("fatJar") {
     archiveVersion.set(project.version.toString())
     archiveClassifier.set("all")
 
-    val javaPlugin = project.convention.getPlugin(JavaPluginConvention::class.java)
+    val javaPlugin = project.extensions.getByType(JavaPluginExtension::class.java)
     val jarTask = project.tasks.getByName("jar") as Jar
 
     manifest.inheritFrom(jarTask.manifest)

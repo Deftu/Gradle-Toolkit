@@ -110,7 +110,7 @@ afterEvaluate {
                 return@any task.name == name
             }) return@forEach
 
-            val task = rootProject.tasks.create(name) {
+            rootProject.tasks.create(name) {
                 group = "publishing"
                 project.subprojects.map(Project::getName).filter { name ->
                     ModLoader.all.any { loader ->

@@ -33,7 +33,7 @@ fun ReleasingExtension.getReleaseName(): String {
                 if (mcData.isFabric && describeFabricWithQuilt.get()) {
                     append("Fabric/Quilt")
                 } else {
-                    append(mcData.loader.name.capitalize())
+                    append(mcData.loader.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.US) else it.toString() })
                 }
 
                 append(" ").append(mcData.versionStr)
