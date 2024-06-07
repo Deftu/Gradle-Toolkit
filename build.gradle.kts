@@ -45,8 +45,8 @@ dependencies {
     implementation("dev.deftu:preprocessor:0.4.3")
 
     // Documentation
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:2.0.0")
-    implementation("org.jetbrains.dokka:dokka-base:2.0.0")
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.9.20")
+    implementation("org.jetbrains.dokka:dokka-base:1.9.20")
 
     // Publishing
     implementation("com.modrinth.minotaur:Minotaur:2.8.7")
