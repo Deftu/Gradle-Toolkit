@@ -3,13 +3,16 @@ package dev.deftu.gradle
 import dev.deftu.gradle.utils.Constants
 import org.gradle.api.Project
 import dev.deftu.gradle.utils.DependencyHelper
-import org.jetbrains.kotlin.gradle.utils.projectCacheDir
+import org.gradle.api.invocation.Gradle
 import java.io.File
 
 @Suppress("unused")
 abstract class ToolkitExtension(
     val project: Project
 ) {
+    private val Gradle.projectCacheDir: File
+        get() = gradle.rootProject.layout.projectDirectory.file(".gradle").asFile
+
     fun useEssential() {
         val repo = "https://repo.essential.gg/repository/maven-public"
         project.repositories.maven {
@@ -23,7 +26,8 @@ abstract class ToolkitExtension(
         val globalCacheDir = File(Constants.dir, ".essential-version-cache").apply { mkdirs() }
 
         val cachedLoaderFilename = "${mcData.versionStr}-${mcData.loader.name}-LOADER.txt"
-        val loaderVersion = DependencyHelper.fetchLatestReleaseOrCached(repo, loaderDependency, cacheDir.resolve(cachedLoaderFilename)) ?:
+        val loaderVersion =
+            DependencyHelper.fetchLatestReleaseOrCached(repo, loaderDependency, cacheDir.resolve(cachedLoaderFilename)) ?:
             DependencyHelper.fetchLatestReleaseOrCached(repo, loaderDependency, globalCacheDir.resolve(cachedLoaderFilename)) ?:
             throw IllegalStateException("Failed to fetch latest Essential loader version.")
 
@@ -39,7 +43,8 @@ abstract class ToolkitExtension(
 
         val cachedApiFilename = "${mcData.versionStr}-${mcData.loader.name}-API.txt"
         val apiDependency = "gg.essential:essential-${mcData.versionStr}-${mcData.loader.name}"
-        val apiVersion = DependencyHelper.fetchLatestReleaseOrCached(repo, apiDependency, cacheDir.resolve(cachedApiFilename)) ?:
+        val apiVersion =
+            DependencyHelper.fetchLatestReleaseOrCached(repo, apiDependency, cacheDir.resolve(cachedApiFilename)) ?:
             DependencyHelper.fetchLatestReleaseOrCached(repo, apiDependency, globalCacheDir.resolve(cachedApiFilename)) ?:
             throw IllegalStateException("Failed to fetch latest Essential API version.")
         project.dependencies.add("compileOnly", "$apiDependency:$apiVersion")
@@ -58,7 +63,8 @@ abstract class ToolkitExtension(
 
         val module = if (mcData.isFabric) "fabric" else if (mcData.isForge && mcData.version <= 11202) "forge-legacy" else "forge-latest"
         val dependency = "me.djtheredstoner:DevAuth-$module"
-        val version = DependencyHelper.fetchLatestReleaseOrCached(repo, dependency, cacheDir.resolve("$module.txt")) ?:
+        val version =
+            DependencyHelper.fetchLatestReleaseOrCached(repo, dependency, cacheDir.resolve("$module.txt")) ?:
             DependencyHelper.fetchLatestReleaseOrCached(repo, dependency, globalCacheDir.resolve("$module.txt")) ?:
             throw IllegalStateException("Failed to fetch latest DevAuth version.")
         project.dependencies.add("modRuntimeOnly", "$dependency:$version")
