@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version("1.9.10")
+    kotlin("jvm") version("2.0.0")
     `kotlin-dsl`
     val dgt = "1.26.0"
     id("dev.deftu.gradle.tools.repo") version(dgt)
@@ -45,8 +45,8 @@ dependencies {
     implementation("dev.deftu:preprocessor:0.4.3")
 
     // Documentation
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.9.10")
-    implementation("org.jetbrains.dokka:dokka-base:1.9.10")
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:2.0.0")
+    implementation("org.jetbrains.dokka:dokka-base:2.0.0")
 
     // Publishing
     implementation("com.modrinth.minotaur:Minotaur:2.8.7")
