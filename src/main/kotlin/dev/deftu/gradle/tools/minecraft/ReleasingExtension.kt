@@ -17,6 +17,7 @@ abstract class ReleasingExtension(
 ) {
     abstract val version: Property<String>
     abstract val versionType: Property<VersionType>
+    abstract val detectVersionType: Property<Boolean>
     abstract val gameVersions: ListProperty<String>
     abstract val loaders: ListProperty<String>
     abstract val file: Property<Zip>
@@ -42,6 +43,7 @@ abstract class ReleasingExtension(
     init {
         val mcData = MCData.from(project)
         versionType.convention(VersionType.RELEASE)
+        detectVersionType.convention(false)
         gameVersions.set(listOf(mcData.versionStr))
         loaders.set(listOf(mcData.loader.name))
         describeFabricWithQuilt.convention(false)

@@ -118,6 +118,19 @@ afterEvaluate {
     if (mcData.isFabric && extension.describeFabricWithQuilt.get()) extension.loaders.add("quilt")
 
     if (modData.present) {
+        if (extension.detectVersionType.getOrElse(false)) {
+            val version = extension.version.getOrElse(modData.version)
+
+            // If the version starts with "0.0.", it can be assumed to be an alpha version.
+            // Otherwise, if it starts with 0.x.x, it can be assumed to be a beta version.
+            // If both of these checks fail, it can be assumed to be a release version.
+            extension.versionType.set(when {
+                version.startsWith("0.0.") -> VersionType.ALPHA
+                version.startsWith("0.") -> VersionType.BETA
+                else -> VersionType.RELEASE
+            })
+        }
+
         if (modrinthToken.isNotBlank()) setupModrinth(modrinthToken)
         if (curseForgeApiKey.isNotBlank()) setupCurseForge(curseForgeApiKey)
     }
