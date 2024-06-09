@@ -55,7 +55,7 @@ dependencies {
 
     // Other
     implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
-    implementation("net.kyori:blossom:1.3.1")
+    implementation("dev.deftu:Bloom:0.1.1")
 }
 
 tasks {
