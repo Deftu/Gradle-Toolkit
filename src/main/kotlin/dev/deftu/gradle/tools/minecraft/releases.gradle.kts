@@ -4,9 +4,6 @@ import com.modrinth.minotaur.Minotaur
 import com.modrinth.minotaur.ModrinthExtension
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
 import org.gradle.kotlin.dsl.*
-import dev.deftu.gradle.GitData
-import dev.deftu.gradle.MCData
-import dev.deftu.gradle.ModData
 import dev.deftu.gradle.utils.*
 import java.nio.charset.StandardCharsets
 import java.util.*
@@ -33,10 +30,10 @@ fun ReleasingExtension.getReleaseName(): String {
                 if (mcData.isFabric && describeFabricWithQuilt.get()) {
                     append("Fabric/Quilt")
                 } else {
-                    append(mcData.loader.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.US) else it.toString() })
+                    append(mcData.loader.friendlyName)
                 }
 
-                append(" ").append(mcData.versionStr)
+                append(" ").append(mcData.version)
             }
         }
 
@@ -64,9 +61,9 @@ fun ReleasingExtension.getReleaseVersion(): String {
         if (isMultiversionProject()) {
             content += buildString {
                 if (includingGitData) append("+")
-                append(mcData.versionStr)
+                append(mcData.version)
                 append("-")
-                append(mcData.loader.name)
+                append(mcData.loader.friendlyString)
             }
         }
 
@@ -81,8 +78,8 @@ fun ReleasingExtension.getReleaseVersion(): String {
 
 fun ReleasingExtension.getUploadFile() = file.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get())
 
-fun ReleasingExtension.getGameVersions() = gameVersions.getOrElse(listOf(mcData.versionStr))
-fun ReleasingExtension.getLoaders(capitalized: Boolean) = loaders.getOrElse(listOf(mcData.loader.name)).map { loader ->
+fun ReleasingExtension.getGameVersions() = gameVersions.getOrElse(listOf(mcData.version.toString()))
+fun ReleasingExtension.getLoaders(capitalized: Boolean) = loaders.getOrElse(listOf(mcData.loader.friendlyString)).map { loader ->
     if (capitalized) loader.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.US) else it.toString() } else loader
 }
 
@@ -91,7 +88,7 @@ fun ReleasingExtension.getVersionType() = versionType.getOrElse(VersionType.RELE
 fun ReleasingExtension.shouldAddSourcesJar() = useSourcesJar.getOrElse(false) && tasks.findByName("sourcesJar") != null
 fun ReleasingExtension.shouldAddJavadocJar() = useJavadocJar.getOrElse(false) && tasks.findByName("javadocJar") != null
 
-fun ReleasingExtension.getSourcesJar() = sourcesJar.getOrElse(getFixedSourcesJarTask().get())
+fun ReleasingExtension.getSourcesJar() = sourcesJar.getOrElse(getSourcesJarTask().get())
 fun ReleasingExtension.getJavadocJar() = javadocJar.getOrElse(tasks.named<Jar>("javadocJar").get())
 
 afterEvaluate {
@@ -117,7 +114,7 @@ afterEvaluate {
 
     if (mcData.isFabric && extension.describeFabricWithQuilt.get()) extension.loaders.add("quilt")
 
-    if (modData.present) {
+    if (modData.isPresent) {
         if (extension.detectVersionType.getOrElse(false)) {
             val version = extension.version.getOrElse(modData.version)
 

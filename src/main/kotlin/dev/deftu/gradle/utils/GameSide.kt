@@ -1,7 +1,7 @@
 package dev.deftu.gradle.utils
 
 enum class GameSide {
-    GLOBAL,
+    BOTH,
     CLIENT,
     SERVER
 }

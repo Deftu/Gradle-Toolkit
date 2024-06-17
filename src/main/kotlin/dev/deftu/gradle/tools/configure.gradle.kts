@@ -1,12 +1,7 @@
 package dev.deftu.gradle.tools
 
-import dev.deftu.gradle.GitData
-import dev.deftu.gradle.MCData
-import dev.deftu.gradle.ModData
-import dev.deftu.gradle.ProjectData
-import dev.deftu.gradle.utils.isLoomPresent
-import dev.deftu.gradle.utils.isMultiversionProject
-import dev.deftu.gradle.utils.propertyBoolOr
+import dev.deftu.gradle.utils.*
+import gradle.kotlin.dsl.accessors._8c47cae829ea3d03260d5ff13fb2398e.base
 
 plugins {
     java
@@ -33,9 +28,9 @@ fun Project.getFixedVersion(): String {
         if (isMultiversionProject()) {
             content += buildString {
                 if (includingGitData) append("+")
-                append(mcData.versionStr)
+                append(mcData.version)
                 append("-")
-                append(mcData.loader.name)
+                append(mcData.loader.friendlyString)
             }
         }
 
@@ -45,11 +40,11 @@ fun Project.getFixedVersion(): String {
         }
     }
 
-    val version = if (modData.present) modData.version else if (projectData.present) projectData.version else project.version
+    val version = if (modData.isPresent) modData.version else if (projectData.isPresent) projectData.version else project.version
     return "$version$suffix"
 }
 
-if (modData.present) {
+if (modData.isPresent) {
     if (propertyBoolOr("mod.version.setup", true))
         version = getFixedVersion()
     if (propertyBoolOr("mod.group.setup", true))
@@ -70,7 +65,7 @@ if (modData.present) {
     }
 }
 
-if (projectData.present) {
+if (projectData.isPresent) {
     if (propertyBoolOr("project.version.setup", true))
         version = getFixedVersion()
     if (propertyBoolOr("project.group.setup", true))

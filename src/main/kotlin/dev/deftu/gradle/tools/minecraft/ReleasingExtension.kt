@@ -8,7 +8,7 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.bundling.Zip
-import dev.deftu.gradle.MCData
+import dev.deftu.gradle.utils.MCData
 import dev.deftu.gradle.utils.VersionType
 import java.io.File
 
@@ -44,8 +44,8 @@ abstract class ReleasingExtension(
         val mcData = MCData.from(project)
         versionType.convention(VersionType.RELEASE)
         detectVersionType.convention(false)
-        gameVersions.set(listOf(mcData.versionStr))
-        loaders.set(listOf(mcData.loader.name))
+        gameVersions.set(listOf(mcData.version.toString()))
+        loaders.set(listOf(mcData.loader.friendlyString))
         describeFabricWithQuilt.convention(false)
         useSourcesJar.convention(false)
         useJavadocJar.convention(false)

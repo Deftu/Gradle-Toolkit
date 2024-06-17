@@ -4,7 +4,7 @@ import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.java
 import org.gradle.kotlin.dsl.withType
-import dev.deftu.gradle.utils.getJavaVersionAsInt
+import dev.deftu.gradle.utils.getMajorJavaVersion
 import gradle.kotlin.dsl.accessors._8c47cae829ea3d03260d5ff13fb2398e.compileJava
 import gradle.kotlin.dsl.accessors._8c47cae829ea3d03260d5ff13fb2398e.java
 
@@ -16,7 +16,7 @@ tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
 
-val version = getJavaVersionAsInt()
+val version = getMajorJavaVersion()
 if (version != 0) {
     val javaVersion = JavaVersion.toVersion(version)
 

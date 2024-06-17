@@ -1,11 +1,12 @@
 package dev.deftu.gradle.tools
 
-import dev.deftu.gradle.GameInfo
-import dev.deftu.gradle.MCData
-import dev.deftu.gradle.ModData
-import dev.deftu.gradle.ProjectData
 import dev.deftu.gradle.tools.minecraft.LoomHelperExtension
-import dev.deftu.gradle.utils.Constants
+import dev.deftu.gradle.ToolkitConstants
+import dev.deftu.gradle.utils.MCData
+import dev.deftu.gradle.utils.MinecraftInfo
+import dev.deftu.gradle.utils.ModData
+import dev.deftu.gradle.utils.ProjectData
+import gradle.kotlin.dsl.accessors._0935894d714bf6b98fac60b9fc45a2f5.processResources
 
 plugins {
     java
@@ -15,51 +16,48 @@ afterEvaluate {
     val loomHelperExtension = extensions.findByType<LoomHelperExtension>()
     tasks.processResources {
         val mcData = MCData.from(project)
-        val modData = ModData.from(project)
         val projectData = ProjectData.from(project)
+        val modData = ModData.from(project)
 
         val forgeLoaderVersion: String? = run {
-            if (!mcData.present) {
-                if (Constants.debug) logger.warn("Forge loader version not provided for ${project.name} because MCData is not present!")
+            if (!mcData.isPresent) {
+                if (ToolkitConstants.debug) logger.warn("Forge loader version not provided for ${project.name} because MCData is not present!")
                 return@run null
             }
 
-            if (!mcData.isForge) {
-                if (Constants.debug) logger.warn("Forge loader version not provided for ${project.name} because Forge is not being used!")
+            if (!mcData.isForgeLike) {
+                if (ToolkitConstants.debug) logger.warn("Forge loader version not provided for ${project.name} because a Forge-like loading is not being used!")
                 return@run null
             }
 
             if (mcData.isLegacyForge) {
-                if (Constants.debug) logger.warn("Forge loader version not provided for ${project.name} because legacy Forge is being used!")
+                if (ToolkitConstants.debug) logger.warn("Forge loader version not provided for ${project.name} because legacy Forge is being used!")
                 return@run null
             }
 
             if (loomHelperExtension === null) {
-                if (Constants.debug) logger.warn("Forge loader version not provided for ${project.name} because LoomHelperExtension is not present!")
+                if (ToolkitConstants.debug) logger.warn("Forge loader version not provided for ${project.name} because LoomHelperExtension is not present!")
                 return@run null
             }
 
             if (!loomHelperExtension.usingKotlinForForge) {
-                if (Constants.debug) logger.warn("Forge loader version not provided for ${project.name} because KotlinForForge is not being used!")
+                if (ToolkitConstants.debug) logger.warn("Forge loader version not provided for ${project.name} because KotlinForForge is not being used!")
                 return@run null
             }
 
-            val version = GameInfo.fetchKotlinForForgeVersion(mcData.version)
+            val version = MinecraftInfo.ForgeLike.getKotlinForForgeVersion(mcData.version)
             val majorVersion = version.split(".")[0]
             "[$majorVersion,)"
         }
 
-        if (mcData.present) {
-            inputs.property("mc_version", mcData.versionStr)
-            inputs.property("minor_mc_version", mcData.minorVersionStr)
-            inputs.property("format_mc_version", mcData.version)
-            inputs.property(
-                "java_version",
-                if (mcData.javaVersion.isJava8) "JAVA_8" else if (mcData.javaVersion.isCompatibleWith(JavaVersion.VERSION_17)) "JAVA_17" else "JAVA_16"
-            )
+        if (mcData.isPresent) {
+            inputs.property("mc_version", mcData.version.toString())
+            inputs.property("minor_mc_version", mcData.version.patchless)
+            inputs.property("format_mc_version", mcData.version.rawVersion.toString())
+            inputs.property("java_version", mcData.version.javaVersionString)
         }
 
-        if (modData.present) {
+        if (modData.isPresent) {
             inputs.property("mod_version", modData.version)
             inputs.property("mod_id", modData.id)
             inputs.property("mod_name", modData.name)
@@ -69,7 +67,7 @@ afterEvaluate {
             if (forgeLoaderVersion != null) inputs.property("forge_loader_version", forgeLoaderVersion)
         }
 
-        if (projectData.present) {
+        if (projectData.isPresent) {
             inputs.property("project_version", projectData.version)
             inputs.property("project_group", projectData.group)
             inputs.property("project_name", projectData.name)
@@ -86,21 +84,15 @@ afterEvaluate {
                 "**/*.mixins.json"
             )
         ) {
-            expand(mutableMapOf<String, Any>().apply {
-                if (mcData.present) {
-                    put("mc_version", mcData.versionStr)
-                    put("minor_mc_version", mcData.minorVersionStr)
-                    put("format_mc_version", mcData.version)
-                    put(
-                        "java_version",
-                        if (mcData.javaVersion.isJava8) "JAVA_8" else if (mcData.javaVersion.isCompatibleWith(
-                                JavaVersion.VERSION_16
-                            )
-                        ) "JAVA_16" else "JAVA_17"
-                    )
+            expand(mutableMapOf<String, String>().apply {
+                if (mcData.isPresent) {
+                    put("mc_version", mcData.version.toString())
+                    put("minor_mc_version", mcData.version.patchless)
+                    put("format_mc_version", mcData.version.rawVersion.toString())
+                    put("java_version", mcData.version.javaVersionString)
                 }
 
-                if (modData.present) {
+                if (modData.isPresent) {
                     put("mod_version", modData.version)
                     put("mod_id", modData.id)
                     put("mod_name", modData.name)
@@ -130,7 +122,7 @@ afterEvaluate {
             )
         ) {
             expand(mutableMapOf<String, Any>().apply {
-                if (projectData.present) {
+                if (projectData.isPresent) {
                     put("project_version", projectData.version)
                     put("project_group", projectData.group)
                     put("project_name", projectData.name)
@@ -141,6 +133,7 @@ afterEvaluate {
 
         if (!mcData.isFabric) exclude("fabric.mod.json")
         if (!mcData.isModLauncher) exclude("META-INF/mods.toml")
+        if (!mcData.isNeoForged) exclude("META-INF/neoforged.mods.toml")
         if (!mcData.isLegacyForge) exclude("mcmod.info")
     }
 }

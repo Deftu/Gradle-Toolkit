@@ -1,10 +1,7 @@
 package dev.deftu.gradle
 
-import dev.deftu.gradle.utils.checkJavaVersion
+import dev.deftu.gradle.utils.GitData
 import dev.deftu.gradle.utils.shadeOptionally
-
-// Check if we're in a Java 17 environment.
-checkJavaVersion(JavaVersion.VERSION_17)
 
 // Initialize Git data.
 GitData.from(project)
@@ -23,6 +20,3 @@ pluginManager.withPlugin("java") {
 pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
     apply(plugin = "dev.deftu.gradle.tools.kotlin")
 }
-
-// Perform our logic.
-extensions.create<ToolkitExtension>("toolkit")

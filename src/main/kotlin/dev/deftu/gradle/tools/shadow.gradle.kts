@@ -1,8 +1,8 @@
 package dev.deftu.gradle.tools
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import dev.deftu.gradle.utils.ModData
 import org.gradle.jvm.tasks.Jar
-import dev.deftu.gradle.ModData
 import dev.deftu.gradle.utils.withLoom
 import gradle.kotlin.dsl.accessors._0935894d714bf6b98fac60b9fc45a2f5.remapJar
 

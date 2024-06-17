@@ -1,24 +1,28 @@
-package dev.deftu.gradle
+package dev.deftu.gradle.utils
 
 import org.gradle.api.Project
-import dev.deftu.gradle.utils.propertyOr
 import java.util.*
 
 data class ModData(
-    val present: Boolean,
+    val isPresent: Boolean,
     val name: String,
     val id: String,
     val version: String,
     val group: String,
     val description: String
 ) {
+
     companion object {
+
+        @JvmStatic
+        val EMPTY = ModData(false, "", "", "", "", "")
+
         @JvmStatic
         fun from(project: Project): ModData {
             val extension = project.extensions.findByName("modData") as ModData?
             if (extension != null) return extension
 
-            if (!project.hasProperty("mod.id")) return ModData(false, "", "", "", "", "")
+            if (!project.hasProperty("mod.id")) return EMPTY
 
             val name = project.propertyOr("mod.name", project.name, false)
             val id = project.propertyOr("mod.id", name.lowercase(Locale.US).replace(" ", "_"), false)
@@ -29,5 +33,7 @@ data class ModData(
             project.extensions.add("modData", data)
             return data
         }
+
     }
+
 }

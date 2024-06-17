@@ -1,9 +1,7 @@
-package dev.deftu.gradle
+package dev.deftu.gradle.utils
 
+import dev.deftu.gradle.ToolkitConstants
 import org.gradle.api.Project
-import dev.deftu.gradle.utils.Constants
-import dev.deftu.gradle.utils.propertyBoolOr
-import dev.deftu.gradle.utils.propertyOr
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
 
@@ -13,18 +11,18 @@ data class GitData(
     val commit: String,
     val url: String
 ) {
+
     fun shouldAppendVersion(project: Project): Boolean {
         return present && project.propertyBoolOr("gitdata.version", default = false, prefix = false)
     }
 
     companion object {
+
         private val debug: Boolean
-            get() = Constants.debug || System.getProperty("dgt.debug.git", "false").toBoolean()
+            get() = ToolkitConstants.debug || System.getProperty("dgt.debug.git", "false").toBoolean()
+
         private val errorOutput: OutputStream?
             get() = if (debug) System.err else ByteArrayOutputStream()
-
-        val ciBuild: Boolean
-            get() = System.getenv("GITHUB_ACTIONS") == "true"
 
         @JvmStatic
         fun from(project: Project): GitData {
@@ -45,7 +43,7 @@ data class GitData(
                 commandLine(*command)
                 isIgnoreExitValue = true
                 standardOutput = output
-                errorOutput = this@Companion.errorOutput
+                errorOutput = Companion.errorOutput
             }
 
             return output
@@ -89,5 +87,6 @@ data class GitData(
                 ""
             }
         }
+
     }
 }

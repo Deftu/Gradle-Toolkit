@@ -1,4 +1,4 @@
-package dev.deftu.gradle.tools
+package dev.deftu.gradle.tools.publishing
 
 import org.gradle.api.Project
 import org.gradle.api.provider.Property

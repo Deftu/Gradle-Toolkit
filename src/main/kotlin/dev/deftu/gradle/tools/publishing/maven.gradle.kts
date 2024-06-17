@@ -1,9 +1,5 @@
-package dev.deftu.gradle.tools
+package dev.deftu.gradle.tools.publishing
 
-import dev.deftu.gradle.MCData
-import dev.deftu.gradle.ModData
-import dev.deftu.gradle.ModLoader
-import dev.deftu.gradle.ProjectData
 import dev.deftu.gradle.utils.*
 
 plugins {
@@ -37,11 +33,11 @@ afterEvaluate {
         if (extension.setupPublication.getOrElse(true)) {
             publications {
                 create<MavenPublication>("mavenJava") {
-                    if (modData.present) {
-                        artifactId = if (isMultiversionProject()) "${extension.getArtifactName(true)}-${mcData.versionStr}-${mcData.loader.name}" else extension.getArtifactName(true)
+                    if (modData.isPresent) {
+                        artifactId = if (isMultiversionProject()) "${extension.getArtifactName(true)}-${mcData.version}-${mcData.loader.friendlyString}" else extension.getArtifactName(true)
                         groupId = modData.group
                         version = modData.version
-                    } else if (projectData.present) {
+                    } else if (projectData.isPresent) {
                         artifactId = extension.getArtifactName(false)
                         groupId = projectData.group
                         version = projectData.version
@@ -53,7 +49,7 @@ afterEvaluate {
                             classifier = null
                         }
 
-                        artifact(getFixedSourcesJarTask())
+                        artifact(getSourcesJarTask())
 
                         pluginManager.withPlugin("java") {
                             val javadocJar = project.tasks.findByName("javadocJar") as Jar?
@@ -113,7 +109,7 @@ afterEvaluate {
             rootProject.tasks.create(name) {
                 group = "publishing"
                 project.subprojects.map(Project::getName).filter { name ->
-                    ModLoader.all.any { loader ->
+                    ModLoader.values().any { loader ->
                         name.endsWith("-${loader.name}", true)
                     }
                 }.forEach { version ->

@@ -1,9 +1,11 @@
 package dev.deftu.gradle.utils
 
-import dev.deftu.gradle.MCData
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 
+/**
+ * Optionally shades a dependency into the outputted JAR file if the shadow plugin is present.
+ */
 val Project.shadeOptionally: Configuration
     get() = try {
         configurations.getByName("shadeOptional")
@@ -15,6 +17,7 @@ val Project.shadeOptionally: Configuration
 
         configuration
     }
+
 
 val Project.includeOrShade: Configuration
     get() = try {

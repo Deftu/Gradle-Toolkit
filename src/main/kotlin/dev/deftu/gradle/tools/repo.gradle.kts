@@ -7,9 +7,9 @@ repositories {
     mavenLocal()
 
     // General
-    optionalMaven("repo.deftu.releases", "Deftu Releases", "https://maven.deftu.xyz/releases/")
+    optionalMaven("repo.deftu.releases", "Deftu Releases", "https://maven.deftu.dev/releases/")
     optionalMaven("repo.jitpack", "JitPack", "https://jitpack.io/")
-    optionalMaven("repo.deftu.snapshots", "Deftu Snapshots", "https://maven.deftu.xyz/snapshots/")
+    optionalMaven("repo.deftu.snapshots", "Deftu Snapshots", "https://maven.deftu.dev/snapshots/")
 
     // Minecraft
     optionalMaven("repo.essential", "Essential", "https://repo.essential.gg/repository/maven-public/")

@@ -1,20 +1,18 @@
 package dev.deftu.gradle.tools.minecraft
 
-import net.fabricmc.loom.api.LoomGradleExtensionAPI
+import dev.deftu.gradle.ToolkitConstants
+import dev.deftu.gradle.utils.*
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
-import dev.deftu.gradle.GameInfo
-import dev.deftu.gradle.MCData
-import dev.deftu.gradle.utils.GameSide
-import dev.deftu.gradle.utils.withLoom
 import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.*
-import org.jetbrains.kotlin.gradle.utils.property
+import java.io.File
 import java.util.*
 
 abstract class LoomHelperExtension(
     val project: Project
 ) {
+
     internal var usingKotlinForForge = false
         private set
 
@@ -63,7 +61,7 @@ abstract class LoomHelperExtension(
     fun useArgument(key: String, value: String, side: GameSide) = apply {
         project.withLoom {
             when (side) {
-                GameSide.GLOBAL -> runConfigs.all { programArgs(key, value) }
+                GameSide.BOTH -> runConfigs.all { programArgs(key, value) }
                 else -> runConfigs[side.name.lowercase(Locale.US)].programArgs(key, value)
             }
         }
@@ -76,7 +74,7 @@ abstract class LoomHelperExtension(
     fun useProperty(key: String, value: String, side: GameSide) = apply {
         project.withLoom {
             when (side) {
-                GameSide.GLOBAL -> runConfigs.all { property(key, value) }
+                GameSide.BOTH -> runConfigs.all { property(key, value) }
                 else -> runConfigs[side.name.lowercase(Locale.US)].property(key, value)
             }
         }
@@ -97,11 +95,14 @@ abstract class LoomHelperExtension(
                     val theAttributes = mutableMapOf<String, Any>(
                         "TweakClass" to value
                     )
-                    if (mcData.isLegacyForge) theAttributes.apply {
-                        this["ForceLoadAsMod"] = true
-                        this["TweakOrder"] = "0"
-                        if (side != GameSide.GLOBAL) this["Side"] = side.name.lowercase(Locale.US)
-                    }
+
+                    if (mcData.isLegacyForge)
+                        theAttributes.apply {
+                            this["ForceLoadAsMod"] = true
+                            this["TweakOrder"] = "0"
+                            if (side != GameSide.BOTH) this["Side"] = side.name.lowercase(Locale.US)
+                        }
+
                     attributes(theAttributes)
                 }
             }
@@ -120,11 +121,14 @@ abstract class LoomHelperExtension(
                     val theAttributes = mutableMapOf<String, Any>(
                         "FMLCorePlugin" to value
                     )
-                    if (mcData.isLegacyForge) theAttributes.apply {
-                        this["ForceLoadAsMod"] = true
-                        this["FMLCorePluginContainsFMLMod"] = true
-                        if (side != GameSide.GLOBAL) this["Side"] = side.name.lowercase(Locale.US)
-                    }
+
+                    if (mcData.isLegacyForge)
+                        theAttributes.apply {
+                            this["ForceLoadAsMod"] = true
+                            this["FMLCorePluginContainsFMLMod"] = true
+                            if (side != GameSide.BOTH) this["Side"] = side.name.lowercase(Locale.US)
+                        }
+
                     attributes(theAttributes)
                 }
             }
@@ -134,8 +138,8 @@ abstract class LoomHelperExtension(
     @JvmOverloads
     fun useKotlinForForge(notation: String = "thedarkcolour:kotlinforforge:") = apply {
         val mcData = MCData.from(project)
-        if (mcData.present) {
-            val version = GameInfo.fetchKotlinForForgeVersion(mcData.version)
+        if (mcData.isPresent) {
+            val version = MinecraftInfo.ForgeLike.getKotlinForForgeVersion(mcData.version)
 
             project.repositories {
                 maven("https://thedarkcolour.github.io/KotlinForForge/")
@@ -151,15 +155,78 @@ abstract class LoomHelperExtension(
     }
 
     /**
-     * Disables game run configs for
-     * the specified game state.
+     * Disables game run configs for the specified game side.
      */
     fun disableRunConfigs(side: GameSide) = apply {
         project.withLoom {
             when (side) {
-                GameSide.GLOBAL -> runConfigs.all { isIdeConfigGenerated = false }
+                GameSide.BOTH -> runConfigs.all { isIdeConfigGenerated = false }
                 else -> runConfigs[side.name.lowercase(Locale.US)].isIdeConfigGenerated = false
             }
         }
     }
+
+    /**
+     * Adds Essential as a dependency, also shading/bundling the loader
+     */
+    fun useEssential() {
+        val repo = "https://repo.essential.gg/repository/maven-public"
+        project.repositories.maven {
+            url = project.uri(repo)
+        }
+
+        val mcData = MCData.from(project)
+        val loaderDependency = "gg.essential:" + if (mcData.isForge) "loader-launchwrapper" else "loader-fabric"
+
+        val cacheDir = File(project.gradle.projectCacheDir, ".essential-version-cache").apply { mkdirs() }
+        val globalCacheDir = File(ToolkitConstants.dir, ".essential-version-cache").apply { mkdirs() }
+
+        val cachedLoaderFilename = "${mcData.version}-${mcData.loader.friendlyString}-LOADER.txt"
+        val loaderVersion =
+            DependencyHelper.fetchLatestReleaseOrCached(repo, loaderDependency, cacheDir.resolve(cachedLoaderFilename)) ?:
+            DependencyHelper.fetchLatestReleaseOrCached(repo, loaderDependency, globalCacheDir.resolve(cachedLoaderFilename)) ?:
+            throw IllegalStateException("Failed to fetch latest Essential loader version.")
+
+        if (mcData.isFabric) {
+            // JiJ (Jar-in-Jar) the loader
+            project.dependencies.add("include", "$loaderDependency:$loaderVersion")
+        } else {
+            // Embed the loader
+            val usingShadow = project.pluginManager.hasPlugin("dev.deftu.gradle.tools.shadow")
+            project.dependencies.add(if (usingShadow) "shade" else "implementation", "$loaderDependency:$loaderVersion")
+            if (!usingShadow) project.logger.warn("It is recommended to use DGT Shadow to embed the Essential loader inside your built mod JAR.")
+        }
+
+        val cachedApiFilename = "${mcData.version}-${mcData.loader.friendlyString}-API.txt"
+        val apiDependency = "gg.essential:essential-${mcData.version}-${mcData.loader.friendlyString}"
+        val apiVersion =
+            DependencyHelper.fetchLatestReleaseOrCached(repo, apiDependency, cacheDir.resolve(cachedApiFilename)) ?:
+            DependencyHelper.fetchLatestReleaseOrCached(repo, apiDependency, globalCacheDir.resolve(cachedApiFilename)) ?:
+            throw IllegalStateException("Failed to fetch latest Essential API version.")
+        project.dependencies.add("compileOnly", "$apiDependency:$apiVersion")
+    }
+
+    /**
+     * Allows you to use DevAuth while in the development environment.
+     */
+    fun useDevAuth() {
+        val repo = "https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1"
+        project.repositories.maven {
+            url = project.uri(repo)
+        }
+
+        val mcData = MCData.from(project)
+
+        val cacheDir = File(project.gradle.projectCacheDir, ".devauth-version-cache").apply { mkdirs() }
+        val globalCacheDir = File(ToolkitConstants.dir, ".devauth-version-cache").apply { mkdirs() }
+
+        val module = if (mcData.isFabric) "fabric" else if (mcData.isForge && mcData.version <= MinecraftVersion.VERSION_1_12_2) "forge-legacy" else "forge-latest"
+        val dependency = "me.djtheredstoner:DevAuth-$module"
+        val version =
+            DependencyHelper.fetchLatestReleaseOrCached(repo, dependency, cacheDir.resolve("$module.txt")) ?:
+            DependencyHelper.fetchLatestReleaseOrCached(repo, dependency, globalCacheDir.resolve("$module.txt")) ?:
+            throw IllegalStateException("Failed to fetch latest DevAuth version.")
+        project.dependencies.add("modRuntimeOnly", "$dependency:$version")
+    }
+
 }

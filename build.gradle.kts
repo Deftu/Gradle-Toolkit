@@ -1,11 +1,11 @@
 plugins {
     kotlin("jvm") version("2.0.0")
     `kotlin-dsl`
-    val dgt = "1.26.0"
+    val dgt = "2.0.0-beta+6"
     id("dev.deftu.gradle.tools.repo") version(dgt)
     id("dev.deftu.gradle.tools.configure") version(dgt)
-    id("dev.deftu.gradle.tools.maven-publishing") version(dgt)
-    id("dev.deftu.gradle.tools.github-publishing") version(dgt)
+    id("dev.deftu.gradle.tools.publishing.maven-publishing") version(dgt)
+    id("dev.deftu.gradle.tools.publishing.github-publishing") version(dgt)
 }
 
 toolkitGitHubPublishing {
@@ -38,7 +38,7 @@ dependencies {
     implementation(kotlin("gradle-plugin"))
 
     // Architectury Loom
-    implementation("gg.essential:architectury-loom:1.6.16")
+    implementation("gg.essential:architectury-loom:1.6.17")
     implementation("dev.architectury:architectury-pack200:0.1.3")
 
     // Preprocessing/multi-versioning

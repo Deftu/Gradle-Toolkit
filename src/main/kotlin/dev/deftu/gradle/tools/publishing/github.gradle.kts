@@ -1,14 +1,7 @@
-package dev.deftu.gradle.tools
+package dev.deftu.gradle.tools.publishing
 
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseExtension
-import dev.deftu.gradle.GitData
-import dev.deftu.gradle.MCData
-import dev.deftu.gradle.ModData
-import dev.deftu.gradle.ProjectData
-import dev.deftu.gradle.utils.VersionType
-import dev.deftu.gradle.utils.getFixedSourcesJarTask
-import dev.deftu.gradle.utils.isMultiversionProject
-import dev.deftu.gradle.utils.propertyOr
+import dev.deftu.gradle.utils.*
 import java.nio.charset.StandardCharsets
 import java.util.*
 
@@ -35,10 +28,10 @@ fun GitHubPublishingExtension.getReleaseName(): String {
                 if (mcData.isFabric && minecraft.describeFabricWithQuilt.get()) {
                     append("Fabric/Quilt")
                 } else {
-                    append(mcData.loader.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.US) else it.toString() })
+                    append(mcData.loader.friendlyName)
                 }
 
-                append(" ").append(mcData.versionStr)
+                append(" ").append(mcData.version)
             }
         }
 
@@ -47,8 +40,8 @@ fun GitHubPublishingExtension.getReleaseName(): String {
         }
     }
 
-    val backupName = if (modData.present) modData.name else projectData.name
-    val backupVersion = if (modData.present) modData.version else projectData.version
+    val backupName = if (modData.isPresent) modData.name else projectData.name
+    val backupVersion = if (modData.isPresent) modData.version else projectData.version
     return "$prefix$backupName $backupVersion"
 }
 
@@ -68,9 +61,9 @@ fun GitHubPublishingExtension.getReleaseVersion(): String {
         if (isMultiversionProject()) {
             content += buildString {
                 if (includingGitData) append("+")
-                append(mcData.versionStr)
+                append(mcData.version)
                 append("-")
-                append(mcData.loader.name)
+                append(mcData.loader.friendlyString)
             }
         }
 
@@ -80,12 +73,12 @@ fun GitHubPublishingExtension.getReleaseVersion(): String {
         }
     }
 
-    val backupVersion = if (modData.present) modData.version else projectData.version
+    val backupVersion = if (modData.isPresent) modData.version else projectData.version
     return "${version.getOrElse(backupVersion)}${suffix}"
 }
 
 fun GitHubPublishingExtension.getUploadFile(): Zip {
-    val backupJar = if (modData.present)
+    val backupJar = if (modData.isPresent)
         tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get()
     else tasks.named<org.gradle.jvm.tasks.Jar>("jar").get()
     return file.getOrElse(backupJar)
@@ -94,7 +87,7 @@ fun GitHubPublishingExtension.getUploadFile(): Zip {
 fun GitHubPublishingExtension.shouldAddSourcesJar() = useSourcesJar.getOrElse(false) && tasks.findByName("sourcesJar") != null
 fun GitHubPublishingExtension.shouldAddJavadocJar() = useJavadocJar.getOrElse(false) && tasks.findByName("javadocJar") != null
 
-fun GitHubPublishingExtension.getSourcesJar() = sourcesJar.getOrElse(getFixedSourcesJarTask().get())
+fun GitHubPublishingExtension.getSourcesJar() = sourcesJar.getOrElse(getSourcesJarTask().get())
 fun GitHubPublishingExtension.getJavadocJar() = javadocJar.getOrElse(tasks.named<Jar>("javadocJar").get())
 
 fun getGitHubToken(): String? {
