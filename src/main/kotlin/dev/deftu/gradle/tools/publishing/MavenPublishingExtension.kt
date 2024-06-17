@@ -7,10 +7,12 @@ abstract class MavenPublishingExtension(
     val project: Project
 ) {
     abstract val artifactName: Property<String>
+    abstract val forceLowercase: Property<Boolean>
     abstract val setupPublication: Property<Boolean>
     abstract val setupRepositories: Property<Boolean>
 
     init {
+        forceLowercase.convention(true)
         setupPublication.convention(true)
         setupRepositories.convention(true)
     }

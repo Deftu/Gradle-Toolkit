@@ -1,6 +1,7 @@
 package dev.deftu.gradle.tools.publishing
 
 import dev.deftu.gradle.utils.*
+import java.util.*
 
 plugins {
     `maven-publish`
@@ -34,7 +35,13 @@ afterEvaluate {
             publications {
                 create<MavenPublication>("mavenJava") {
                     if (modData.isPresent) {
-                        artifactId = if (isMultiversionProject()) "${extension.getArtifactName(true)}-${mcData.version}-${mcData.loader.friendlyString}" else extension.getArtifactName(true)
+                        artifactId = (if (isMultiversionProject()) {
+                            "${extension.getArtifactName(true)}-${mcData.version}-${mcData.loader.friendlyString}"
+                        } else extension.getArtifactName(true))
+                        if (extension.forceLowercase.getOrElse(false)) {
+                            artifactId = artifactId.lowercase(Locale.US)
+                        }
+
                         groupId = modData.group
                         version = modData.version
                     } else if (projectData.isPresent) {
