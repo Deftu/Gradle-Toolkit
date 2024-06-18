@@ -15,7 +15,7 @@ setupLoom()
 setupPreprocessor()
 
 fun setupLoom() {
-    extra.set("loom.platform", mcData.loader.loomPlatform)
+    extra.set("loom.platform", mcData.loader.friendlyString)
     apply<LoomGradlePluginBootstrap>()
 }
 

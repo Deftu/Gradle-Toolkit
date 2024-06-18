@@ -45,7 +45,7 @@ abstract class ReleasingExtension(
         versionType.convention(VersionType.RELEASE)
         detectVersionType.convention(false)
         gameVersions.set(listOf(mcData.version.toString()))
-        loaders.set(listOf(mcData.loader.modrinthName))
+        loaders.set(listOf(mcData.loader.friendlyString))
         describeFabricWithQuilt.convention(false)
         useSourcesJar.convention(false)
         useJavadocJar.convention(false)

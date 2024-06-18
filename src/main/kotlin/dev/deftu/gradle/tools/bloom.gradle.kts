@@ -20,6 +20,7 @@ bloom {
     if (mcData.isPresent) {
         replacement("@MC_VERSION@", mcData.version)
         replacement("@MOD_LOADER@", mcData.loader.friendlyString)
+        replacement("@FORMATTED_MOD_LOADER@", mcData.loader.friendlyName)
     }
 
     if (modData.isPresent) {

@@ -15,7 +15,7 @@ plugins {
 
 val mcData = MCData.from(project)
 val extension = extensions.create("toolkitLoomHelper", LoomHelperExtension::class)
-extra.set("loom.platform", mcData.loader.loomPlatform)
+extra.set("loom.platform", mcData.loader.friendlyString)
 
 loom {
     runConfigs {

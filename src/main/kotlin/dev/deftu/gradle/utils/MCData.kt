@@ -1,7 +1,6 @@
 package dev.deftu.gradle.utils
 
 import dev.deftu.gradle.exceptions.LoaderSpecificException
-import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 
 class MCDependencies(
@@ -78,7 +77,7 @@ class MCDependencies(
 
         val neoForgedVersion: String
             get() {
-                if (!mcData.isNeoForged) throw LoaderSpecificException(ModLoader.NEOFORGED)
+                if (!mcData.isNeoForged) throw LoaderSpecificException(ModLoader.NEOFORGE)
 
                 return MinecraftInfo.NeoForged.getNeoForgedVersion(mcData.version)
             }
@@ -104,7 +103,7 @@ data class MCData(
         get() = loader == ModLoader.FORGE
 
     val isNeoForged: Boolean
-        get() = loader == ModLoader.NEOFORGED
+        get() = loader == ModLoader.NEOFORGE
 
     val isForgeLike: Boolean
         get() = isForge || isNeoForged
@@ -148,7 +147,6 @@ data class MCData(
             if (!isValidProject) return MCData(false, MinecraftVersion.UNKNOWN, ModLoader.OTHER)
 
             val (major, minor, patch) = match(project.minecraftVersion)
-            project.logger.lifecycle("Detected Minecraft version: $major.$minor.$patch - Loader: ${project.modLoader.friendlyName}")
             val data = MCData(true, MinecraftVersion.from(major, minor, patch), project.modLoader)
             project.extensions.add("mcData", data)
             return data
