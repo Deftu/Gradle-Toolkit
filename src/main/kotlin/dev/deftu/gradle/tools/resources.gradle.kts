@@ -133,7 +133,7 @@ afterEvaluate {
 
         if (!mcData.isFabric) exclude("fabric.mod.json")
         if (!mcData.isModLauncher) exclude("META-INF/mods.toml")
-        if (!mcData.isNeoForged) exclude("META-INF/neoforged.mods.toml")
+        if (!mcData.isNeoForged) exclude("META-INF/neoforge.mods.toml")
         if (!mcData.isLegacyForge) exclude("mcmod.info")
     }
 }
