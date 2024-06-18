@@ -2,12 +2,13 @@ package dev.deftu.gradle.utils
 
 enum class ModLoader(
     val friendlyName: String,
-    val loomPlatform: String
+    val loomPlatform: String,
+    val modrinthName: String,
 ) {
-    NEOFORGED("NeoForge", "neoforge"),
-    FORGE("Forge", "forge"),
-    FABRIC("Fabric", "fabric"),
-    OTHER("Unknown", "");
+    NEOFORGED("NeoForge", "neoforge", "neoforge"),
+    FORGE("Forge", "forge", "forge"),
+    FABRIC("Fabric", "fabric", "fabric"),
+    OTHER("Unknown", "", "");
 
     val friendlyString: String
         get() = name.lowercase()

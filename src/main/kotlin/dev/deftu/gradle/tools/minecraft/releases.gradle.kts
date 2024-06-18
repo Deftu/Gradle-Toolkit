@@ -79,7 +79,7 @@ fun ReleasingExtension.getReleaseVersion(): String {
 fun ReleasingExtension.getUploadFile() = file.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get())
 
 fun ReleasingExtension.getGameVersions() = gameVersions.getOrElse(listOf(mcData.version.toString()))
-fun ReleasingExtension.getLoaders(capitalized: Boolean) = loaders.getOrElse(listOf(mcData.loader.friendlyString)).map { loader ->
+fun ReleasingExtension.getLoaders(capitalized: Boolean) = loaders.getOrElse(listOf(mcData.loader.modrinthName)).map { loader ->
     if (capitalized) loader.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.US) else it.toString() } else loader
 }
 
