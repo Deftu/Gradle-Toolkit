@@ -135,10 +135,10 @@ abstract class LoomHelperExtension(
         }
     }
 
-    @JvmOverloads
-    fun useKotlinForForge(notation: String = "thedarkcolour:kotlinforforge:") = apply {
+    fun useKotlinForForge() = apply {
         val mcData = MCData.from(project)
         if (mcData.isPresent) {
+            val notation = "thedarkcolour:kotlinforforge"
             val version = MinecraftInfo.ForgeLike.getKotlinForForgeVersion(mcData.version)
 
             project.repositories {
@@ -146,8 +146,12 @@ abstract class LoomHelperExtension(
             }
 
             project.dependencies {
-                val finalNotation = if (notation.endsWith(':')) notation else "$notation:"
-                add("implementation", "$finalNotation$version")
+                val finalNotation = buildString {
+                    append(notation.removeSuffix(":"))
+                    if (mcData.isNeoForge) append("-neoforge")
+                }
+
+                add("implementation", "$finalNotation:$version")
             }
 
             usingKotlinForForge = true
