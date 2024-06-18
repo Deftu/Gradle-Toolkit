@@ -25,7 +25,7 @@ loom {
     }
 }
 
-if (mcData.isNeoForged) {
+if (mcData.isNeoForge) {
     repositories {
         maven("https://maven.neoforged.net/releases")
     }
@@ -62,7 +62,7 @@ dependencies {
             }
 
             mcData.isFabric -> modImplementation("net.fabricmc:fabric-loader:${mcData.dependencies.fabric.fabricLoaderVersion}")
-            mcData.isNeoForged -> "neoForge"("net.neoforged:neoforge:${mcData.dependencies.neoForged.neoForgedVersion}")
+            mcData.isNeoForge -> "neoForge"("net.neoforged:neoforge:${mcData.dependencies.neoForged.neoForgedVersion}")
         }
     }
 }

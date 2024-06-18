@@ -77,7 +77,7 @@ class MCDependencies(
 
         val neoForgedVersion: String
             get() {
-                if (!mcData.isNeoForged) throw LoaderSpecificException(ModLoader.NEOFORGE)
+                if (!mcData.isNeoForge) throw LoaderSpecificException(ModLoader.NEOFORGE)
 
                 return MinecraftInfo.NeoForged.getNeoForgedVersion(mcData.version)
             }
@@ -102,11 +102,11 @@ data class MCData(
     val isForge: Boolean
         get() = loader == ModLoader.FORGE
 
-    val isNeoForged: Boolean
+    val isNeoForge: Boolean
         get() = loader == ModLoader.NEOFORGE
 
     val isForgeLike: Boolean
-        get() = isForge || isNeoForged
+        get() = isForge || isNeoForge
 
     val isModLauncher: Boolean
         get() = loader == ModLoader.FORGE && version >= MinecraftVersion.VERSION_1_14

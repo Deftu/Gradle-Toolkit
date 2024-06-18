@@ -24,8 +24,8 @@ fun setupPreprocessor() {
     extensions.configure<PreprocessExtension> {
         vars.put("MC", mcData.version.rawVersion)
         vars.put("FABRIC", if (mcData.isFabric) 1 else 0)
-        vars.put("FORGE-LIKE", if (mcData.isForge || mcData.isNeoForged) 1 else 0)
+        vars.put("FORGE-LIKE", if (mcData.isForge || mcData.isNeoForge) 1 else 0)
         vars.put("FORGE", if (mcData.isForge) 1 else 0)
-        vars.put("NEOFORGE", if (mcData.isNeoForged) 1 else 0)
+        vars.put("NEOFORGE", if (mcData.isNeoForge) 1 else 0)
     }
 }
