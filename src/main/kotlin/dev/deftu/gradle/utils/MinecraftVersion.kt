@@ -1,11 +1,12 @@
 package dev.deftu.gradle.utils
 
 import org.gradle.api.JavaVersion
+import java.io.Serializable
 
 /**
  * A class representing a version of Minecraft.
  */
-class MinecraftVersion private constructor(val rawVersion: Int) : Comparable<MinecraftVersion> {
+class MinecraftVersion private constructor(val rawVersion: Int) : Comparable<MinecraftVersion>, Serializable {
 
     val major: Int
         get() = rawVersion / 10000
@@ -52,6 +53,13 @@ class MinecraftVersion private constructor(val rawVersion: Int) : Comparable<Min
         }
 
         return false
+    }
+
+    override fun hashCode(): Int {
+        var result = major.hashCode()
+        result = 31 * result + minor.hashCode()
+        result = 31 * result + patch.hashCode()
+        return result
     }
 
     override fun toString(): String {
