@@ -80,6 +80,7 @@ afterEvaluate {
                 "**/fabric.mod.json",
                 "**/quilt.mod.json",
                 "**/META-INF/mods.toml",
+                "**/META-INF/neoforge.mods.toml",
                 "**/mixins.*.json",
                 "**/*.mixins.json"
             )
