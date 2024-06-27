@@ -115,6 +115,8 @@ afterEvaluate {
 
             rootProject.tasks.create(name) {
                 group = "publishing"
+                description = "Publish all versions of the mod to $repo"
+
                 project.subprojects.map(Project::getName).filter { name ->
                     ModLoader.values().any { loader ->
                         name.endsWith("-${loader.name}", true)
