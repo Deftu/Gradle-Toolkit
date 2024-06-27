@@ -55,6 +55,17 @@ class MCDependencies(
 
     }
 
+    inner class ForgeLike {
+
+        val kotlinForForgeVersion: String
+            get() {
+                if (!mcData.isForgeLike) throw LoaderSpecificException(ModLoader.FORGE)
+
+                return MinecraftInfo.ForgeLike.getKotlinForForgeVersion(mcData.version)
+            }
+
+    }
+
     inner class Forge {
 
         val forgeVersion: String
@@ -85,6 +96,7 @@ class MCDependencies(
     }
 
     val fabric = Fabric()
+    val forgeLike = ForgeLike()
     val forge = Forge()
     val neoForged = NeoForged()
 

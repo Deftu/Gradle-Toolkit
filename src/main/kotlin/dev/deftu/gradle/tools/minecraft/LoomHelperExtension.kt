@@ -48,6 +48,7 @@ abstract class LoomHelperExtension(
 
     @JvmOverloads
     fun useMixinRefMap(namespace: String, file: Boolean = false) {
+        val mcData = MCData.from(project)
         val value = if (file) namespace else "mixins.$namespace.refmap.json"
         project.withLoom {
             mixin.defaultRefmapName.set(value)
@@ -139,7 +140,6 @@ abstract class LoomHelperExtension(
         val mcData = MCData.from(project)
         if (mcData.isPresent) {
             val notation = "thedarkcolour:kotlinforforge"
-            val version = MinecraftInfo.ForgeLike.getKotlinForForgeVersion(mcData.version)
 
             project.repositories {
                 maven("https://thedarkcolour.github.io/KotlinForForge/")
@@ -151,7 +151,7 @@ abstract class LoomHelperExtension(
                     if (mcData.isNeoForge) append("-neoforge")
                 }
 
-                add("implementation", "$finalNotation:$version")
+                add("implementation", "$finalNotation:${mcData.dependencies.forgeLike.kotlinForForgeVersion}")
             }
 
             usingKotlinForForge = true
