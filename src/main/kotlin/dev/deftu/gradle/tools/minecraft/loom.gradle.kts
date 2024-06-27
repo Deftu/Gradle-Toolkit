@@ -44,7 +44,7 @@ dependencies {
                 else -> "official"
             }
         ).apply {
-            if (this == "official") {
+            if (this in setOf("official", "mojang", "mojmap")) {
                 mappings(loom.officialMojangMappings())
             } else {
                 mappings(this) {
