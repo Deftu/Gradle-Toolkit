@@ -16,7 +16,7 @@ extra.set("javax.xml.parsers.SAXParserFactory", "com.sun.org.apache.xerces.inter
 val mcData = MCData.from(project)
 setupLoom(mcData) {
     if (mcData.isLegacyFabric) {
-        intermediaryUrl.set("https://maven.legacyfabric.net/net/legacyfabric/intermediary/%1\\\$s/intermediary-%1\\\$s-v2.jar")
+        intermediaryUrl.set("https://maven.legacyfabric.net/net/legacyfabric/intermediary/%1\$s/intermediary-%1\$s-v2.jar")
     }
 }
 
