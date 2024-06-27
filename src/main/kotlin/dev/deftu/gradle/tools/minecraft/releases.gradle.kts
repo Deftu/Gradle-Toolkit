@@ -136,6 +136,7 @@ afterEvaluate {
 fun setupModrinth(token: String) {
     val projectId = extension.modrinth.projectId.orNull
     if (projectId.isNullOrBlank()) return
+
     apply<Minotaur>()
     configure<ModrinthExtension> {
         failSilently.set(true)
