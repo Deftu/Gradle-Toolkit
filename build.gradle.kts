@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm") version("2.0.0")
     `kotlin-dsl`
-    val dgt = "2.0.0"
+    val dgt = "2.0.9"
     id("dev.deftu.gradle.tools.repo") version(dgt)
     id("dev.deftu.gradle.tools.configure") version(dgt)
     id("dev.deftu.gradle.tools.publishing.maven") version(dgt)
