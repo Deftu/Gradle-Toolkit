@@ -3,7 +3,7 @@ package dev.deftu.gradle
 import com.replaymod.gradle.preprocess.PreprocessExtension
 import com.replaymod.gradle.preprocess.PreprocessPlugin
 import dev.deftu.gradle.utils.MCData
-import net.fabricmc.loom.bootstrap.LoomGradlePluginBootstrap
+import dev.deftu.gradle.utils.setupLoom
 
 plugins {
     java
@@ -11,13 +11,8 @@ plugins {
 
 val mcData = MCData.from(project)
 
-setupLoom()
+setupLoom(mcData)
 setupPreprocessor()
-
-fun setupLoom() {
-    extra.set("loom.platform", mcData.loader.friendlyString)
-    apply<LoomGradlePluginBootstrap>()
-}
 
 fun setupPreprocessor() {
     apply<PreprocessPlugin>()

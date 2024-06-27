@@ -1,9 +1,12 @@
 package dev.deftu.gradle.utils
 
 import net.fabricmc.loom.api.LoomGradleExtensionAPI
+import net.fabricmc.loom.bootstrap.LoomGradlePluginBootstrap
 import org.gradle.api.Action
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.extra
 import java.io.File
 
 private val loomIds = listOf(
@@ -34,6 +37,14 @@ fun Project.withLoom(action: Action<LoomGradleExtensionAPI>) {
                 action.execute(this)
             }
         }
+    }
+}
+
+fun Project.setupLoom(mcData: MCData, action: LoomGradleExtensionAPI.(MCData) -> Unit = {}) {
+    extra.set("loom.platform", mcData.loader.friendlyString)
+    apply<LoomGradlePluginBootstrap>()
+    withLoom {
+        action(mcData)
     }
 }
 

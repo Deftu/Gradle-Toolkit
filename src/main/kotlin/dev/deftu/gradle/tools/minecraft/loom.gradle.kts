@@ -2,20 +2,24 @@ package dev.deftu.gradle.tools.minecraft
 
 import dev.architectury.pack200.java.Pack200Adapter
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.extra
 import dev.deftu.gradle.utils.*
 import gradle.kotlin.dsl.accessors._0935894d714bf6b98fac60b9fc45a2f5.loom
 import gradle.kotlin.dsl.accessors._0935894d714bf6b98fac60b9fc45a2f5.mappings
 import gradle.kotlin.dsl.accessors._0935894d714bf6b98fac60b9fc45a2f5.minecraft
 import gradle.kotlin.dsl.accessors._0935894d714bf6b98fac60b9fc45a2f5.modImplementation
 
+val mcData = MCData.from(project)
+setupLoom(mcData) {
+    if (mcData.isLegacyFabric) {
+        intermediaryUrl.set("https://maven.legacyfabric.net/net/legacyfabric/intermediary/%1\\\$s/intermediary-%1\\\$s-v2.jar")
+    }
+}
+
 plugins {
     id("gg.essential.loom")
 }
 
-val mcData = MCData.from(project)
 val extension = extensions.create("toolkitLoomHelper", LoomHelperExtension::class)
-extra.set("loom.platform", mcData.loader.friendlyString)
 
 loom {
     runConfigs {
