@@ -13,7 +13,6 @@ extra.set("javax.xml.parsers.DocumentBuilderFactory", "com.sun.org.apache.xerces
 extra.set("javax.xml.transform.TransformerFactory", "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl")
 extra.set("javax.xml.parsers.SAXParserFactory", "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl")
 
-
 val mcData = MCData.from(project)
 setupLoom(mcData) {
     if (mcData.isLegacyFabric) {
@@ -35,9 +34,13 @@ loom {
     }
 }
 
-if (mcData.isNeoForge) {
-    repositories {
+repositories {
+    if (mcData.isNeoForge) {
         maven("https://maven.neoforged.net/releases")
+    }
+
+    if (mcData.isLegacyFabric) {
+        maven("https://repo.legacyfabric.net/repository/legacyfabric/")
     }
 }
 
