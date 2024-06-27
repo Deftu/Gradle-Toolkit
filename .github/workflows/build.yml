@@ -6,6 +6,8 @@ on:
       - "*"
     paths-ignore:
       - "README"
+      - "README.md"
+      - "LICENSE"
       - "LICENSE.md"
       - ".gitignore"
       - ".gitattributes"
