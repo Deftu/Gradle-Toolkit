@@ -49,8 +49,8 @@ dependencies {
     if (propertyBoolOr("loom.mappings.use", true)) {
         propertyOr(
             "loom.mappings", when {
-                mcData.isFabric -> "net.fabricmc:yarn:${mcData.dependencies.fabric.yarnVersion}"
                 mcData.isLegacyFabric -> "net.legacyfabric:yarn:${mcData.dependencies.legacyFabric.legacyYarnVersion}"
+                mcData.isFabric -> "net.fabricmc:yarn:${mcData.dependencies.fabric.yarnVersion}"
                 mcData.isForge && mcData.version <= MinecraftVersion.VERSION_1_15_2  -> mcData.dependencies.forge.mcpDependency
                 else -> "official"
             }
