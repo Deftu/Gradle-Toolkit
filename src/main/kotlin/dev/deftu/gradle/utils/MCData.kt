@@ -64,6 +64,13 @@ class MCDependencies(
                 return MinecraftInfo.LegacyFabric.getLegacyYarnVersion(mcData.version)
             }
 
+        val legacyFabricApiVersion: String
+            get() {
+                if (!mcData.isLegacyFabric) throw LoaderSpecificException(ModLoader.FABRIC)
+
+                return MinecraftInfo.LegacyFabric.getLegacyFabricApiVersion(mcData.version)
+            }
+
     }
 
     inner class ForgeLike {
