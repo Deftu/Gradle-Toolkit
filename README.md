@@ -37,6 +37,12 @@ Using it is as simple as applying the plugin to your project and using the `shad
 ### Dokka plugin
 The `dev.deftu.gradle.tools.dokka` plugin will automatically put your Dokka documentation inside of your Javadoc JAR, and requires nothing more than being applied to your project.
 
+### GitHub publishing plugin
+The `dev.deftu.gradle.tools.publishing.github` plugin will automatically configure your project to publish to GitHub releases, and has maximal configuration options. It's easiest to check the `GitHubPublishingExtension` class for all the properties.
+
+### Maven publishing plugin
+The `dev.deftu.gradle.tools.publishing.maven` plugin will automatically configure your project to publish to a Maven repository, and has maximal configuration options. It's easiest to check the `MavenPublishingExtension` class for all the properties.
+
 ---
 
 **This project is licensed under [LGPL-3.0][lgpl3].**\
