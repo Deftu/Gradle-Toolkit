@@ -55,6 +55,17 @@ class MCDependencies(
 
     }
 
+    inner class LegacyFabric {
+
+        val legacyYarnVersion: String
+            get() {
+                if (!mcData.isLegacyFabric) throw LoaderSpecificException(ModLoader.FABRIC)
+
+                return MinecraftInfo.LegacyFabric.getLegacyYarnVersion(mcData.version)
+            }
+
+    }
+
     inner class ForgeLike {
 
         val kotlinForForgeVersion: String
@@ -96,6 +107,7 @@ class MCDependencies(
     }
 
     val fabric = Fabric()
+    val legacyFabric = LegacyFabric()
     val forgeLike = ForgeLike()
     val forge = Forge()
     val neoForged = NeoForged()
@@ -110,6 +122,9 @@ data class MCData(
 
     val isFabric: Boolean
         get() = loader == ModLoader.FABRIC
+
+    val isLegacyFabric: Boolean
+        get() = loader == ModLoader.FABRIC && version < MinecraftVersion.VERSION_1_13_2
 
     val isForge: Boolean
         get() = loader == ModLoader.FORGE

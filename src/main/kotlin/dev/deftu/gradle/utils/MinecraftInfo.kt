@@ -129,6 +129,24 @@ object MinecraftInfo {
 
     }
 
+    object LegacyFabric {
+
+        private val legacyYarnVersions = MinecraftVersionMap(
+            MinecraftVersion.VERSION_1_13_2 to "1.13.2+build.541:v2",
+            MinecraftVersion.VERSION_1_12_2 to "1.12.2+build.541:v2",
+            MinecraftVersion.VERSION_1_11_2 to "1.11.2+build.541:v2",
+            MinecraftVersion.VERSION_1_10_2 to "1.10.2+build.541:v2",
+            MinecraftVersion.VERSION_1_9_4 to "1.9.4+build.541:v2",
+            MinecraftVersion.VERSION_1_8_9 to "1.8.9+build.541:v2"
+        )
+
+        @JvmStatic
+        fun getLegacyYarnVersion(version: MinecraftVersion): String {
+            return legacyYarnVersions[version] ?: throw IllegalArgumentException("Unknown version for (legacy) Yarn mappings: $version")
+        }
+
+    }
+
     object ForgeLike {
 
         @JvmStatic
