@@ -35,5 +35,5 @@ val Project.includeOrShade: Configuration
             childConfig.extendsFrom(configuration)
 
             configuration
-        } else throw IllegalStateException("${project.name} does not have the required plugins to use includeOrShade (dev.deftu.gradle.tools.minecraft.loom, dev.deftu.gradle.tools.shadow)")
+        } else throw IllegalStateException("${project.name} does not have the required plugins to use includeOrShade")
     }
