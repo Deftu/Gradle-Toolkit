@@ -106,7 +106,7 @@ if (mcData.isLegacyForge) {
         }
 
         if (isShadowPluginPresent) {
-            named<Jar>("fatJar") {
+            named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("fatJar") {
                 applyExclusions()
             }
         }
