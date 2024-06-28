@@ -45,7 +45,7 @@ afterEvaluate {
                     moveBuilds()
                 }
             }
-            
+
             if (isShadowPluginPresent) {
                 named<Jar>("fatJar") {
                     moveBuilds()
