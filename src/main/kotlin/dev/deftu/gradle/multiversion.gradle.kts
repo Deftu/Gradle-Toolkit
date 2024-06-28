@@ -2,15 +2,14 @@ package dev.deftu.gradle
 
 import com.replaymod.gradle.preprocess.PreprocessExtension
 import com.replaymod.gradle.preprocess.PreprocessPlugin
-import dev.deftu.gradle.utils.MCData
-import dev.deftu.gradle.utils.ModLoader
-import dev.deftu.gradle.utils.setupLoom
+import dev.deftu.gradle.utils.*
 
 plugins {
     java
 }
 
 val mcData = MCData.from(project)
+val extension = extensions.create("toolkitMultiversion", MultiVersionExtension::class)
 
 // Set up `loom.platform` and apply Loom
 setupLoom(mcData)
@@ -23,6 +22,37 @@ extensions.configure<PreprocessExtension> {
     vars.put("FORGE-LIKE", if (mcData.isForge || mcData.isNeoForge) 1 else 0)
     vars.put("FORGE", if (mcData.isForge) 1 else 0)
     vars.put("NEOFORGE", if (mcData.isNeoForge) 1 else 0)
+}
+
+// Move builds to the new directory if the extension wants us too
+afterEvaluate {
+    if (extension.moveBuildsToRootProject.getOrElse(false)) {
+        val newBuildDestinationDirectory by lazy {
+            rootProject.layout.buildDirectory.asFile.get().resolve("versions")
+        }
+
+        fun Jar.moveBuilds() {
+            destinationDirectory.set(newBuildDestinationDirectory)
+        }
+
+        tasks {
+            jar {
+                moveBuilds()
+            }
+
+            if (isLoomPluginPresent) {
+                named<Jar>("remapJar") {
+                    moveBuilds()
+                }
+            }
+            
+            if (isShadowPluginPresent) {
+                named<Jar>("fatJar") {
+                    moveBuilds()
+                }
+            }
+        }
+    }
 }
 
 // Define root tasks for ease-of-use
