@@ -92,6 +92,27 @@ if (mcData.isModLauncher) {
     }
 }
 
+if (mcData.isLegacyForge) {
+    tasks {
+        fun Jar.applyExclusions() {
+            exclude("META-INF/versions/**")
+            exclude("META-INF/proguard/**")
+            exclude("META-INF/maven/**")
+            exclude("META-INF/com.android.tools/**")
+        }
+
+        named<Jar>("jar") {
+            applyExclusions()
+        }
+
+        if (isShadowPluginPresent) {
+            named<Jar>("fatJar") {
+                applyExclusions()
+            }
+        }
+    }
+}
+
 afterEvaluate {
     if (extension.appleSiliconFix.get()) {
         if (
