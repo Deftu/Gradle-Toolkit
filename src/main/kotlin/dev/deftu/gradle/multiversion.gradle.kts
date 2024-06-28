@@ -3,6 +3,7 @@ package dev.deftu.gradle
 import com.replaymod.gradle.preprocess.PreprocessExtension
 import com.replaymod.gradle.preprocess.PreprocessPlugin
 import dev.deftu.gradle.utils.*
+import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
     java
@@ -31,24 +32,20 @@ afterEvaluate {
             rootProject.layout.buildDirectory.asFile.get().resolve("versions")
         }
 
-        fun Jar.moveBuilds() {
-            destinationDirectory.set(newBuildDestinationDirectory)
-        }
-
         tasks {
             jar {
-                moveBuilds()
+                destinationDirectory.set(newBuildDestinationDirectory)
             }
 
             if (isLoomPluginPresent) {
-                named<Jar>("remapJar") {
-                    moveBuilds()
+                named<RemapJarTask>("remapJar") {
+                    destinationDirectory.set(newBuildDestinationDirectory)
                 }
             }
 
             if (isShadowPluginPresent) {
                 named<Jar>("fatJar") {
-                    moveBuilds()
+                    destinationDirectory.set(newBuildDestinationDirectory)
                 }
             }
         }
