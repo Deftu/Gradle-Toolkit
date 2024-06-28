@@ -11,7 +11,7 @@ val Project.shadeOptionally: Configuration
         configurations.getByName("shadeOptional")
     } catch (e: Throwable) {
         val configuration = configurations.create("shadeOptional")
-        pluginManager.withPlugin("dev.deftu.gradle.tools.shadow") {
+        if (isShadowPluginPresent) {
             configuration.extendsFrom(configurations.getByName("shade"))
         }
 
@@ -24,8 +24,8 @@ val Project.includeOrShade: Configuration
         configurations.getByName("includeOrShade")
     } catch (e: Throwable) {
         if (
-            pluginManager.hasPlugin("dev.deftu.gradle.tools.minecraft.loom") &&
-            pluginManager.hasPlugin("dev.deftu.gradle.tools.shadow")
+            isLoomPluginPresent &&
+            isShadowPluginPresent
         ) {
             val mcData = MCData.from(project)
             val configuration = configurations.create("includeOrShade")
