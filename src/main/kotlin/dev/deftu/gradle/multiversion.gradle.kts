@@ -42,12 +42,6 @@ afterEvaluate {
                     destinationDirectory.set(newBuildDestinationDirectory)
                 }
             }
-
-            if (isShadowPluginPresent) {
-                named<Jar>("fatJar") {
-                    destinationDirectory.set(newBuildDestinationDirectory)
-                }
-            }
         }
     }
 }
