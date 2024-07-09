@@ -34,6 +34,23 @@ data class ModData(
             return data
         }
 
+        @JvmStatic
+        fun populateFrom(project: Project, projectData: ProjectData) {
+            val extension = project.extensions.findByName("modData") as ModData?
+            if (extension != null) {
+                return
+            }
+
+            if (!project.hasProperty("mod.id")) {
+                return
+            }
+
+            project.logger.lifecycle("Populating ModData from ProjectData of ${projectData.name}")
+            val id = project.propertyOr("mod.id", projectData.name.lowercase(Locale.US).replace(" ", "_"), false)
+            val data = ModData(true, projectData.name, id, projectData.version, projectData.group, projectData.description)
+            project.extensions.add("modData", data)
+        }
+
     }
 
 }
