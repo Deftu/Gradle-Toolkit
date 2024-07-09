@@ -151,7 +151,13 @@ abstract class LoomHelperExtension(
                     if (mcData.isNeoForge) append("-neoforge")
                 }
 
-                add("implementation", "$finalNotation:${mcData.dependencies.forgeLike.kotlinForForgeVersion}")
+                add("implementation", "$finalNotation:${mcData.dependencies.forgeLike.kotlinForForgeVersion}") {
+                    // LexForge
+                    exclude(group = "net.minecraftforge.fmlloader")
+
+                    // NeoForge
+                    exclude(group = "net.neoforged.fancymodloader", module = "loader")
+                }
             }
 
             usingKotlinForForge = true
