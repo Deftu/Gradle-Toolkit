@@ -38,9 +38,6 @@ afterEvaluate {
                         artifactId = (if (isMultiversionProject()) {
                             "${extension.getArtifactName(true)}-${mcData.version}-${mcData.loader.friendlyString}"
                         } else extension.getArtifactName(true))
-                        if (extension.forceLowercase.getOrElse(false)) {
-                            artifactId = artifactId.lowercase(Locale.US)
-                        }
 
                         groupId = modData.group
                         version = modData.version
@@ -48,6 +45,10 @@ afterEvaluate {
                         artifactId = extension.getArtifactName(false)
                         groupId = projectData.group
                         version = projectData.version
+                    }
+
+                    if (extension.forceLowercase.getOrElse(false)) {
+                        artifactId = artifactId.lowercase(Locale.US)
                     }
 
                     if (pluginManager.hasPlugin("dev.deftu.gradle.tools.shadow")) {
