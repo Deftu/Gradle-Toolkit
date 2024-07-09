@@ -48,6 +48,12 @@ fun Project.setupLoom(mcData: MCData, action: LoomGradleExtensionAPI.(MCData) ->
     }
 }
 
-fun Project.isMultiversionProject(): Boolean = preprocessorIds.any { id ->
-    pluginManager.hasPlugin(id)
-} || (rootProject.file("versions").exists() && File(rootProject.file("versions"), "mainProject").exists())
+fun Project.isMultiversionProject(): Boolean {
+    fun Project.isVersionFilePresent(): Boolean {
+        return file("versions").exists() && File(file("versions"), "mainProject").exists()
+    }
+
+    return preprocessorIds.any { id ->
+        pluginManager.hasPlugin(id)
+    } || rootProject.isVersionFilePresent() || parent?.isVersionFilePresent() == true
+}
