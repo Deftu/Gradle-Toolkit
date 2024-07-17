@@ -20,7 +20,7 @@ class MinecraftVersion private constructor(val rawVersion: Int) : Comparable<Min
 
     val javaVersion: JavaVersion
         get() = when {
-            this >= VERSION_1_20_6 -> JavaVersion.VERSION_21
+            this >= VERSION_1_20_5 -> JavaVersion.VERSION_21
             minor >= 18 -> JavaVersion.VERSION_17
             minor >= 17 -> JavaVersion.VERSION_16
             else -> JavaVersion.VERSION_1_8
