@@ -14,9 +14,12 @@ extra.set("javax.xml.transform.TransformerFactory", "com.sun.org.apache.xalan.in
 extra.set("javax.xml.parsers.SAXParserFactory", "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl")
 
 val mcData = MCData.from(project)
+extensions.create("toolkitLegacyFabric", LegacyFabricExtension::class)
 setupLoom(mcData) {
     if (mcData.isLegacyFabric) {
-        intermediaryUrl.set("https://maven.legacyfabric.net/net/legacyfabric/intermediary/%1\$s/intermediary-%1\$s-v2.jar")
+        setIntermediateMappingsProvider(LegacyFabricIntermediaryMappingsProvider::class.java) {
+            configure(project)
+        }
     }
 }
 
