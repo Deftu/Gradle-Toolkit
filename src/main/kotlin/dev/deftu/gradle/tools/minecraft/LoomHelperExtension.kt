@@ -48,7 +48,6 @@ abstract class LoomHelperExtension(
 
     @JvmOverloads
     fun useMixinRefMap(namespace: String, file: Boolean = false) {
-        val mcData = MCData.from(project)
         val value = if (file) namespace else "mixins.$namespace.refmap.json"
         project.withLoom {
             mixin.defaultRefmapName.set(value)

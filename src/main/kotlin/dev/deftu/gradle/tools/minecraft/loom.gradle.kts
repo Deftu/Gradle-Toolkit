@@ -9,9 +9,9 @@ import gradle.kotlin.dsl.accessors._0935894d714bf6b98fac60b9fc45a2f5.minecraft
 import gradle.kotlin.dsl.accessors._0935894d714bf6b98fac60b9fc45a2f5.modImplementation
 
 // Set XML parsers so Gradle stops complaining.
-extra.set("javax.xml.parsers.DocumentBuilderFactory", "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl")
-extra.set("javax.xml.transform.TransformerFactory", "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl")
-extra.set("javax.xml.parsers.SAXParserFactory", "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl")
+extra.set("systemProp.javax.xml.parsers.DocumentBuilderFactory", "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl")
+extra.set("systemProp.javax.xml.transform.TransformerFactory", "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl")
+extra.set("systemProp.javax.xml.parsers.SAXParserFactory", "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl")
 
 val mcData = MCData.from(project)
 extensions.create("toolkitLegacyFabric", LegacyFabricExtension::class)
@@ -53,21 +53,41 @@ dependencies {
     }
 
     if (propertyBoolOr("loom.mappings.use", true)) {
+        /**
+         * A pair of mappings used for the given environment.
+         *
+         * The first value is the mappings string, and the second value is whether these should be forced despite the requested configuration.
+         */
+        val defaultMappings: Pair<String, Boolean> = when {
+            mcData.isLegacyFabric -> "net.legacyfabric:yarn:${mcData.dependencies.legacyFabric.legacyYarnVersion}" to true
+            mcData.isFabric -> "net.fabricmc:yarn:${mcData.dependencies.fabric.yarnVersion}" to false
+            mcData.isForge && mcData.version <= MinecraftVersion.VERSION_1_15_2 -> mcData.dependencies.forge.mcpDependency to true
+            else -> "official" to false
+        }
+
         propertyOr(
-            "loom.mappings", when {
-                mcData.isLegacyFabric -> "net.legacyfabric:yarn:${mcData.dependencies.legacyFabric.legacyYarnVersion}"
-                mcData.isFabric -> "net.fabricmc:yarn:${mcData.dependencies.fabric.yarnVersion}"
-                mcData.isForge && mcData.version <= MinecraftVersion.VERSION_1_15_2  -> mcData.dependencies.forge.mcpDependency
-                else -> "official"
+            "loom.mappings", defaultMappings.first).apply {
+            fun Dependency?.applyExclusions() {
+                check(this != null && this is ModuleDependency)
+                exclude(module = "fabric-loader")
             }
-        ).apply {
-            if (this in setOf("official", "mojang", "mojmap")) {
-                mappings(loom.officialMojangMappings())
-            } else {
-                mappings(this) {
-                    exclude(module = "fabric-loader")
+
+            val value = if (defaultMappings.second) defaultMappings.first else this
+            mappings(when(value) {
+                "official", "mojang", "mojmap" -> loom.officialMojangMappings()
+                "parchment" -> {
+                    repositories {
+                        maven("https://maven.parchmentmc.org")
+                    }
+
+                    loom.layered {
+                        officialMojangMappings()
+                        parchment("org.parchmentmc.data:parchment-${MinecraftInfo.getParchmentVersion(mcData.version)}@zip")
+                    }
                 }
-            }
+
+                else -> value
+            }).applyExclusions()
         }
     }
 

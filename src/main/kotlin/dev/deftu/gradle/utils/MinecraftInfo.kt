@@ -293,4 +293,24 @@ object MinecraftInfo {
 
     }
 
+    private val parchmentVersions = MinecraftVersionMap(
+        MinecraftVersion.VERSION_1_21 to "1.21:2024.07.07",
+        MinecraftVersion.VERSION_1_20_6 to "1.20.6:2024.06.16",
+        MinecraftVersion.VERSION_1_20_4 to "1.20.4:2024.04.14",
+        MinecraftVersion.VERSION_1_20_3 to "1.20.3:2023.12.31",
+        MinecraftVersion.VERSION_1_20_2 to "1.20.2:2023.12.10",
+        MinecraftVersion.VERSION_1_20_1 to "1.20.1:2023.09.03",
+        MinecraftVersion.VERSION_1_19_4 to "1.19.4:2023.06.26",
+        MinecraftVersion.VERSION_1_19_3 to "1.19.3:2023.06.25",
+        MinecraftVersion.VERSION_1_19_2 to "1.19.2:2022.11.27",
+        MinecraftVersion.VERSION_1_18_2 to "1.18.2:2022.11.06",
+        MinecraftVersion.VERSION_1_17_1 to "1.17.1:2021.12.12",
+        MinecraftVersion.VERSION_1_16_5 to "1.16.5:2022.03.06"
+    )
+
+    @JvmStatic
+    fun getParchmentVersion(version: MinecraftVersion): String {
+        return parchmentVersions[version] ?: throw IllegalArgumentException("Unknown version for Parchment: $version")
+    }
+
 }
