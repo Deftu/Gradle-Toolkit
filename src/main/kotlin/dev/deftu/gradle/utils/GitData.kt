@@ -13,7 +13,7 @@ data class GitData(
 ) {
 
     fun shouldAppendVersion(project: Project): Boolean {
-        return present && project.propertyBoolOr("gitdata.version", default = false, prefix = false)
+        return present && project.propertyBoolOr("gitdata.version", default = false, prefix = "")
     }
 
     companion object {
@@ -29,8 +29,8 @@ data class GitData(
             val extension = project.extensions.findByName("gitData") as GitData?
             if (extension != null) return extension
 
-            val branch = project.propertyOr("GITHUB_REF_NAME", fetchCurrentBranch(project), false)
-            val commit = project.propertyOr("GITHUB_SHA", fetchCurrentCommit(project), false)
+            val branch = project.propertyOr("GITHUB_REF_NAME", fetchCurrentBranch(project), prefix = "")
+            val commit = project.propertyOr("GITHUB_SHA", fetchCurrentCommit(project), prefix = "")
             val url = fetchCurrentUrl(project) ?: "NONE"
             val data = GitData(branch.isNotBlank() && commit.isNotBlank(), branch, commit, url)
             project.extensions.add("gitData", data)

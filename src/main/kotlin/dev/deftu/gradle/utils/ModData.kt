@@ -24,11 +24,11 @@ data class ModData(
 
             if (!project.hasProperty("mod.id")) return EMPTY
 
-            val name = project.propertyOr("mod.name", project.name, false)
-            val id = project.propertyOr("mod.id", name.lowercase(Locale.US).replace(" ", "_"), false)
-            val version = project.propertyOr("mod.version", project.version.toString(), false)
-            val group = project.propertyOr("mod.group", project.group.toString(), false)
-            val description = project.propertyOr("mod.description", "", false)
+            val name = project.propertyOr("mod.name", project.name, prefix = "")
+            val id = project.propertyOr("mod.id", name.lowercase(Locale.US).replace(" ", "_"), prefix = "")
+            val version = project.propertyOr("mod.version", project.version.toString(), prefix = "")
+            val group = project.propertyOr("mod.group", project.group.toString(), prefix = "")
+            val description = project.propertyOr("mod.description", "", prefix = "")
             val data = ModData(true, name, id, version, group, description)
             project.extensions.add("modData", data)
             return data
@@ -46,7 +46,7 @@ data class ModData(
             }
 
             project.logger.lifecycle("Populating ModData from ProjectData of ${projectData.name}")
-            val id = project.propertyOr("mod.id", projectData.name.lowercase(Locale.US).replace(" ", "_"), false)
+            val id = project.propertyOr("mod.id", projectData.name.lowercase(Locale.US).replace(" ", "_"), prefix = "")
             val data = ModData(true, projectData.name, id, projectData.version, projectData.group, projectData.description)
             project.extensions.add("modData", data)
         }

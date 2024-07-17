@@ -22,10 +22,10 @@ class ProjectData(
 
             if (!project.hasProperty("project.group")) return EMPTY
 
-            val name = project.propertyOr("project.name", project.name, false)
-            val version = project.propertyOr("project.version", project.version.toString(), false)
-            val group = project.propertyOr("project.group", project.group.toString(), false)
-            val description = project.propertyOr("project.description", "", false)
+            val name = project.propertyOr("project.name", project.name, prefix = "")
+            val version = project.propertyOr("project.version", project.version.toString(), prefix = "")
+            val group = project.propertyOr("project.group", project.group.toString(), prefix = "")
+            val description = project.propertyOr("project.description", "", prefix = "")
             val data = ProjectData(true, name, version, group, description)
             project.extensions.add("projectData", data)
             return data

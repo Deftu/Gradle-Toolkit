@@ -12,6 +12,8 @@ import org.gradle.kotlin.dsl.named
 import java.io.File
 import kotlin.math.floor
 
+private const val DEFAULT_PROPERTY_PREFIX = "dgt."
+
 val Gradle.projectCacheDir: File
     get() = gradle.rootProject.layout.projectDirectory.file(".gradle").asFile
 
@@ -53,9 +55,9 @@ fun MavenArtifactRepository.applyBasicCredentials(
 fun Project.propertyOr(
     key: String,
     default: String? = null,
-    prefix: Boolean = true
+    prefix: String = DEFAULT_PROPERTY_PREFIX
 ): String {
-    val newKey = if (prefix) "dgt.$key" else key
+    val newKey = "$prefix$key"
     return (project.findProperty(newKey)
         ?: System.getProperty(newKey)
         ?: default) as String?
@@ -65,17 +67,17 @@ fun Project.propertyOr(
 fun Project.propertyBoolOr(
     key: String,
     default: Boolean? = null,
-    prefix: Boolean = true
+    prefix: String = DEFAULT_PROPERTY_PREFIX
 ) = propertyOr(key, default?.toString(), prefix).toBoolean()
 
 fun Project.propertyIntOr(
     key: String,
     default: Int? = null,
-    prefix: Boolean = true
+    prefix: String = DEFAULT_PROPERTY_PREFIX
 ) = propertyOr(key, default?.toString(), prefix).toInt()
 
 fun Project.propertyDoubleOr(
     key: String,
     default: Double? = null,
-    prefix: Boolean = true
+    prefix: String = DEFAULT_PROPERTY_PREFIX
 ) = propertyOr(key, default?.toString(), prefix).toDouble()

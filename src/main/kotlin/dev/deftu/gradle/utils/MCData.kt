@@ -163,13 +163,13 @@ data class MCData(
          * Gets the project's Minecraft version, either by the property or by inferring it from the project's name.
          */
         private val Project.minecraftVersion: String
-            get() = propertyOr("minecraft.version", name, prefix = false)
+            get() = propertyOr("minecraft.version", name, prefix = "")
 
         private val Project.modLoader: ModLoader
             get() = ModLoader.from(propertyOr(
                 "loom.platform",
                 name,
-                prefix = false
+                prefix = ""
             ))
 
         @JvmStatic
