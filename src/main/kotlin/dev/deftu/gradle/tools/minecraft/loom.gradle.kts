@@ -66,27 +66,52 @@ dependencies {
         }
 
         propertyOr(
-            "loom.mappings", defaultMappings.first).apply {
+            "loom.mappings",
+            defaultMappings.first
+        ).apply {
             fun Dependency?.applyExclusions() {
                 check(this != null && this is ModuleDependency)
                 exclude(module = "fabric-loader")
             }
 
             val value = if (defaultMappings.second) defaultMappings.first else this
-            mappings(when(value) {
-                "official", "mojang", "mojmap" -> loom.officialMojangMappings()
-                "parchment" -> {
-                    repositories {
-                        maven("https://maven.parchmentmc.org")
+
+            mappings(loom.layered {
+                val mappingsFlavor = propertyOr("loom.mappings.flavor", "")
+
+                mappings(when(value) {
+                    "official", "mojang", "mojmap" -> officialMojangMappings()
+
+                    "official-like" -> {
+                        if (mcData.version <= MinecraftVersion.VERSION_1_12_2) {
+                            if (mcData.isForge) {
+                                mcData.dependencies.forge.mcpDependency
+                            } else {
+                                repositories {
+                                    maven("https://raw.githubusercontent.com/BleachDev/cursed-mappings/main/")
+                                }
+
+                                "net.legacyfabric:yarn:${mcData.version}+build.mcp"
+                            }
+                        } else if (mcData.isFabric) {
+                            "net.fabricmc:yarn:${mcData.dependencies.fabric.yarnVersion}"
+                        } else officialMojangMappings()
                     }
 
-                    loom.layered {
-                        officialMojangMappings()
+                    else -> value
+                })
+
+                when(mappingsFlavor) {
+                    "parchment" -> {
+                        if (mcData.version >= MinecraftVersion.VERSION_1_16_5)
+
+                        repositories {
+                            maven("https://maven.parchmentmc.org")
+                        }
+
                         parchment("org.parchmentmc.data:parchment-${MinecraftInfo.getParchmentVersion(mcData.version)}@zip")
                     }
                 }
-
-                else -> value
             }).applyExclusions()
         }
     }
