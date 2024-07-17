@@ -49,6 +49,17 @@ The `dev.deftu.gradle.tools.minecraft.api` plugin will add a `toolkitLoomApi` ex
 ### Minecraft Loom plugin
 The `dev.deftu.gradle.tools.minecraft.loom` plugin will automatically configure the Loom plugin in your project, setting up the versioning of all required dependencies for the given Minecraft version and mod loader your project uses.
 
+You can configure it to not set up certain aspects of your project with the following properties:
+- `dgt.loom.minecraft.setup`
+- `dgt.loom.mappings.use`
+- `dgt.loom.loader.use`
+
+An entirely different `minecraft` dependency can be configured with `dgt.loom.minecraft`.
+
+It is also possible to pick from several options for your mappings using `dgt.loom.mappings`. The default is to use the recommended mappings set for your version and loader (f.ex, Yarn for Fabric, official for Forge 1.16+, etc). The possible options are `official`/`mojang`/`mojmap` for official mappings, `official-like` to use the most similar mappings to the official ones, or alternatively you can outright provide your own dependency notation.
+
+There are also mapping flavors which you can choose from. At the moment, the only supported flavor is `parchment`, which is available for official mappings. When used, the `parchment` flavor will only apply to Minecraft versions which support official mappings (1.16.5+).
+
 ### Minecraft Releases plugin
 The `dev.deftu.gradle.tools.minecraft.releases` plugin will automatically configure your project to publish to both CurseForge and Modrinth, and has maximal configuration options. It's easiest to check the `ReleasingExtension` class for all the properties.
 
