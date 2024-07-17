@@ -93,8 +93,6 @@ dependencies {
 
                                 "net.legacyfabric:yarn:${mcData.version}+build.mcp"
                             }
-                        } else if (mcData.isFabric) {
-                            "net.fabricmc:yarn:${mcData.dependencies.fabric.yarnVersion}"
                         } else officialMojangMappings()
                     }
 
