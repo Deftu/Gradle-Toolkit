@@ -29,7 +29,7 @@ val Project.includeOrShade: Configuration
         ) {
             val mcData = MCData.from(project)
             val configuration = configurations.create("includeOrShade")
-            val childConfigName = if (mcData.isFabric) "include" else "shade"
+            val childConfigName = if (mcData.isFabric || (mcData.isForgeLike && mcData.version >= MinecraftVersion.VERSION_1_18)) "include" else "shade"
             val childConfig = configurations.findByName(childConfigName)
                 ?: throw IllegalStateException("Configuration '$childConfigName' not found!")
             childConfig.extendsFrom(configuration)
