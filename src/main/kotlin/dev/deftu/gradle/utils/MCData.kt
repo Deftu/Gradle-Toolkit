@@ -11,35 +11,67 @@ class MCDependencies(
 
         val fabricLoaderVersion: String
             get() {
-                if (!mcData.isFabric) throw LoaderSpecificException(ModLoader.FABRIC)
+                if (!mcData.isFabric) {
+                    throw LoaderSpecificException(ModLoader.FABRIC)
+                }
+
+                val fabricLoaderVersionOverride = mcData.project.propertyOr("fabric.loader.version", "")
+                if (fabricLoaderVersionOverride.isNotEmpty()) {
+                    return fabricLoaderVersionOverride
+                }
 
                 return MinecraftInfo.Fabric.LOADER_VERSION
             }
 
         val yarnVersion: String
             get() {
-                if (!mcData.isFabric) throw LoaderSpecificException(ModLoader.FABRIC)
+                if (!mcData.isFabric) {
+                    throw LoaderSpecificException(ModLoader.FABRIC)
+                }
+
+                val yarnVersionOverride = mcData.project.propertyOr("fabric.yarn.version", "")
+                if (yarnVersionOverride.isNotEmpty()) {
+                    return yarnVersionOverride
+                }
 
                 return MinecraftInfo.Fabric.getYarnVersion(mcData.version)
             }
 
         val fabricApiVersion: String
             get() {
-                if (!mcData.isFabric) throw LoaderSpecificException(ModLoader.FABRIC)
+                if (!mcData.isFabric) {
+                    throw LoaderSpecificException(ModLoader.FABRIC)
+                }
+
+                val fabricApiVersionOverride = mcData.project.propertyOr("fabric.api.version", "")
+                if (fabricApiVersionOverride.isNotEmpty()) {
+                    return fabricApiVersionOverride
+                }
 
                 return MinecraftInfo.Fabric.getFabricApiVersion(mcData.version)
             }
 
         val fabricLanguageKotlinVersion: String
             get() {
-                if (!mcData.isFabric) throw LoaderSpecificException(ModLoader.FABRIC)
+                if (!mcData.isFabric) {
+                    throw LoaderSpecificException(ModLoader.FABRIC)
+                }
+
+                val kotlinVersionOverride = mcData.project.propertyOr("fabric.language.kotlin.version", "")
 
                 return MinecraftInfo.Fabric.KOTLIN_DEP_VERSION
             }
 
         val modMenuVersion: String
             get() {
-                if (!mcData.isFabric) throw LoaderSpecificException(ModLoader.FABRIC)
+                if (!mcData.isFabric) {
+                    throw LoaderSpecificException(ModLoader.FABRIC)
+                }
+
+                val modMenuVersionOverride = mcData.project.propertyOr("fabric.modmenu.version", "")
+                if (modMenuVersionOverride.isNotEmpty()) {
+                    return modMenuVersionOverride
+                }
 
                 val (_, version) = MinecraftInfo.Fabric.getModMenuDependency(mcData.version)
                 return version
@@ -47,7 +79,14 @@ class MCDependencies(
 
         val modMenuDependency: String
             get() {
-                if (!mcData.isFabric) throw LoaderSpecificException(ModLoader.FABRIC)
+                if (!mcData.isFabric) {
+                    throw LoaderSpecificException(ModLoader.FABRIC)
+                }
+
+                val modMenuDependencyOverride = mcData.project.propertyOr("fabric.modmenu.dependency", "")
+                if (modMenuDependencyOverride.isNotEmpty()) {
+                    return modMenuDependencyOverride
+                }
 
                 val (group, version) = MinecraftInfo.Fabric.getModMenuDependency(mcData.version)
                 return "$group$version"
@@ -59,14 +98,28 @@ class MCDependencies(
 
         val legacyYarnVersion: String
             get() {
-                if (!mcData.isLegacyFabric) throw LoaderSpecificException(ModLoader.FABRIC)
+                if (!mcData.isLegacyFabric) {
+                    throw LoaderSpecificException(ModLoader.FABRIC)
+                }
+
+                val legacyYarnVersionOverride = mcData.project.propertyOr("fabric.yarn.version", "")
+                if (legacyYarnVersionOverride.isNotEmpty()) {
+                    return legacyYarnVersionOverride
+                }
 
                 return MinecraftInfo.LegacyFabric.getLegacyYarnVersion(mcData.version)
             }
 
         val legacyFabricApiVersion: String
             get() {
-                if (!mcData.isLegacyFabric) throw LoaderSpecificException(ModLoader.FABRIC)
+                if (!mcData.isLegacyFabric) {
+                    throw LoaderSpecificException(ModLoader.FABRIC)
+                }
+
+                val legacyFabricApiVersionOverride = mcData.project.propertyOr("fabric.api.version", "")
+                if (legacyFabricApiVersionOverride.isNotEmpty()) {
+                    return legacyFabricApiVersionOverride
+                }
 
                 return MinecraftInfo.LegacyFabric.getLegacyFabricApiVersion(mcData.version)
             }
@@ -77,7 +130,14 @@ class MCDependencies(
 
         val kotlinForForgeVersion: String
             get() {
-                if (!mcData.isForgeLike) throw LoaderSpecificException(ModLoader.FORGE)
+                if (!mcData.isForgeLike) {
+                    throw LoaderSpecificException(ModLoader.FORGE)
+                }
+
+                val kotlinForForgeVersionOverride = mcData.project.propertyOr("forge.kotlin.version", "")
+                if (kotlinForForgeVersionOverride.isNotEmpty()) {
+                    return kotlinForForgeVersionOverride
+                }
 
                 return MinecraftInfo.ForgeLike.getKotlinForForgeVersion(mcData.version)
             }
@@ -88,14 +148,28 @@ class MCDependencies(
 
         val forgeVersion: String
             get() {
-                if (!mcData.isForge) throw LoaderSpecificException(ModLoader.FORGE)
+                if (!mcData.isForge) {
+                    throw LoaderSpecificException(ModLoader.FORGE)
+                }
+
+                val forgeVersionOverride = mcData.project.propertyOr("forge.version", "")
+                if (forgeVersionOverride.isNotEmpty()) {
+                    return forgeVersionOverride
+                }
 
                 return MinecraftInfo.Forge.getForgeVersion(mcData.version)
             }
 
         val mcpDependency: String
             get() {
-                if (!mcData.isForge) throw LoaderSpecificException(ModLoader.FORGE)
+                if (!mcData.isForge) {
+                    throw LoaderSpecificException(ModLoader.FORGE)
+                }
+
+                val mcpDependencyOverride = mcData.project.propertyOr("forge.mcp.dependency", "")
+                if (mcpDependencyOverride.isNotEmpty()) {
+                    return mcpDependencyOverride
+                }
 
                 return MinecraftInfo.Forge.getMcpDependency(mcData.version)
             }
@@ -104,9 +178,16 @@ class MCDependencies(
 
     inner class NeoForged {
 
-        val neoForgedVersion: String
+        val neoForgeVersion: String
             get() {
-                if (!mcData.isNeoForge) throw LoaderSpecificException(ModLoader.NEOFORGE)
+                if (!mcData.isNeoForge) {
+                    throw LoaderSpecificException(ModLoader.NEOFORGE)
+                }
+
+                val neoForgeVersionOverride = mcData.project.propertyOr("neoforge.version", "")
+                if (neoForgeVersionOverride.isNotEmpty()) {
+                    return neoForgeVersionOverride
+                }
 
                 return MinecraftInfo.NeoForged.getNeoForgedVersion(mcData.version)
             }
@@ -122,6 +203,7 @@ class MCDependencies(
 }
 
 data class MCData(
+    val project: Project,
     val isPresent: Boolean,
     val version: MinecraftVersion,
     val loader: ModLoader
@@ -178,10 +260,10 @@ data class MCData(
             if (extension != null) return extension
 
             val isValidProject = project.hasProperty("minecraft.version") || project.isMultiversionProject()
-            if (!isValidProject) return MCData(false, MinecraftVersion.UNKNOWN, ModLoader.OTHER)
+            if (!isValidProject) return MCData(project, false, MinecraftVersion.UNKNOWN, ModLoader.OTHER)
 
             val (major, minor, patch) = match(project.minecraftVersion)
-            val data = MCData(true, MinecraftVersion.from(major, minor, patch), project.modLoader)
+            val data = MCData(project, true, MinecraftVersion.from(major, minor, patch), project.modLoader)
             project.extensions.add("mcData", data)
             return data
         }
