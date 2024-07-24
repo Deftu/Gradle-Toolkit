@@ -61,7 +61,7 @@ It is also possible to pick from several options for your mappings using `dgt.lo
 - `official-like` to use the most similar mappings to the official ones (MCP for legacy Forge/Fabric, official for 1.16+)
 - Alternatively you can outright provide your own dependency notation.
 
-There are also mapping flavors which you can choose from. At the moment, the only supported flavor is `parchment`, which is available for official mappings. When used, the `parchment` flavor will only apply to Minecraft versions which support official mappings (1.16.5+).
+There are also mapping flavors which you can choose from using `dgt.loom.mappings.flavor`. At the moment, the only supported flavor is `parchment`, which is available for official mappings. When used, the `parchment` flavor will only apply to Minecraft versions which support official mappings (1.16.5+).
 
 ### Minecraft Releases plugin
 The `dev.deftu.gradle.tools.minecraft.releases` plugin will automatically configure your project to publish to both CurseForge and Modrinth, and has maximal configuration options. It's easiest to check the `ReleasingExtension` class for all the properties.
