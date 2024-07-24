@@ -75,7 +75,7 @@ dependencies {
             defaultMappings.first
         )
 
-        val mappingsFlavor = propertyOr("loom.mappings.flavor", "")
+        val mappingsFlavor = if (defaultMappings.second) "" else propertyOr("loom.mappings.flavor", "")
 
         if (mappingsFlavor.isNotEmpty()) {
             mappings(loom.layered {
