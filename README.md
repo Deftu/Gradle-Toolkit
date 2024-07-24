@@ -63,6 +63,20 @@ It is also possible to pick from several options for your mappings using `dgt.lo
 
 There are also mapping flavors which you can choose from using `dgt.loom.mappings.flavor`. At the moment, the only supported flavor is `parchment`, which is available for official mappings. When used, the `parchment` flavor will only apply to Minecraft versions which support official mappings (1.16.5+).
 
+### Dependencies
+
+You can get versions (or full dependency notations) for multiple different loader-specific common dependencies via `mcData#dependencies`.
+
+The return values of all of the properties inside of the `MCDependency` objects are configurable via several properties:
+- `dgt.fabric.loader.version`
+- `dgt.fabric.yarn.version` (also works for Legacy Fabric!)
+- `dgt.fabric.api.version` (also works for Legacy Fabric!)
+- `dgt.fabric.language.kotlin.version`
+- `dgt.fabric.modmenu.version`
+- `dgt.forge.version`
+- `dgt.forge.mcp.dependency`
+- `dgt.neoforge.version`
+
 ### Minecraft Releases plugin
 The `dev.deftu.gradle.tools.minecraft.releases` plugin will automatically configure your project to publish to both CurseForge and Modrinth, and has maximal configuration options. It's easiest to check the `ReleasingExtension` class for all the properties.
 
