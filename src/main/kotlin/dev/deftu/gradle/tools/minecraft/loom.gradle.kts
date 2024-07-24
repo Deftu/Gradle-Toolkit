@@ -1,3 +1,4 @@
+@file:Suppress("UnstableApiUsage")
 package dev.deftu.gradle.tools.minecraft
 
 import dev.architectury.pack200.java.Pack200Adapter
