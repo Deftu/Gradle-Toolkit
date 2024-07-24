@@ -53,6 +53,11 @@ dependencies {
     }
 
     if (propertyBoolOr("loom.mappings.use", true)) {
+        fun Dependency?.applyExclusions() {
+            check(this != null && this is ModuleDependency)
+            exclude(module = "fabric-loader")
+        }
+
         /**
          * A pair of mappings used for the given environment.
          *
@@ -65,21 +70,16 @@ dependencies {
             else -> "official" to false
         }
 
-        propertyOr(
+        val mappingsNotation = if (defaultMappings.second) defaultMappings.first else propertyOr(
             "loom.mappings",
             defaultMappings.first
-        ).apply {
-            fun Dependency?.applyExclusions() {
-                check(this != null && this is ModuleDependency)
-                exclude(module = "fabric-loader")
-            }
+        )
 
-            val value = if (defaultMappings.second) defaultMappings.first else this
+        val mappingsFlavor = propertyOr("loom.mappings.flavor", "")
 
+        if (mappingsFlavor.isNotEmpty()) {
             mappings(loom.layered {
-                val mappingsFlavor = propertyOr("loom.mappings.flavor", "")
-
-                mappings(when(value) {
+                mappings(when(mappingsNotation) {
                     "official", "mojang", "mojmap" -> officialMojangMappings()
 
                     "official-like" -> {
@@ -96,20 +96,40 @@ dependencies {
                         } else officialMojangMappings()
                     }
 
-                    else -> value
+                    else -> mappingsNotation
                 })
 
                 when(mappingsFlavor) {
                     "parchment" -> {
                         if (mcData.version >= MinecraftVersion.VERSION_1_16_5)
 
-                        repositories {
-                            maven("https://maven.parchmentmc.org")
-                        }
+                            repositories {
+                                maven("https://maven.parchmentmc.org")
+                            }
 
                         parchment("org.parchmentmc.data:parchment-${MinecraftInfo.getParchmentVersion(mcData.version)}@zip")
                     }
                 }
+            }).applyExclusions()
+        } else {
+            mappings(when(mappingsNotation) {
+                "official", "mojang", "mojmap" -> loom.officialMojangMappings()
+
+                "official-like" -> {
+                    if (mcData.version <= MinecraftVersion.VERSION_1_12_2) {
+                        if (mcData.isForge) {
+                            mcData.dependencies.forge.mcpDependency
+                        } else {
+                            repositories {
+                                maven("https://raw.githubusercontent.com/BleachDev/cursed-mappings/main/")
+                            }
+
+                            "net.legacyfabric:yarn:${mcData.version}+build.mcp"
+                        }
+                    } else loom.officialMojangMappings()
+                }
+
+                else -> mappingsNotation
             }).applyExclusions()
         }
     }
