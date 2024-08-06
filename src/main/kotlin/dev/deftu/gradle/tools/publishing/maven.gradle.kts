@@ -13,6 +13,7 @@ plugins {
 val RELEASES_REPO_NAME = "DeftuReleases"
 val SNAPSHOT_REPO_NAME = "DeftuSnapshots"
 val INTERNAL_REPO_NAME = "DeftuInternal"
+val INTERNAL_EXPOSED_REPO_NAME = "DeftuInternalExposed"
 
 val mcData = MCData.from(project)
 val modData = ModData.from(project)
@@ -93,6 +94,12 @@ afterEvaluate {
                     maven {
                         name = INTERNAL_REPO_NAME
                         url = uri("https://maven.deftu.dev/internal")
+                        applyBasicCredentials(publishingUsername, publishingPassword)
+                    }
+
+                    maven {
+                        name = INTERNAL_EXPOSED_REPO_NAME
+                        url = uri("https://maven.deftu.dev/internal-exposed")
                         applyBasicCredentials(publishingUsername, publishingPassword)
                     }
                 }
