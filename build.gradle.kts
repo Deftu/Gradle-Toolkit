@@ -1,11 +1,11 @@
 plugins {
     kotlin("jvm") version("2.0.10")
     `kotlin-dsl`
-    val dgt = "2.0.9"
-    id("dev.deftu.gradle.tools.repo") version(dgt)
-    id("dev.deftu.gradle.tools.configure") version(dgt)
-    id("dev.deftu.gradle.tools.publishing.maven") version(dgt)
-    id("dev.deftu.gradle.tools.publishing.github") version(dgt)
+    val dgtVersion = "2.5.0"
+    id("dev.deftu.gradle.tools.repo") version(dgtVersion)
+    id("dev.deftu.gradle.tools.configure") version(dgtVersion)
+    id("dev.deftu.gradle.tools.publishing.maven") version(dgtVersion)
+    id("dev.deftu.gradle.tools.publishing.github") version(dgtVersion)
 }
 
 toolkitGitHubPublishing {
