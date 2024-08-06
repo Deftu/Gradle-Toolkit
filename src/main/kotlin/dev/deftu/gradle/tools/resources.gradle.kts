@@ -52,8 +52,8 @@ afterEvaluate {
 
         if (mcData.isPresent) {
             inputs.property("mc_version", mcData.version.toString())
-            inputs.property("minor_mc_version", mcData.version.patchless)
-            inputs.property("format_mc_version", mcData.version.rawVersion.toString())
+            inputs.property("patchless_mc_version", mcData.version.patchless)
+            inputs.property("padded_mc_version", mcData.version.rawVersion.toString())
             inputs.property("java_version", mcData.version.javaVersionString)
         }
 
