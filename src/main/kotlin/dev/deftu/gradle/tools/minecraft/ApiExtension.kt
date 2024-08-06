@@ -1,5 +1,6 @@
 package dev.deftu.gradle.tools.minecraft
 
+import dev.deftu.gradle.ToolkitConstants
 import net.fabricmc.loom.task.RemapJarTask
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
@@ -44,7 +45,7 @@ abstract class ApiExtension(
         val devLibsDir = project.layout.buildDirectory.dir("dev-libs")
 
         val testJar = project.tasks.register("testJar", Jar::class.java) {
-            group = "build"
+            group = ToolkitConstants.TASK_GROUP
 
             archiveClassifier.set("test-mod-dev")
             destinationDirectory.set(devLibsDir)
@@ -52,7 +53,7 @@ abstract class ApiExtension(
         }.get()
 
         val remapTestJar = project.tasks.register("remapTestJar", RemapJarTask::class.java) {
-            group = "build"
+            group = ToolkitConstants.TASK_GROUP
 
             archiveClassifier.set("test-mod")
             destinationDirectory.set(devLibsDir)

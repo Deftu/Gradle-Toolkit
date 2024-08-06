@@ -1,5 +1,6 @@
 package dev.deftu.gradle.tools.publishing
 
+import dev.deftu.gradle.ToolkitConstants
 import dev.deftu.gradle.utils.*
 import java.util.*
 
@@ -115,7 +116,7 @@ afterEvaluate {
             }) return@forEach
 
             rootProject.tasks.create(name) {
-                group = "publishing"
+                group = ToolkitConstants.TASK_GROUP
                 description = "Publish all versions of the mod to $repo"
 
                 project.subprojects.map(Project::getName).filter { name ->

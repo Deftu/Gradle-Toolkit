@@ -4,6 +4,8 @@ import java.io.File
 
 object ToolkitConstants {
 
+    const val TASK_GROUP = "toolkit"
+
     val debug: Boolean
         get() = System.getProperty("dgt.debug", "false").toBoolean()
 

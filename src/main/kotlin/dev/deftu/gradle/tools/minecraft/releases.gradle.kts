@@ -2,6 +2,7 @@ package dev.deftu.gradle.tools.minecraft
 
 import com.modrinth.minotaur.Minotaur
 import com.modrinth.minotaur.ModrinthExtension
+import dev.deftu.gradle.ToolkitConstants
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
 import org.gradle.kotlin.dsl.*
 import dev.deftu.gradle.utils.*
@@ -96,7 +97,7 @@ afterEvaluate {
     val curseForgeApiKey = propertyOr("publish.curseforge.apikey", "")
 
     tasks.register(taskName) {
-        group = "publishing"
+        group = ToolkitConstants.TASK_GROUP
         dependsOn("build")
     }
 
@@ -160,7 +161,8 @@ fun setupModrinth(token: String) {
     }
 
     val publishToModrinth by tasks.registering {
-        group = "publishing"
+        group = ToolkitConstants.TASK_GROUP
+
         dependsOn("modrinth")
     }
 
@@ -173,7 +175,8 @@ fun setupCurseForge(apiKey: String) {
     if (projectId.isNullOrBlank()) return
 
     val publishToCurseForge by tasks.registering(TaskPublishCurseForge::class) {
-        group = "publishing"
+        group = ToolkitConstants.TASK_GROUP
+
         this.apiToken = apiKey
         this.debugMode = extension.curseforge.debug.getOrElse(false)
 

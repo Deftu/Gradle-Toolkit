@@ -1,6 +1,7 @@
 package dev.deftu.gradle.tools.publishing
 
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseExtension
+import dev.deftu.gradle.ToolkitConstants
 import dev.deftu.gradle.utils.*
 import java.nio.charset.StandardCharsets
 import java.util.*
@@ -87,8 +88,8 @@ fun GitHubPublishingExtension.getUploadFile(): Zip {
 fun GitHubPublishingExtension.shouldAddSourcesJar() = useSourcesJar.getOrElse(false) && tasks.findByName("sourcesJar") != null
 fun GitHubPublishingExtension.shouldAddJavadocJar() = useJavadocJar.getOrElse(false) && tasks.findByName("javadocJar") != null
 
-fun GitHubPublishingExtension.getSourcesJar() = sourcesJar.getOrElse(getSourcesJarTask().get())
-fun GitHubPublishingExtension.getJavadocJar() = javadocJar.getOrElse(tasks.named<Jar>("javadocJar").get())
+fun GitHubPublishingExtension.getSourcesJar(): Zip = sourcesJar.getOrElse(getSourcesJarTask().get())
+fun GitHubPublishingExtension.getJavadocJar(): Zip = javadocJar.getOrElse(tasks.named<Jar>("javadocJar").get())
 
 fun getGitHubToken(): String? {
     val property = project.findProperty("dgt.publish.github.token")
@@ -134,7 +135,8 @@ afterEvaluate {
     }
 
     tasks.register(taskName) {
-        group = "publishing"
+        group = ToolkitConstants.TASK_GROUP
+
         dependsOn("build", "githubRelease")
     }
 }

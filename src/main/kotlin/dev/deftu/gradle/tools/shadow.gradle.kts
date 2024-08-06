@@ -1,6 +1,7 @@
 package dev.deftu.gradle.tools
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import dev.deftu.gradle.ToolkitConstants
 import dev.deftu.gradle.utils.ModData
 import org.gradle.jvm.tasks.Jar
 import dev.deftu.gradle.utils.withLoom
@@ -13,8 +14,9 @@ plugins {
 val shade: Configuration by configurations.creating { }
 
 val fatJar = tasks.register<ShadowJar>("fatJar") {
-    group = "deftu"
+    group = ToolkitConstants.TASK_GROUP
     description = "Builds a fat JAR with all dependencies shaded in"
+
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     configurations = listOf(shade)
     archiveVersion.set(project.version.toString())
