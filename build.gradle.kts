@@ -54,7 +54,7 @@ dependencies {
     implementation("com.github.breadmoirai:github-release:2.5.2")
 
     // Other
-    implementation("gradle.plugin.com.github.johnrengelman:shadow:8.1.1")
+    implementation("com.github.johnrengelman:shadow:8.1.1")
     implementation("dev.deftu:Bloom:0.1.2")
 }
 
