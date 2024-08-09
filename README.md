@@ -3,6 +3,8 @@ A simple Gradle plugin ecosystem used to manage your Gradle projects — Automat
 
 ![Repository badge](https://maven.deftu.dev/api/badge/latest/releases/dev/deftu/gradle/gradle-toolkit?color=c33f3f&name=Gradle+Toolkit)
 
+[![wakatime](https://wakatime.com/badge/user/25be8ed5-7461-4fcf-93f7-0d88a7692cca/project/c079fa6c-67b4-4144-9436-fd9a37ee66b2.svg)](https://wakatime.com/badge/user/25be8ed5-7461-4fcf-93f7-0d88a7692cca/project/c079fa6c-67b4-4144-9436-fd9a37ee66b2)
+
 ---
 
 ## Usage
