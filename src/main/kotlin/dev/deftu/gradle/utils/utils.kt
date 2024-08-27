@@ -19,19 +19,20 @@ val Gradle.projectCacheDir: File
 
 fun Project.getMajorJavaVersion(): Int {
     val mcData = MCData.from(this)
-    return floor(propertyOr("java.version", if (mcData.isPresent) {
+    val rawVersion = if (mcData.isPresent) {
         mcData.version.javaVersion.toString()
-    } else JavaVersion.current().toString()).let { version ->
-        if (version.startsWith("1.")) {
-            version.substring(2)
-        } else {
-            version
-        }.substringBefore(".")
-    }.let { version ->
-        Regex("[^0-9]").replace(version, "").ifEmpty {
-            throw IllegalArgumentException("Invalid java version: $version")
-        }
-    }.toDouble()).toInt()
+    } else propertyOr("java.version", JavaVersion.current().toString())
+    val formattedVersion = if (rawVersion.startsWith("1.")) {
+        rawVersion.substring(2)
+    } else {
+        rawVersion
+    }.substringBefore(".")
+    val strippedVersion = Regex("[^0-9]").replace(formattedVersion, "")
+    if (strippedVersion.isEmpty()) {
+        throw IllegalArgumentException("Invalid java version: $formattedVersion")
+    }
+
+    return floor(strippedVersion.toDouble()).toInt()
 }
 
 fun Project.getSourcesJarTask() =
