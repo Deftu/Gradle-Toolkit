@@ -80,35 +80,35 @@ dependencies {
 
         if (mappingsFlavor.isNotEmpty()) {
             mappings(loom.layered {
-                mappings(when(mappingsNotation) {
+                when(mappingsNotation) {
                     "official", "mojang", "mojmap" -> officialMojangMappings()
 
                     "official-like" -> {
                         if (mcData.version <= MinecraftVersion.VERSION_1_12_2) {
                             if (mcData.isForge) {
-                                mcData.dependencies.forge.mcpDependency
+                                mappings(mcData.dependencies.forge.mcpDependency)
                             } else {
                                 repositories {
                                     maven("https://raw.githubusercontent.com/BleachDev/cursed-mappings/main/")
                                 }
 
-                                "net.legacyfabric:yarn:${mcData.version}+build.mcp"
+                                mappings("net.legacyfabric:yarn:${mcData.version}+build.mcp")
                             }
                         } else officialMojangMappings()
                     }
 
-                    else -> mappingsNotation
-                })
+                    else -> mappings(mappingsNotation)
+                }
 
                 when(mappingsFlavor) {
                     "parchment" -> {
-                        if (mcData.version >= MinecraftVersion.VERSION_1_16_5)
-
+                        if (mcData.version >= MinecraftVersion.VERSION_1_16_5) {
                             repositories {
                                 maven("https://maven.parchmentmc.org")
                             }
 
-                        parchment("org.parchmentmc.data:parchment-${MinecraftInfo.getParchmentVersion(mcData.version)}@zip")
+                            parchment("org.parchmentmc.data:parchment-${MinecraftInfo.getParchmentVersion(mcData.version)}@zip")
+                        }
                     }
                 }
             }).applyExclusions()
