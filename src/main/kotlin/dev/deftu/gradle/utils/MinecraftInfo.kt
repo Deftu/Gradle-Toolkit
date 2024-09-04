@@ -169,7 +169,7 @@ object MinecraftInfo {
         @JvmStatic
         fun getKotlinForForgeVersion(version: MinecraftVersion): String {
             return when {
-                version >= MinecraftVersion.VERSION_1_20_6 -> "5.3.0"
+                version >= MinecraftVersion.VERSION_1_20_6 -> "5.4.0"
                 version >= MinecraftVersion.VERSION_1_20_5 -> "5.0.2"
                 version >= MinecraftVersion.VERSION_1_19_3 -> "4.11.0"
                 version >= MinecraftVersion.VERSION_1_18 -> "3.12.0"
