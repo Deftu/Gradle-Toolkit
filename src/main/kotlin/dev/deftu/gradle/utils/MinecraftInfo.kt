@@ -4,15 +4,15 @@ object MinecraftInfo {
 
     object Fabric {
 
-        const val LOADER_VERSION = "0.15.11"
-        const val KOTLIN_DEP_VERSION = "1.7.4+kotlin.1.6.21"
+        const val LOADER_VERSION = "0.16.4"
+        const val KOTLIN_DEP_VERSION = "1.12.1+kotlin.2.0.20"
 
         private val yarnVersions = MinecraftVersionMap(
             MinecraftVersion.VERSION_1_21_1 to "1.21.1+build.3",
-            MinecraftVersion.VERSION_1_21 to "1.21+build.1",
-            MinecraftVersion.VERSION_1_20_6 to "1.20.6+build.1",
+            MinecraftVersion.VERSION_1_21 to "1.21+build.9",
+            MinecraftVersion.VERSION_1_20_6 to "1.20.6+build.3",
             MinecraftVersion.VERSION_1_20_5 to "1.20.5+build.1",
-            MinecraftVersion.VERSION_1_20_4 to "1.20.4+build.2",
+            MinecraftVersion.VERSION_1_20_4 to "1.20.4+build.3",
             MinecraftVersion.VERSION_1_20_3 to "1.20.3+build.1",
             MinecraftVersion.VERSION_1_20_2 to "1.20.2+build.4",
             MinecraftVersion.VERSION_1_20_1 to "1.20.1+build.10",
@@ -51,16 +51,16 @@ object MinecraftInfo {
 
         private val fabricApiVersions = MinecraftVersionMap(
             MinecraftVersion.VERSION_1_21_1 to "0.103.0+1.21.1",
-            MinecraftVersion.VERSION_1_21 to "0.100.1+1.21",
-            MinecraftVersion.VERSION_1_20_6 to "0.98.0+1.20.6",
+            MinecraftVersion.VERSION_1_21 to "0.102.0+1.21",
+            MinecraftVersion.VERSION_1_20_6 to "0.100.8+1.20.6",
             MinecraftVersion.VERSION_1_20_5 to "0.97.8+1.20.5",
             MinecraftVersion.VERSION_1_20_4 to "0.91.2+1.20.4",
             MinecraftVersion.VERSION_1_20_3 to "0.91.1+1.20.3",
-            MinecraftVersion.VERSION_1_20_2 to "0.91.2+1.20.2",
-            MinecraftVersion.VERSION_1_20_1 to "0.91.0+1.20.1",
+            MinecraftVersion.VERSION_1_20_2 to "0.91.6+1.20.2",
+            MinecraftVersion.VERSION_1_20_1 to "0.92.2+1.20.1",
             MinecraftVersion.VERSION_1_20 to "0.83.0+1.20",
 
-            MinecraftVersion.VERSION_1_19_4 to "0.82.0+1.19.4",
+            MinecraftVersion.VERSION_1_19_4 to "0.87.2+1.19.4",
             MinecraftVersion.VERSION_1_19_3 to "0.76.1+1.19.3",
             MinecraftVersion.VERSION_1_19_2 to "0.77.0+1.19.2",
             MinecraftVersion.VERSION_1_19_1 to "0.58.5+1.19.1",
