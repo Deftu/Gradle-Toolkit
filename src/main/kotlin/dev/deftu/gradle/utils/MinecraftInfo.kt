@@ -8,6 +8,7 @@ object MinecraftInfo {
         const val KOTLIN_DEP_VERSION = "1.7.4+kotlin.1.6.21"
 
         private val yarnVersions = MinecraftVersionMap(
+            MinecraftVersion.VERSION_1_21_1 to "1.21.1+build.3",
             MinecraftVersion.VERSION_1_21 to "1.21+build.1",
             MinecraftVersion.VERSION_1_20_6 to "1.20.6+build.1",
             MinecraftVersion.VERSION_1_20_5 to "1.20.5+build.1",
@@ -49,6 +50,7 @@ object MinecraftInfo {
         )
 
         private val fabricApiVersions = MinecraftVersionMap(
+            MinecraftVersion.VERSION_1_21_1 to "0.103.0+1.21.1",
             MinecraftVersion.VERSION_1_21 to "0.100.1+1.21",
             MinecraftVersion.VERSION_1_20_6 to "0.98.0+1.20.6",
             MinecraftVersion.VERSION_1_20_5 to "0.97.8+1.20.5",
@@ -89,6 +91,7 @@ object MinecraftInfo {
         )
 
         private val modMenuDependencies = MinecraftVersionMap(
+            MinecraftVersion.VERSION_1_21_1 to ("com.terraformersmc:modmenu:" to "11.0.2"),
             MinecraftVersion.VERSION_1_21 to ("com.terraformersmc:modmenu:" to "11.0.0-beta.1"),
 
             MinecraftVersion.VERSION_1_20_6 to ("com.terraformersmc:modmenu:" to "10.0.0-beta.1"),
@@ -181,6 +184,7 @@ object MinecraftInfo {
     object Forge {
 
         private val forgeVersions = MinecraftVersionMap(
+            MinecraftVersion.VERSION_1_21_1 to "1.21.1-52.0.9",
             MinecraftVersion.VERSION_1_21 to "1.21-51.0.6",
 
             MinecraftVersion.VERSION_1_20_6 to "1.20.6-50.1.6",
@@ -277,6 +281,7 @@ object MinecraftInfo {
     object NeoForged {
 
         private val neoForgedVersions = MinecraftVersionMap(
+            MinecraftVersion.VERSION_1_21_1 to "21.1.37",
             MinecraftVersion.VERSION_1_21 to "21.0.4-beta",
 
             MinecraftVersion.VERSION_1_20_6 to "20.6.117",
@@ -294,6 +299,7 @@ object MinecraftInfo {
     }
 
     private val parchmentVersions = MinecraftVersionMap(
+        MinecraftVersion.VERSION_1_21_1 to "1.21:2024.07.07",
         MinecraftVersion.VERSION_1_21 to "1.21:2024.07.07",
         MinecraftVersion.VERSION_1_20_6 to "1.20.6:2024.06.16",
         MinecraftVersion.VERSION_1_20_4 to "1.20.4:2024.04.14",

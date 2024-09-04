@@ -77,6 +77,9 @@ class MinecraftVersion private constructor(val rawVersion: Int) : Comparable<Min
         val UNKNOWN = MinecraftVersion(0)
 
         @JvmStatic
+        val VERSION_1_21_1 = MinecraftVersion(1_21_01)
+
+        @JvmStatic
         val VERSION_1_21 = MinecraftVersion(1_21_00)
 
         @JvmStatic
