@@ -12,7 +12,7 @@ class MCDependencies(
         val fabricLoaderVersion: String
             get() {
                 if (!mcData.isFabric) {
-                    throw LoaderSpecificException(ModLoader.FABRIC)
+                    throw LoaderSpecificException(mcData.loader, ModLoader.FABRIC)
                 }
 
                 val fabricLoaderVersionOverride = mcData.project.propertyOr("fabric.loader.version", "")
@@ -26,7 +26,7 @@ class MCDependencies(
         val yarnVersion: String
             get() {
                 if (!mcData.isFabric) {
-                    throw LoaderSpecificException(ModLoader.FABRIC)
+                    throw LoaderSpecificException(mcData.loader, ModLoader.FABRIC)
                 }
 
                 val yarnVersionOverride = mcData.project.propertyOr("fabric.yarn.version", "")
@@ -40,7 +40,7 @@ class MCDependencies(
         val fabricApiVersion: String
             get() {
                 if (!mcData.isFabric) {
-                    throw LoaderSpecificException(ModLoader.FABRIC)
+                    throw LoaderSpecificException(mcData.loader, ModLoader.FABRIC)
                 }
 
                 val fabricApiVersionOverride = mcData.project.propertyOr("fabric.api.version", "")
@@ -54,7 +54,7 @@ class MCDependencies(
         val fabricLanguageKotlinVersion: String
             get() {
                 if (!mcData.isFabric) {
-                    throw LoaderSpecificException(ModLoader.FABRIC)
+                    throw LoaderSpecificException(mcData.loader, ModLoader.FABRIC)
                 }
 
                 val kotlinVersionOverride = mcData.project.propertyOr("fabric.language.kotlin.version", "")
@@ -65,7 +65,7 @@ class MCDependencies(
         val modMenuVersion: String
             get() {
                 if (!mcData.isFabric) {
-                    throw LoaderSpecificException(ModLoader.FABRIC)
+                    throw LoaderSpecificException(mcData.loader, ModLoader.FABRIC)
                 }
 
                 val modMenuVersionOverride = mcData.project.propertyOr("fabric.modmenu.version", "")
@@ -80,7 +80,7 @@ class MCDependencies(
         val modMenuDependency: String
             get() {
                 if (!mcData.isFabric) {
-                    throw LoaderSpecificException(ModLoader.FABRIC)
+                    throw LoaderSpecificException(mcData.loader, ModLoader.FABRIC)
                 }
 
                 val modMenuDependencyOverride = mcData.project.propertyOr("fabric.modmenu.dependency", "")
@@ -99,7 +99,7 @@ class MCDependencies(
         val legacyYarnVersion: String
             get() {
                 if (!mcData.isLegacyFabric) {
-                    throw LoaderSpecificException(ModLoader.FABRIC)
+                    throw LoaderSpecificException(mcData.loader, ModLoader.FABRIC)
                 }
 
                 val legacyYarnVersionOverride = mcData.project.propertyOr("fabric.yarn.version", "")
@@ -113,7 +113,7 @@ class MCDependencies(
         val legacyFabricApiVersion: String
             get() {
                 if (!mcData.isLegacyFabric) {
-                    throw LoaderSpecificException(ModLoader.FABRIC)
+                    throw LoaderSpecificException(mcData.loader, ModLoader.FABRIC)
                 }
 
                 val legacyFabricApiVersionOverride = mcData.project.propertyOr("fabric.api.version", "")
@@ -131,7 +131,7 @@ class MCDependencies(
         val kotlinForForgeVersion: String
             get() {
                 if (!mcData.isForgeLike) {
-                    throw LoaderSpecificException(ModLoader.FORGE)
+                    throw LoaderSpecificException(mcData.loader, ModLoader.FORGE, ModLoader.NEOFORGE)
                 }
 
                 val kotlinForForgeVersionOverride = mcData.project.propertyOr("forge.kotlin.version", "")
@@ -148,8 +148,8 @@ class MCDependencies(
 
         val forgeVersion: String
             get() {
-                if (!mcData.isForge) {
-                    throw LoaderSpecificException(ModLoader.FORGE)
+                if (!mcData.isForgeLike) {
+                    throw LoaderSpecificException(mcData.loader, ModLoader.FORGE)
                 }
 
                 val forgeVersionOverride = mcData.project.propertyOr("forge.version", "")
@@ -163,7 +163,7 @@ class MCDependencies(
         val mcpDependency: String
             get() {
                 if (!mcData.isForge) {
-                    throw LoaderSpecificException(ModLoader.FORGE)
+                    throw LoaderSpecificException(mcData.loader, ModLoader.FORGE)
                 }
 
                 val mcpDependencyOverride = mcData.project.propertyOr("forge.mcp.dependency", "")
@@ -181,7 +181,7 @@ class MCDependencies(
         val neoForgeVersion: String
             get() {
                 if (!mcData.isNeoForge) {
-                    throw LoaderSpecificException(ModLoader.NEOFORGE)
+                    throw LoaderSpecificException(mcData.loader, ModLoader.NEOFORGE)
                 }
 
                 val neoForgeVersionOverride = mcData.project.propertyOr("neoforge.version", "")
