@@ -185,9 +185,9 @@ object MinecraftInfo {
 
         private val forgeVersions = MinecraftVersionMap(
             MinecraftVersion.VERSION_1_21_1 to "1.21.1-52.0.9",
-            MinecraftVersion.VERSION_1_21 to "1.21-51.0.6",
+            MinecraftVersion.VERSION_1_21 to "1.21-51.0.33",
 
-            MinecraftVersion.VERSION_1_20_6 to "1.20.6-50.1.6",
+            MinecraftVersion.VERSION_1_20_6 to "1.20.6-50.1.14",
             MinecraftVersion.VERSION_1_20_4 to "1.20.4-49.1.0",
             MinecraftVersion.VERSION_1_20_3 to "1.20.3-49.0.2",
             MinecraftVersion.VERSION_1_20_2 to "1.20.2-48.0.18",
