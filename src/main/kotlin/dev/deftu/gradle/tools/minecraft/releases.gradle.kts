@@ -79,10 +79,9 @@ fun ReleasingExtension.getReleaseVersion(): String {
 
 fun ReleasingExtension.getUploadFile() = file.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get())
 
-fun ReleasingExtension.getGameVersions() = gameVersions.getOrElse(listOf(mcData.version.toString()))
-fun ReleasingExtension.getLoaders(capitalized: Boolean) = loaders.getOrElse(listOf(mcData.loader.friendlyString)).map { loader ->
-    if (capitalized) loader.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.US) else it.toString() } else loader
-}
+fun ReleasingExtension.getGameVersions() = gameVersions.getOrElse(listOf(mcData.version))
+
+fun ReleasingExtension.getLoaders() = loaders.getOrElse(listOf(mcData.loader))
 
 fun ReleasingExtension.getVersionType() = versionType.getOrElse(VersionType.RELEASE)
 
@@ -113,8 +112,6 @@ afterEvaluate {
         })
     }
 
-    if (mcData.isFabric && extension.describeFabricWithQuilt.get()) extension.loaders.add("quilt")
-
     if (modData.isPresent) {
         if (extension.detectVersionType.getOrElse(false)) {
             val version = extension.version.getOrElse(modData.version)
@@ -129,14 +126,21 @@ afterEvaluate {
             })
         }
 
-        if (modrinthToken.isNotBlank()) setupModrinth(modrinthToken)
-        if (curseForgeApiKey.isNotBlank()) setupCurseForge(curseForgeApiKey)
+        if (modrinthToken.isNotBlank()) {
+            setupModrinth(modrinthToken)
+        }
+
+        if (curseForgeApiKey.isNotBlank()) {
+            setupCurseForge(curseForgeApiKey)
+        }
     }
 }
 
 fun setupModrinth(token: String) {
     val projectId = extension.modrinth.projectId.orNull
-    if (projectId.isNullOrBlank()) return
+    if (projectId.isNullOrBlank()) {
+        return
+    }
 
     apply<Minotaur>()
     configure<ModrinthExtension> {
@@ -151,12 +155,21 @@ fun setupModrinth(token: String) {
         versionType.set(extension.getVersionType().value)
         uploadFile.set(extension.getUploadFile())
 
-        if (extension.shouldAddSourcesJar()) additionalFiles.add(extension.getSourcesJar())
-        if (extension.shouldAddJavadocJar()) additionalFiles.add(extension.getJavadocJar())
+        if (extension.shouldAddSourcesJar()) {
+            additionalFiles.add(extension.getSourcesJar())
+        }
+
+        if (extension.shouldAddJavadocJar()) {
+            additionalFiles.add(extension.getJavadocJar())
+        }
 
         changelog.set(extension.changelog.get())
-        gameVersions.addAll(extension.getGameVersions())
-        loaders.addAll(extension.getLoaders(false))
+        gameVersions.addAll(extension.getGameVersions().map(MinecraftVersion::toString))
+        loaders.addAll(extension.getLoaders().map(ModLoader::toString))
+        if (mcData.isFabric && extension.describeFabricWithQuilt.getOrElse(false)) {
+            loaders.add("quilt")
+        }
+
         dependencies.addAll(extension.modrinth.dependencies.getOrElse(listOf()))
     }
 
@@ -172,7 +185,9 @@ fun setupModrinth(token: String) {
 
 fun setupCurseForge(apiKey: String) {
     val projectId = extension.curseforge.projectId.orNull
-    if (projectId.isNullOrBlank()) return
+    if (projectId.isNullOrBlank()) {
+        return
+    }
 
     val publishToCurseForge by tasks.registering(TaskPublishCurseForge::class) {
         group = ToolkitConstants.TASK_GROUP
@@ -187,14 +202,23 @@ fun setupCurseForge(apiKey: String) {
             releaseType = extension.getVersionType().value
             changelog = extension.changelog.get()
             changelogType = extension.curseforge.changelogType.getOrElse("text")
-            extension.getLoaders(true).forEach(this::addModLoader)
+            extension.getLoaders().map(ModLoader::friendlyName).forEach(this::addModLoader)
+            if (mcData.isFabric && extension.describeFabricWithQuilt.getOrElse(false)) {
+                addModLoader("Quilt")
+            }
+
             extension.getGameVersions().forEach(this::addGameVersion)
             extension.curseforge.relations.getOrElse(listOf()).forEach { relation ->
                 relation.applyTo(this)
             }
 
-            if (extension.shouldAddSourcesJar()) withAdditionalFile(extension.getSourcesJar())
-            if (extension.shouldAddJavadocJar()) withAdditionalFile(extension.getJavadocJar())
+            if (extension.shouldAddSourcesJar()) {
+                withAdditionalFile(extension.getSourcesJar())
+            }
+
+            if (extension.shouldAddJavadocJar()) {
+                withAdditionalFile(extension.getJavadocJar())
+            }
         }
     }
 

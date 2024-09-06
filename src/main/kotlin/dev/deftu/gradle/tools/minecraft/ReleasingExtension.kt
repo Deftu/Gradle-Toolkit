@@ -9,6 +9,8 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.bundling.Zip
 import dev.deftu.gradle.utils.MCData
+import dev.deftu.gradle.utils.MinecraftVersion
+import dev.deftu.gradle.utils.ModLoader
 import dev.deftu.gradle.utils.VersionType
 import java.io.File
 
@@ -18,8 +20,8 @@ abstract class ReleasingExtension(
     abstract val version: Property<String>
     abstract val versionType: Property<VersionType>
     abstract val detectVersionType: Property<Boolean>
-    abstract val gameVersions: ListProperty<String>
-    abstract val loaders: ListProperty<String>
+    abstract val gameVersions: ListProperty<MinecraftVersion>
+    abstract val loaders: ListProperty<ModLoader>
     abstract val file: Property<Zip>
 
     abstract val describeFabricWithQuilt: Property<Boolean>
@@ -44,8 +46,8 @@ abstract class ReleasingExtension(
         val mcData = MCData.from(project)
         versionType.convention(VersionType.RELEASE)
         detectVersionType.convention(false)
-        gameVersions.set(listOf(mcData.version.toString()))
-        loaders.set(listOf(mcData.loader.friendlyString))
+        gameVersions.set(listOf(mcData.version))
+        loaders.set(listOf(mcData.loader))
         describeFabricWithQuilt.convention(false)
         useSourcesJar.convention(false)
         useJavadocJar.convention(false)
