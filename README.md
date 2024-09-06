@@ -82,6 +82,13 @@ The return values of all of the properties inside of the `MCDependency` objects 
 ### Minecraft Releases plugin
 The `dev.deftu.gradle.tools.minecraft.releases` plugin will automatically configure your project to publish to both CurseForge and Modrinth, and has maximal configuration options. It's easiest to check the `ReleasingExtension` class for all the properties.
 
+- Publishing for Modrinth can be setup via configuring the `dgt.publish.modrinth.token` property in your global Gradle properties file and setting your project ID via `modrinth.projectId` in `toolkitReleases`
+- Publishing for CurseForge can be setup via configuring the `dgt.publish.curseforge.apikey` property in your global Gradle properties file and setting your project ID via `curseforge.projectId` in `toolkitReleases`
+
+#### How do I locate my global Gradle properties?
+
+By default, for Windows users, they will be located at `C:\Users\YOU\.gradle\gradle.properties`. **But**, this can be configured using the `GRADLE_HOME` environment variable, so if setting these properties in the default location does not work, check if you have the environment variable set up.
+
 ---
 
 **This project is licensed under [LGPL-3.0][lgpl3].**\
