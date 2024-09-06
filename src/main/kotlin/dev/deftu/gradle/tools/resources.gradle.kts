@@ -2,10 +2,7 @@ package dev.deftu.gradle.tools
 
 import dev.deftu.gradle.tools.minecraft.LoomHelperExtension
 import dev.deftu.gradle.ToolkitConstants
-import dev.deftu.gradle.utils.MCData
-import dev.deftu.gradle.utils.MinecraftInfo
-import dev.deftu.gradle.utils.ModData
-import dev.deftu.gradle.utils.ProjectData
+import dev.deftu.gradle.utils.*
 import gradle.kotlin.dsl.accessors._0935894d714bf6b98fac60b9fc45a2f5.processResources
 
 plugins {
@@ -132,9 +129,24 @@ afterEvaluate {
             })
         }
 
-        if (!mcData.isFabric) exclude("fabric.mod.json")
-        if (!mcData.isModLauncher) exclude("META-INF/mods.toml")
-        if (!mcData.isNeoForge) exclude("META-INF/neoforge.mods.toml")
-        if (!mcData.isLegacyForge) exclude("mcmod.info")
+        // Only include our FMJ if we're using Fabric
+        if (!mcData.isFabric) {
+            exclude("fabric.mod.json")
+        }
+
+        // Only include our mods.toml if we're using Forge or NeoForge <=1.20.4
+        if (!mcData.isModLauncher || (!mcData.isNeoForge && mcData.version <= MinecraftVersion.VERSION_1_20_4)) {
+            exclude("META-INF/mods.toml")
+        }
+
+        // Only include our neoforge.mods.toml if we're using NeoForge
+        if (!mcData.isNeoForge || mcData.version > MinecraftVersion.VERSION_1_20_4) {
+            exclude("META-INF/neoforge.mods.toml")
+        }
+
+        // Only include our mcmod.info if we're using Forge <=1.12.2
+        if (!mcData.isLegacyForge) {
+            exclude("mcmod.info")
+        }
     }
 }
