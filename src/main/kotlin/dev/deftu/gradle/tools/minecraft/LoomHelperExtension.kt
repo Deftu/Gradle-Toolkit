@@ -215,7 +215,7 @@ abstract class LoomHelperExtension(
         project.dependencies.add("compileOnly", "$apiDependency:$apiVersion")
     }
 
-    fun useOneConfig(version: MinecraftVersion, vararg modules: String) {
+    fun useOneConfig(version: MinecraftVersion, loader: ModLoader, vararg modules: String) {
         val repos = arrayOf("https://repo.polyfrost.org/releases", "https://repo.polyfrost.org/snapshots")
         project.repositories {
             repos.forEach { maven(it) }
@@ -255,7 +255,7 @@ abstract class LoomHelperExtension(
         }
 
         // Set up OneConfig dependencies
-        for (module in (arrayOf(version.toString()) + modules)) {
+        for (module in (arrayOf("$version-$loader") + modules)) {
             val cachedDependencyFilename = "${module}-ONECONFIG.txt"
             val dependency = "org.polyfrost.oneconfig:$module"
             val moduleVersion =
