@@ -129,22 +129,22 @@ afterEvaluate {
             })
         }
 
-        // Only include our FMJ if we're using Fabric
+        // Only exclude our FMJ if we're NOT using Fabric
         if (!mcData.isFabric) {
             exclude("fabric.mod.json")
         }
 
-        // Only include our mods.toml if we're using Forge or NeoForge <=1.20.4
-        if (!mcData.isModLauncher || (!mcData.isNeoForge && mcData.version <= MinecraftVersion.VERSION_1_20_4)) {
+        // Only exclude our mods.toml if we're NOT on Forge 1.14+ (ModLauncher) or we're NOT on NeoForge for 1.20.4 and below
+        if (!mcData.isModLauncher && (mcData.isNeoForge && mcData.version > MinecraftVersion.VERSION_1_20_4)) {
             exclude("META-INF/mods.toml")
         }
 
-        // Only include our neoforge.mods.toml if we're using NeoForge
-        if (!mcData.isNeoForge || mcData.version > MinecraftVersion.VERSION_1_20_4) {
+        // Only exclude our neoforge.mods.toml if we're NOT using NeoForge for 1.20.6 and above
+        if (!mcData.isNeoForge || mcData.version < MinecraftVersion.VERSION_1_20_6) {
             exclude("META-INF/neoforge.mods.toml")
         }
 
-        // Only include our mcmod.info if we're using Forge <=1.12.2
+        // Only exclude our mcmod.info if we're NOT using Forge <=1.12.2
         if (!mcData.isLegacyForge) {
             exclude("mcmod.info")
         }

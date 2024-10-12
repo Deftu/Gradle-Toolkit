@@ -58,6 +58,9 @@ class MCDependencies(
                 }
 
                 val kotlinVersionOverride = mcData.project.propertyOr("fabric.language.kotlin.version", "")
+                if (kotlinVersionOverride.isNotEmpty()) {
+                    return kotlinVersionOverride
+                }
 
                 return MinecraftInfo.Fabric.KOTLIN_DEP_VERSION
             }
