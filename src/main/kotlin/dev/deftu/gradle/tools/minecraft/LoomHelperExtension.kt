@@ -215,6 +215,59 @@ abstract class LoomHelperExtension(
         project.dependencies.add("compileOnly", "$apiDependency:$apiVersion")
     }
 
+    fun useOneConfig(version: MinecraftVersion, vararg modules: String) {
+        val repos = arrayOf("https://repo.polyfrost.org/releases", "https://repo.polyfrost.org/snapshots")
+        project.repositories {
+            repos.forEach { maven(it) }
+        }
+
+        val mcData = MCData.from(project)
+
+        // Set up OneConfig's loader
+        val loaderModule = when {
+            mcData.isFabric -> "fabriclike"
+            mcData.isLegacyForge -> "launchwrapper"
+            else -> "modlauncher"
+        }
+
+        val loaderDependency = "org.polyfrost.oneconfig:stage0"
+
+        val cacheDir = File(project.gradle.projectCacheDir, ".oneconfig-version-cache").apply { mkdirs() }
+        val globalCacheDir = File(ToolkitConstants.dir, ".oneconfig-version-cache").apply { mkdirs() }
+
+        val cachedLoaderFilename = "${version}-${loaderModule}-STAGE0.txt"
+        val loaderVersion =
+            DependencyHelper.fetchLatestReleaseOrCached(repos[0], loaderDependency, cacheDir.resolve(cachedLoaderFilename)) ?:
+            DependencyHelper.fetchLatestReleaseOrCached(repos[1], loaderDependency, cacheDir.resolve(cachedLoaderFilename)) ?:
+            DependencyHelper.fetchLatestReleaseOrCached(repos[0], loaderDependency, globalCacheDir.resolve(cachedLoaderFilename)) ?:
+            DependencyHelper.fetchLatestReleaseOrCached(repos[1], loaderDependency, globalCacheDir.resolve(cachedLoaderFilename)) ?:
+            throw IllegalStateException("Failed to fetch latest OneConfig loader version.")
+
+        val fullLoaderDependency = "$loaderDependency:$loaderVersion:$loaderModule"
+        if (mcData.isFabric) {
+            // JiJ (Jar-in-Jar) the loader
+            project.dependencies.add("include", fullLoaderDependency)
+        } else {
+            // Embed the loader
+            val usingShadow = project.pluginManager.hasPlugin("dev.deftu.gradle.tools.shadow")
+            project.dependencies.add(if (usingShadow) "shade" else "implementation", fullLoaderDependency)
+            if (!usingShadow) project.logger.warn("It is recommended to use DGT Shadow to embed the Essential loader inside your built mod JAR.")
+        }
+
+        // Set up OneConfig dependencies
+        for (module in (arrayOf(version.toString()) + modules)) {
+            val cachedDependencyFilename = "${module}-ONECONFIG.txt"
+            val dependency = "org.polyfrost.oneconfig:$module"
+            val moduleVersion =
+                DependencyHelper.fetchLatestReleaseOrCached(repos[0], dependency, cacheDir.resolve(cachedDependencyFilename)) ?:
+                DependencyHelper.fetchLatestReleaseOrCached(repos[1], dependency, cacheDir.resolve(cachedDependencyFilename)) ?:
+                DependencyHelper.fetchLatestReleaseOrCached(repos[0], dependency, globalCacheDir.resolve(cachedDependencyFilename)) ?:
+                DependencyHelper.fetchLatestReleaseOrCached(repos[1], dependency, globalCacheDir.resolve(cachedDependencyFilename)) ?:
+                throw IllegalStateException("Failed to fetch latest OneConfig version for module $module.")
+            project.dependencies.add("compileOnly", "$dependency:$moduleVersion")
+        }
+    }
+
     /**
      * Allows you to use DevAuth while in the development environment.
      */
