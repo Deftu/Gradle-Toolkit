@@ -2,6 +2,7 @@ package dev.deftu.gradle.utils
 
 import dev.deftu.gradle.ToolkitConstants
 import java.io.File
+import java.net.URI
 import java.net.URL
 
 object DependencyHelper {
@@ -10,7 +11,7 @@ object DependencyHelper {
 
     fun fetchLatestRelease(repository: String, group: String, artifact: String): String {
         val url = "$repository/${group.replace('.', '/')}/$artifact/maven-metadata.xml"
-        val response = URL(url).readText()
+        val response = URI.create(url).toURL().readText()
         if (ToolkitConstants.debug) println("DependencyHelper#fetchLatestRelease:\n$response")
 
         val match = latestReleaseRegex.find(response)
@@ -31,7 +32,7 @@ object DependencyHelper {
     ): String? {
         val content = try {
             val url = "$repository/${group.replace('.', '/')}/$artifact/maven-metadata.xml"
-            val response = URL(url).readText()
+            val response = URI.create(url).toURL().readText()
             if (ToolkitConstants.debug) println("DependencyHelper#fetchLatestRelease:\n$response")
 
             if (!file.exists()) file.createNewFile()
