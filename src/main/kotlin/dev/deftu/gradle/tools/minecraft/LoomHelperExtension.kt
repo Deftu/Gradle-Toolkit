@@ -202,8 +202,16 @@ abstract class LoomHelperExtension(
         } else {
             // Embed the loader
             val usingShadow = project.pluginManager.hasPlugin("dev.deftu.gradle.tools.shadow")
-            project.dependencies.add(if (usingShadow) "shade" else "implementation", "$loaderDependency:$loaderVersion")
-            if (!usingShadow) project.logger.warn("It is recommended to use DGT Shadow to embed the Essential loader inside your built mod JAR.")
+
+            if (usingShadow) {
+                project.dependencies.add("shade", "$loaderDependency:$loaderVersion")
+            }
+
+            project.dependencies.add("implementation", "$loaderDependency:$loaderVersion")
+
+            if (!usingShadow) {
+                project.logger.warn("It is recommended to use DGT Shadow to embed the Essential loader inside your built mod JAR.")
+            }
         }
 
         val cachedApiFilename = "${mcData.version}-${mcData.loader.friendlyString}-API.txt"
@@ -250,8 +258,17 @@ abstract class LoomHelperExtension(
         } else {
             // Embed the loader
             val usingShadow = project.pluginManager.hasPlugin("dev.deftu.gradle.tools.shadow")
-            project.dependencies.add(if (usingShadow) "shade" else "implementation", fullLoaderDependency)
-            if (!usingShadow) project.logger.warn("It is recommended to use DGT Shadow to embed the Essential loader inside your built mod JAR.")
+//            project.dependencies.add(if (usingShadow) "shade" else "implementation", fullLoaderDependency)
+
+            if (usingShadow) {
+                project.dependencies.add("shade", fullLoaderDependency)
+            }
+
+            project.dependencies.add("implementation", fullLoaderDependency)
+
+            if (!usingShadow) {
+                project.logger.warn("It is recommended to use DGT Shadow to embed the OneConfig loader inside your built mod JAR.")
+            }
         }
 
         // Set up OneConfig dependencies
