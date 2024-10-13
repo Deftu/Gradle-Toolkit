@@ -285,6 +285,10 @@ abstract class LoomHelperExtension(
         }
     }
 
+    fun useOneConfig(mcData: MCData, vararg modules: String) {
+        useOneConfig(mcData.version, mcData.loader, *modules)
+    }
+
     /**
      * Allows you to use DevAuth while in the development environment.
      */
