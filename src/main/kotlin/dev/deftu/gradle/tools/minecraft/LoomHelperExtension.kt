@@ -192,6 +192,7 @@ abstract class LoomHelperExtension(
 
         val cachedLoaderFilename = "${mcData.version}-${mcData.loader.friendlyString}-LOADER.txt"
         val loaderVersion =
+            DependencyHelper.fetchLatestReleaseFromLocal(project, loaderDependency) ?:
             DependencyHelper.fetchLatestReleaseOrCached(repo, loaderDependency, cacheDir.resolve(cachedLoaderFilename)) ?:
             DependencyHelper.fetchLatestReleaseOrCached(repo, loaderDependency, globalCacheDir.resolve(cachedLoaderFilename)) ?:
             throw IllegalStateException("Failed to fetch latest Essential loader version.")
@@ -217,6 +218,7 @@ abstract class LoomHelperExtension(
         val cachedApiFilename = "${mcData.version}-${mcData.loader.friendlyString}-API.txt"
         val apiDependency = "gg.essential:essential-${mcData.version}-${mcData.loader.friendlyString}"
         val apiVersion =
+            DependencyHelper.fetchLatestReleaseFromLocal(project, apiDependency) ?:
             DependencyHelper.fetchLatestReleaseOrCached(repo, apiDependency, cacheDir.resolve(cachedApiFilename)) ?:
             DependencyHelper.fetchLatestReleaseOrCached(repo, apiDependency, globalCacheDir.resolve(cachedApiFilename)) ?:
             throw IllegalStateException("Failed to fetch latest Essential API version.")
@@ -245,6 +247,7 @@ abstract class LoomHelperExtension(
 
         val cachedLoaderFilename = "${version}-${loaderModule}-STAGE0.txt"
         val loaderVersion =
+            DependencyHelper.fetchLatestReleaseFromLocal(project, loaderDependency) ?:
             DependencyHelper.fetchLatestReleaseOrCached(repos[0], loaderDependency, cacheDir.resolve(cachedLoaderFilename)) ?:
             DependencyHelper.fetchLatestReleaseOrCached(repos[1], loaderDependency, cacheDir.resolve(cachedLoaderFilename)) ?:
             DependencyHelper.fetchLatestReleaseOrCached(repos[0], loaderDependency, globalCacheDir.resolve(cachedLoaderFilename)) ?:
@@ -276,6 +279,7 @@ abstract class LoomHelperExtension(
             val cachedDependencyFilename = "${module}-ONECONFIG.txt"
             val dependency = "org.polyfrost.oneconfig:$module"
             val moduleVersion =
+                DependencyHelper.fetchLatestReleaseFromLocal(project, dependency) ?:
                 DependencyHelper.fetchLatestReleaseOrCached(repos[0], dependency, cacheDir.resolve(cachedDependencyFilename)) ?:
                 DependencyHelper.fetchLatestReleaseOrCached(repos[1], dependency, cacheDir.resolve(cachedDependencyFilename)) ?:
                 DependencyHelper.fetchLatestReleaseOrCached(repos[0], dependency, globalCacheDir.resolve(cachedDependencyFilename)) ?:
@@ -306,6 +310,7 @@ abstract class LoomHelperExtension(
         val module = if (mcData.isFabric) "fabric" else if (mcData.isForge && mcData.version <= MinecraftVersion.VERSION_1_12_2) "forge-legacy" else "forge-latest"
         val dependency = "me.djtheredstoner:DevAuth-$module"
         val version =
+            DependencyHelper.fetchLatestReleaseFromLocal(project, dependency) ?:
             DependencyHelper.fetchLatestReleaseOrCached(repo, dependency, cacheDir.resolve("$module.txt")) ?:
             DependencyHelper.fetchLatestReleaseOrCached(repo, dependency, globalCacheDir.resolve("$module.txt")) ?:
             throw IllegalStateException("Failed to fetch latest DevAuth version.")
