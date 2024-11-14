@@ -180,26 +180,24 @@ if (mcData.isLegacyForge) {
     }
 }
 
-afterEvaluate {
-    if (extension.appleSiliconFix.get()) {
-        if (
-            System.getProperty("os.arch") == "aarch64" &&
-            System.getProperty("os.name") == "Mac OS X"
-        ) {
-            val lwjglVersion = if (mcData.version >= MinecraftVersion.VERSION_1_19) "3.3.1" else "3.3.0"
-            val lwjglNatives = "natives-macos-arm64"
-            logger.error("Setting up fix with Apple Silicon for Minecraft ${mcData.version} ($lwjglVersion, $lwjglNatives)")
+if (propertyBoolOr("loom.appleSiliconFix", true)) {
+    if (
+        System.getProperty("os.arch") == "aarch64" &&
+        System.getProperty("os.name") == "Mac OS X"
+    ) {
+        val lwjglVersion = if (mcData.version >= MinecraftVersion.VERSION_1_19) "3.3.1" else "3.3.0"
+        val lwjglNatives = "natives-macos-arm64"
+        logger.error("Setting up fix with Apple Silicon for Minecraft ${mcData.version} ($lwjglVersion, $lwjglNatives)")
 
-            configurations.all {
-                resolutionStrategy {
-                    force("org.lwjgl:lwjgl:$lwjglVersion")
-                    force("org.lwjgl:lwjgl-openal:$lwjglVersion")
-                    force("org.lwjgl:lwjgl-opengl:$lwjglVersion")
-                    force("org.lwjgl:lwjgl-jemalloc:$lwjglVersion")
-                    force("org.lwjgl:lwjgl-glfw:$lwjglVersion")
-                    force("org.lwjgl:lwjgl-stb:$lwjglVersion")
-                    force("org.lwjgl:lwjgl-tinyfd:$lwjglVersion")
-                }
+        configurations.all {
+            resolutionStrategy {
+                force("org.lwjgl:lwjgl:$lwjglVersion")
+                force("org.lwjgl:lwjgl-openal:$lwjglVersion")
+                force("org.lwjgl:lwjgl-opengl:$lwjglVersion")
+                force("org.lwjgl:lwjgl-jemalloc:$lwjglVersion")
+                force("org.lwjgl:lwjgl-glfw:$lwjglVersion")
+                force("org.lwjgl:lwjgl-stb:$lwjglVersion")
+                force("org.lwjgl:lwjgl-tinyfd:$lwjglVersion")
             }
         }
     }

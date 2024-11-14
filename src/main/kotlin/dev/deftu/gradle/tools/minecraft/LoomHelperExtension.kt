@@ -16,12 +16,6 @@ abstract class LoomHelperExtension(
     internal var usingKotlinForForge = false
         private set
 
-    abstract val appleSiliconFix: Property<Boolean>
-
-    init {
-        appleSiliconFix.convention(true)
-    }
-
     /**
      * Sets a Mixin config for
      * Forge to use.
