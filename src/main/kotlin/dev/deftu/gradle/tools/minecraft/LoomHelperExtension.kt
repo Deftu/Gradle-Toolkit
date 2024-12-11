@@ -269,17 +269,18 @@ abstract class LoomHelperExtension(
         }
 
         // Set up OneConfig dependencies
-        for (module in (arrayOf("$version-$loader") + modules)) {
-            val cachedDependencyFilename = "${module}-ONECONFIG.txt"
-            val dependency = "org.polyfrost.oneconfig:$module"
+        val dependencies = modules.map { module -> module to false } + ("$version-$loader" to true)
+        for (dep in dependencies) {
+            val cachedDependencyFilename = "${dep.first}-ONECONFIG.txt"
+            val dependency = "org.polyfrost.oneconfig:${dep.first}"
             val moduleVersion =
                 DependencyHelper.fetchLatestReleaseFromLocal(project, dependency) ?:
                 DependencyHelper.fetchLatestReleaseOrCached(repos[0], dependency, cacheDir.resolve(cachedDependencyFilename)) ?:
                 DependencyHelper.fetchLatestReleaseOrCached(repos[1], dependency, cacheDir.resolve(cachedDependencyFilename)) ?:
                 DependencyHelper.fetchLatestReleaseOrCached(repos[0], dependency, globalCacheDir.resolve(cachedDependencyFilename)) ?:
                 DependencyHelper.fetchLatestReleaseOrCached(repos[1], dependency, globalCacheDir.resolve(cachedDependencyFilename)) ?:
-                throw IllegalStateException("Failed to fetch latest OneConfig version for module $module.")
-            project.dependencies.add("compileOnly", "$dependency:$moduleVersion")
+                throw IllegalStateException("Failed to fetch latest OneConfig version for module ${dep.first}.")
+            project.dependencies.add(if (dep.second) "modCompileOnly" else "compileOnly", "$dependency:$moduleVersion")
         }
     }
 
