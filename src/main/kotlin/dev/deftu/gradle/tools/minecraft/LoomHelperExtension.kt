@@ -4,7 +4,6 @@ import dev.deftu.gradle.ToolkitConstants
 import dev.deftu.gradle.utils.*
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
-import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.*
 import java.io.File
 import java.util.*
@@ -219,7 +218,7 @@ abstract class LoomHelperExtension(
         project.dependencies.add("compileOnly", "$apiDependency:$apiVersion")
     }
 
-    fun useOneConfig(version: MinecraftVersion, loader: ModLoader, vararg modules: String) {
+    fun useOneConfig(loaderVersion: String, libVersion: String, minecraftVersion: MinecraftVersion, modLoader: ModLoader, vararg modules: String) {
         val repos = arrayOf("https://repo.polyfrost.org/releases", "https://repo.polyfrost.org/snapshots")
         project.repositories {
             repos.forEach { maven(it) }
@@ -236,18 +235,6 @@ abstract class LoomHelperExtension(
 
         val loaderDependency = "org.polyfrost.oneconfig:stage0"
 
-        val cacheDir = File(project.gradle.projectCacheDir, ".oneconfig-version-cache").apply { mkdirs() }
-        val globalCacheDir = File(ToolkitConstants.dir, ".oneconfig-version-cache").apply { mkdirs() }
-
-        val cachedLoaderFilename = "${version}-${loaderModule}-STAGE0.txt"
-        val loaderVersion =
-            DependencyHelper.fetchLatestReleaseFromLocal(project, loaderDependency) ?:
-            DependencyHelper.fetchLatestReleaseOrCached(repos[0], loaderDependency, cacheDir.resolve(cachedLoaderFilename)) ?:
-            DependencyHelper.fetchLatestReleaseOrCached(repos[1], loaderDependency, cacheDir.resolve(cachedLoaderFilename)) ?:
-            DependencyHelper.fetchLatestReleaseOrCached(repos[0], loaderDependency, globalCacheDir.resolve(cachedLoaderFilename)) ?:
-            DependencyHelper.fetchLatestReleaseOrCached(repos[1], loaderDependency, globalCacheDir.resolve(cachedLoaderFilename)) ?:
-            throw IllegalStateException("Failed to fetch latest OneConfig loader version.")
-
         val fullLoaderDependency = "$loaderDependency:$loaderVersion:$loaderModule"
         if (mcData.isFabric) {
             // JiJ (Jar-in-Jar) the loader
@@ -259,33 +246,23 @@ abstract class LoomHelperExtension(
 
             if (usingShadow) {
                 project.dependencies.add("shade", fullLoaderDependency)
-            }
-
-            project.dependencies.add("implementation", fullLoaderDependency)
-
-            if (!usingShadow) {
+            } else {
                 project.logger.warn("It is recommended to use DGT Shadow to embed the OneConfig loader inside your built mod JAR.")
             }
         }
 
+        project.dependencies.add("implementation", fullLoaderDependency)
+
         // Set up OneConfig dependencies
-        val dependencies = modules.map { module -> module to false } + ("$version-$loader" to true)
+        val dependencies = modules.map { module -> module to false } + ("$minecraftVersion-$modLoader" to true)
         for (dep in dependencies) {
-            val cachedDependencyFilename = "${dep.first}-ONECONFIG.txt"
             val dependency = "org.polyfrost.oneconfig:${dep.first}"
-            val moduleVersion =
-                DependencyHelper.fetchLatestReleaseFromLocal(project, dependency) ?:
-                DependencyHelper.fetchLatestReleaseOrCached(repos[0], dependency, cacheDir.resolve(cachedDependencyFilename)) ?:
-                DependencyHelper.fetchLatestReleaseOrCached(repos[1], dependency, cacheDir.resolve(cachedDependencyFilename)) ?:
-                DependencyHelper.fetchLatestReleaseOrCached(repos[0], dependency, globalCacheDir.resolve(cachedDependencyFilename)) ?:
-                DependencyHelper.fetchLatestReleaseOrCached(repos[1], dependency, globalCacheDir.resolve(cachedDependencyFilename)) ?:
-                throw IllegalStateException("Failed to fetch latest OneConfig version for module ${dep.first}.")
-            project.dependencies.add(if (dep.second) "modCompileOnly" else "compileOnly", "$dependency:$moduleVersion")
+            project.dependencies.add(if (dep.second) "modCompileOnly" else "compileOnly", "$dependency:$libVersion")
         }
     }
 
-    fun useOneConfig(mcData: MCData, vararg modules: String) {
-        useOneConfig(mcData.version, mcData.loader, *modules)
+    fun useOneConfig(loaderVersion: String, libVersion: String, mcData: MCData, vararg modules: String) {
+        useOneConfig(loaderVersion, libVersion, mcData.version, mcData.loader, *modules)
     }
 
     /**
