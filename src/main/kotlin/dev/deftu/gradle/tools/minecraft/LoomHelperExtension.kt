@@ -218,6 +218,57 @@ abstract class LoomHelperExtension(
         project.dependencies.add("compileOnly", "$apiDependency:$apiVersion")
     }
 
+    fun useOneConfig(builder: OneConfigBuilder.() -> Unit) {
+        val mcData = MCData.from(project)
+        val minecraftVersion = mcData.version
+        val modLoader = mcData.loader
+
+        fun isUsingLoader(): Boolean {
+            return modLoader == ModLoader.FORGE && minecraftVersion <= MinecraftVersion.VERSION_1_12_2
+        }
+
+        val builder = OneConfigBuilder().apply(builder)
+        if (isUsingLoader() && builder.loaderVersion == null) {
+            throw NullPointerException("loaderVersion must be set when using Forge 1.12.2 or lower.")
+        }
+
+        val repos = arrayOf("Polyfrost Releases" to "https://repo.polyfrost.org/releases", "Polyfrost Snapshots" to "https://repo.polyfrost.org/snapshots")
+        project.repositories {
+            for ((name, url) in repos) {
+                maven(url) {
+                    this.name = name
+                }
+            }
+        }
+
+        if (isUsingLoader()) {
+            val loaderModule = "launchwrapper" // Module used for 1.8.9 & 1.12.2 Forge
+            val loaderDependency = "org.polyfrost.oneconfig:stage0"
+            val fullLoaderDependency = "$loaderDependency:${builder.loaderVersion}:$loaderModule"
+            val usingShadow = project.pluginManager.hasPlugin("dev.deftu.gradle.tools.shadow")
+            if (usingShadow) {
+                project.dependencies.add("shade", fullLoaderDependency)
+            } else {
+                project.logger.warn("It is recommended to use DGT Shadow to embed the OneConfig loader inside your built mod JAR.")
+            }
+
+            project.dependencies.add("implementation", fullLoaderDependency)
+        }
+
+        if (builder.usePolyMixin) {
+            val polyMixinVersion = builder.polyMixinVersion ?: throw NullPointerException("polyMixinVersion must be set when using PolyMixin.")
+            val polyMixinDependency = "org.polyfrost:polymixin"
+            project.dependencies.add(if (isUsingLoader()) "compileOnly" else "implementation", "$polyMixinDependency:$polyMixinVersion")
+        }
+
+        val dependencies = builder.modules + "${minecraftVersion}-${modLoader}"
+        for (dep in dependencies) {
+            val dependency = "org.polyfrost.oneconfig:$dep"
+            project.dependencies.add(if (isUsingLoader()) "modCompileOnly" else "modImplementation", "$dependency:${builder.version}")
+        }
+    }
+
+    @Deprecated("Use the builder instead.", ReplaceWith("useOneConfig(loaderVersion, libVersion, builder)"))
     fun useOneConfig(loaderVersion: String, libVersion: String, minecraftVersion: MinecraftVersion, modLoader: ModLoader, vararg modules: String) {
         val repos = arrayOf("https://repo.polyfrost.org/releases", "https://repo.polyfrost.org/snapshots")
         project.repositories {
@@ -261,6 +312,7 @@ abstract class LoomHelperExtension(
         }
     }
 
+    @Deprecated("Use the builder instead.", ReplaceWith("useOneConfig(loaderVersion, libVersion, builder)"))
     fun useOneConfig(loaderVersion: String, libVersion: String, mcData: MCData, vararg modules: String) {
         useOneConfig(loaderVersion, libVersion, mcData.version, mcData.loader, *modules)
     }
