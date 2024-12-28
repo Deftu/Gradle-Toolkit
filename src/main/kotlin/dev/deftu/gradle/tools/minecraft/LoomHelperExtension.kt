@@ -15,6 +15,8 @@ abstract class LoomHelperExtension(
     internal var usingKotlinForForge = false
         private set
 
+    private var usingOneConfig = false
+
     /**
      * Sets a Mixin config for
      * Forge to use.
@@ -219,6 +221,8 @@ abstract class LoomHelperExtension(
     }
 
     fun useOneConfig(builder: OneConfigBuilder.() -> Unit) {
+        usingOneConfig = true
+
         val mcData = MCData.from(project)
         val minecraftVersion = mcData.version
         val modLoader = mcData.loader
@@ -270,6 +274,8 @@ abstract class LoomHelperExtension(
 
     @Deprecated("Use the builder instead.", ReplaceWith("useOneConfig(loaderVersion, libVersion, builder)"))
     fun useOneConfig(loaderVersion: String, libVersion: String, minecraftVersion: MinecraftVersion, modLoader: ModLoader, vararg modules: String) {
+        usingOneConfig = true
+
         val repos = arrayOf("https://repo.polyfrost.org/releases", "https://repo.polyfrost.org/snapshots")
         project.repositories {
             repos.forEach { maven(it) }
@@ -315,6 +321,18 @@ abstract class LoomHelperExtension(
     @Deprecated("Use the builder instead.", ReplaceWith("useOneConfig(loaderVersion, libVersion, builder)"))
     fun useOneConfig(loaderVersion: String, libVersion: String, mcData: MCData, vararg modules: String) {
         useOneConfig(loaderVersion, libVersion, mcData.version, mcData.loader, *modules)
+    }
+
+    fun useMixinExtras() {
+        val repository = "https://jitpack.io"
+        project.repositories.maven {
+            url = project.uri(repository)
+        }
+
+        val mcData = MCData.from(project)
+        val mixinExtras = "io.github.llamalad7:mixinextras-common"
+        val mixinExtrasVersion = DependencyHelper.fetchLatestReleaseOrCached(repository, mixinExtras, File(project.gradle.projectCacheDir, "mixinextras-common.txt"))
+        project.dependencies.add(if (usingOneConfig && mcData.loader == ModLoader.FORGE && mcData.version <= MinecraftVersion.VERSION_1_12_2) "modCompileOnly" else "modImplementation", "$mixinExtras:$mixinExtrasVersion")
     }
 
     /**
