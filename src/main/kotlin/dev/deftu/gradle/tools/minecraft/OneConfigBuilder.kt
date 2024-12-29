@@ -20,4 +20,12 @@ class OneConfigBuilder {
         modules.remove(this)
     }
 
+    fun addModule(module: String) {
+        modules.add(module)
+    }
+
+    fun removeModule(module: String) {
+        modules.remove(module)
+    }
+
 }
