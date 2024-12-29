@@ -257,6 +257,10 @@ abstract class LoomHelperExtension(
             }
 
             project.dependencies.add("implementation", fullLoaderDependency)
+
+            if (builder.applyLoaderTweaker) {
+                useTweaker("org.polyfrost.oneconfig.loader.stage0.LaunchWrapperTweaker", GameSide.CLIENT)
+            }
         }
 
         if (builder.usePolyMixin && isUsingLoader()) {

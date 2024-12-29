@@ -8,6 +8,8 @@ class OneConfigBuilder {
     var usePolyMixin = false
     var polyMixinVersion: String? = null
 
+    var applyLoaderTweaker = true
+
     internal val modules = mutableSetOf<String>()
 
     operator fun String.unaryPlus() {
