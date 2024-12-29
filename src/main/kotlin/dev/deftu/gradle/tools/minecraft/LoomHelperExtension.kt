@@ -259,16 +259,23 @@ abstract class LoomHelperExtension(
             project.dependencies.add("implementation", fullLoaderDependency)
         }
 
-        if (builder.usePolyMixin) {
+        if (builder.usePolyMixin && isUsingLoader()) {
             val polyMixinVersion = builder.polyMixinVersion ?: throw NullPointerException("polyMixinVersion must be set when using PolyMixin.")
             val polyMixinDependency = "org.polyfrost:polymixin"
             project.dependencies.add(if (isUsingLoader()) "compileOnly" else "implementation", "$polyMixinDependency:$polyMixinVersion")
+            project.dependencies.add("annotationProcessor", "$polyMixinDependency:$polyMixinVersion")
         }
 
-        val dependencies = builder.modules + "${minecraftVersion}-${modLoader}"
-        for (dep in dependencies) {
+        val dependencies = builder.modules.map { it to false } + ("${minecraftVersion}-${modLoader}" to true)
+        for ((dep, isMod) in dependencies) {
             val dependency = "org.polyfrost.oneconfig:$dep"
-            project.dependencies.add(if (isUsingLoader()) "modCompileOnly" else "modImplementation", "$dependency:${builder.version}")
+            val configuration = if (isMod) {
+                if (isUsingLoader()) "modCompileOnly" else "modImplementation"
+            } else {
+                if (isUsingLoader()) "compileOnly" else "implementation"
+            }
+
+            project.dependencies.add(configuration, "$dependency:${builder.version}")
         }
     }
 
@@ -333,6 +340,7 @@ abstract class LoomHelperExtension(
         val mixinExtras = "io.github.llamalad7:mixinextras-common"
         val mixinExtrasVersion = DependencyHelper.fetchLatestReleaseOrCached(repository, mixinExtras, File(project.gradle.projectCacheDir, "mixinextras-common.txt"))
         project.dependencies.add(if (usingOneConfig && mcData.loader == ModLoader.FORGE && mcData.version <= MinecraftVersion.VERSION_1_12_2) "modCompileOnly" else "modImplementation", "$mixinExtras:$mixinExtrasVersion")
+        project.dependencies.add("annotationProcessor", "$mixinExtras:$mixinExtrasVersion")
     }
 
     /**
