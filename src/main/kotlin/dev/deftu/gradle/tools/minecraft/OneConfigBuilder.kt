@@ -8,14 +8,14 @@ class OneConfigBuilder {
     var usePolyMixin = false
     var polyMixinVersion: String? = null
 
-    internal val modules = setOf<String>()
+    internal val modules = mutableSetOf<String>()
 
     operator fun String.unaryPlus() {
-        modules.plus(this)
+        modules.add(this)
     }
 
     operator fun String.unaryMinus() {
-        modules.minus(this)
+        modules.remove(this)
     }
 
 }
