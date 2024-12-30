@@ -170,56 +170,6 @@ abstract class LoomHelperExtension(
         }
     }
 
-    /**
-     * Adds Essential as a dependency, also shading/bundling the loader
-     */
-    fun useEssential() {
-        val repo = "https://repo.essential.gg/repository/maven-public"
-        project.repositories.maven {
-            url = project.uri(repo)
-        }
-
-        val mcData = MCData.from(project)
-        val loaderDependency = "gg.essential:" + if (mcData.isForge) "loader-launchwrapper" else "loader-fabric"
-
-        val cacheDir = File(project.gradle.projectCacheDir, ".essential-version-cache").apply { mkdirs() }
-        val globalCacheDir = File(ToolkitConstants.dir, ".essential-version-cache").apply { mkdirs() }
-
-        val cachedLoaderFilename = "${mcData.version}-${mcData.loader.friendlyString}-LOADER.txt"
-        val loaderVersion =
-            DependencyHelper.fetchLatestReleaseFromLocal(project, loaderDependency) ?:
-            DependencyHelper.fetchLatestReleaseOrCached(repo, loaderDependency, cacheDir.resolve(cachedLoaderFilename)) ?:
-            DependencyHelper.fetchLatestReleaseOrCached(repo, loaderDependency, globalCacheDir.resolve(cachedLoaderFilename)) ?:
-            throw IllegalStateException("Failed to fetch latest Essential loader version.")
-
-        if (mcData.isFabric) {
-            // JiJ (Jar-in-Jar) the loader
-            project.dependencies.add("include", "$loaderDependency:$loaderVersion")
-        } else {
-            // Embed the loader
-            val usingShadow = project.pluginManager.hasPlugin("dev.deftu.gradle.tools.shadow")
-
-            if (usingShadow) {
-                project.dependencies.add("shade", "$loaderDependency:$loaderVersion")
-            }
-
-            project.dependencies.add("implementation", "$loaderDependency:$loaderVersion")
-
-            if (!usingShadow) {
-                project.logger.warn("It is recommended to use DGT Shadow to embed the Essential loader inside your built mod JAR.")
-            }
-        }
-
-        val cachedApiFilename = "${mcData.version}-${mcData.loader.friendlyString}-API.txt"
-        val apiDependency = "gg.essential:essential-${mcData.version}-${mcData.loader.friendlyString}"
-        val apiVersion =
-            DependencyHelper.fetchLatestReleaseFromLocal(project, apiDependency) ?:
-            DependencyHelper.fetchLatestReleaseOrCached(repo, apiDependency, cacheDir.resolve(cachedApiFilename)) ?:
-            DependencyHelper.fetchLatestReleaseOrCached(repo, apiDependency, globalCacheDir.resolve(cachedApiFilename)) ?:
-            throw IllegalStateException("Failed to fetch latest Essential API version.")
-        project.dependencies.add("compileOnly", "$apiDependency:$apiVersion")
-    }
-
     fun useOneConfig(block: OneConfigBuilder.() -> Unit) {
         usingOneConfig = true
 
@@ -308,6 +258,56 @@ abstract class LoomHelperExtension(
         val module = if (mcData.isFabric) "fabric" else if (mcData.isForge && mcData.version <= MinecraftVersion.VERSION_1_12_2) "forge-legacy" else "forge-latest"
         val dependency = "me.djtheredstoner:DevAuth-$module"
         project.dependencies.add("modRuntimeOnly", "$dependency:$version")
+    }
+
+    /**
+     * Adds Essential as a dependency, also shading/bundling the loader
+     */
+    fun useEssential() {
+        val repo = "https://repo.essential.gg/repository/maven-public"
+        project.repositories.maven {
+            url = project.uri(repo)
+        }
+
+        val mcData = MCData.from(project)
+        val loaderDependency = "gg.essential:" + if (mcData.isForge) "loader-launchwrapper" else "loader-fabric"
+
+        val cacheDir = File(project.gradle.projectCacheDir, ".essential-version-cache").apply { mkdirs() }
+        val globalCacheDir = File(ToolkitConstants.dir, ".essential-version-cache").apply { mkdirs() }
+
+        val cachedLoaderFilename = "${mcData.version}-${mcData.loader.friendlyString}-LOADER.txt"
+        val loaderVersion =
+            DependencyHelper.fetchLatestReleaseFromLocal(project, loaderDependency) ?:
+            DependencyHelper.fetchLatestReleaseOrCached(repo, loaderDependency, cacheDir.resolve(cachedLoaderFilename)) ?:
+            DependencyHelper.fetchLatestReleaseOrCached(repo, loaderDependency, globalCacheDir.resolve(cachedLoaderFilename)) ?:
+            throw IllegalStateException("Failed to fetch latest Essential loader version.")
+
+        if (mcData.isFabric) {
+            // JiJ (Jar-in-Jar) the loader
+            project.dependencies.add("include", "$loaderDependency:$loaderVersion")
+        } else {
+            // Embed the loader
+            val usingShadow = project.pluginManager.hasPlugin("dev.deftu.gradle.tools.shadow")
+
+            if (usingShadow) {
+                project.dependencies.add("shade", "$loaderDependency:$loaderVersion")
+            }
+
+            project.dependencies.add("implementation", "$loaderDependency:$loaderVersion")
+
+            if (!usingShadow) {
+                project.logger.warn("It is recommended to use DGT Shadow to embed the Essential loader inside your built mod JAR.")
+            }
+        }
+
+        val cachedApiFilename = "${mcData.version}-${mcData.loader.friendlyString}-API.txt"
+        val apiDependency = "gg.essential:essential-${mcData.version}-${mcData.loader.friendlyString}"
+        val apiVersion =
+            DependencyHelper.fetchLatestReleaseFromLocal(project, apiDependency) ?:
+            DependencyHelper.fetchLatestReleaseOrCached(repo, apiDependency, cacheDir.resolve(cachedApiFilename)) ?:
+            DependencyHelper.fetchLatestReleaseOrCached(repo, apiDependency, globalCacheDir.resolve(cachedApiFilename)) ?:
+            throw IllegalStateException("Failed to fetch latest Essential API version.")
+        project.dependencies.add("compileOnly", "$apiDependency:$apiVersion")
     }
 
 }
