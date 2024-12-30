@@ -267,7 +267,6 @@ abstract class LoomHelperExtension(
             val polyMixinVersion = builder.polyMixinVersion ?: throw NullPointerException("polyMixinVersion must be set when using PolyMixin.")
             val polyMixinDependency = "org.polyfrost:polymixin"
             project.dependencies.add(if (isUsingLoader()) "compileOnly" else "implementation", "$polyMixinDependency:$polyMixinVersion")
-            project.dependencies.add("annotationProcessor", "$polyMixinDependency:$polyMixinVersion")
         }
 
         val dependencies = builder.modules.map { it to false } + ("${minecraftVersion}-${modLoader}" to true)
