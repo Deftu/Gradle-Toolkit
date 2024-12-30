@@ -221,6 +221,7 @@ abstract class LoomHelperExtension(
     }
 
     fun useOneConfig(builder: OneConfigBuilder.() -> Unit) {
+    fun useOneConfig(block: OneConfigBuilder.() -> Unit) {
         usingOneConfig = true
 
         val mcData = MCData.from(project)
@@ -231,7 +232,7 @@ abstract class LoomHelperExtension(
             return modLoader == ModLoader.FORGE && minecraftVersion <= MinecraftVersion.VERSION_1_12_2
         }
 
-        val builder = OneConfigBuilder().apply(builder)
+        val builder = OneConfigBuilder().apply(block)
         if (isUsingLoader() && builder.loaderVersion == null) {
             throw NullPointerException("loaderVersion must be set when using Forge 1.12.2 or lower.")
         }
@@ -335,22 +336,22 @@ abstract class LoomHelperExtension(
     }
 
     fun useMixinExtras() {
+    fun useMixinExtras(version: String) {
         val repository = "https://jitpack.io"
         project.repositories.maven {
             url = project.uri(repository)
         }
 
         val mcData = MCData.from(project)
-        val mixinExtras = "io.github.llamalad7:mixinextras-common"
-        val mixinExtrasVersion = DependencyHelper.fetchLatestReleaseOrCached(repository, mixinExtras, File(project.gradle.projectCacheDir, "mixinextras-common.txt"))
-        project.dependencies.add(if (usingOneConfig && mcData.loader == ModLoader.FORGE && mcData.version <= MinecraftVersion.VERSION_1_12_2) "modCompileOnly" else "modImplementation", "$mixinExtras:$mixinExtrasVersion")
-        project.dependencies.add("annotationProcessor", "$mixinExtras:$mixinExtrasVersion")
+        val dependencies = "io.github.llamalad7:mixinextras-common"
+        project.dependencies.add(if (usingOneConfig && mcData.loader == ModLoader.FORGE && mcData.version <= MinecraftVersion.VERSION_1_12_2) "modCompileOnly" else "modImplementation", "$dependencies:$version")
+        project.dependencies.add("annotationProcessor", "$dependencies:$version")
     }
 
     /**
      * Allows you to use DevAuth while in the development environment.
      */
-    fun useDevAuth() {
+    fun useDevAuth(version: String) {
         val repo = "https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1"
         project.repositories.maven {
             url = project.uri(repo)
@@ -358,16 +359,8 @@ abstract class LoomHelperExtension(
 
         val mcData = MCData.from(project)
 
-        val cacheDir = File(project.gradle.projectCacheDir, ".devauth-version-cache").apply { mkdirs() }
-        val globalCacheDir = File(ToolkitConstants.dir, ".devauth-version-cache").apply { mkdirs() }
-
         val module = if (mcData.isFabric) "fabric" else if (mcData.isForge && mcData.version <= MinecraftVersion.VERSION_1_12_2) "forge-legacy" else "forge-latest"
         val dependency = "me.djtheredstoner:DevAuth-$module"
-        val version =
-            DependencyHelper.fetchLatestReleaseFromLocal(project, dependency) ?:
-            DependencyHelper.fetchLatestReleaseOrCached(repo, dependency, cacheDir.resolve("$module.txt")) ?:
-            DependencyHelper.fetchLatestReleaseOrCached(repo, dependency, globalCacheDir.resolve("$module.txt")) ?:
-            throw IllegalStateException("Failed to fetch latest DevAuth version.")
         project.dependencies.add("modRuntimeOnly", "$dependency:$version")
     }
 
