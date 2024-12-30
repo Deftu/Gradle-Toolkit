@@ -220,7 +220,6 @@ abstract class LoomHelperExtension(
         project.dependencies.add("compileOnly", "$apiDependency:$apiVersion")
     }
 
-    fun useOneConfig(builder: OneConfigBuilder.() -> Unit) {
     fun useOneConfig(block: OneConfigBuilder.() -> Unit) {
         usingOneConfig = true
 
@@ -284,58 +283,6 @@ abstract class LoomHelperExtension(
         }
     }
 
-    @Deprecated("Use the builder instead.", ReplaceWith("useOneConfig(loaderVersion, libVersion, builder)"))
-    fun useOneConfig(loaderVersion: String, libVersion: String, minecraftVersion: MinecraftVersion, modLoader: ModLoader, vararg modules: String) {
-        usingOneConfig = true
-
-        val repos = arrayOf("https://repo.polyfrost.org/releases", "https://repo.polyfrost.org/snapshots")
-        project.repositories {
-            repos.forEach { maven(it) }
-        }
-
-        val mcData = MCData.from(project)
-
-        // Set up OneConfig's loader
-        val loaderModule = when {
-            mcData.isFabric -> "fabriclike"
-            mcData.isLegacyForge -> "launchwrapper"
-            else -> "modlauncher"
-        }
-
-        val loaderDependency = "org.polyfrost.oneconfig:stage0"
-
-        val fullLoaderDependency = "$loaderDependency:$loaderVersion:$loaderModule"
-        if (mcData.isFabric) {
-            // JiJ (Jar-in-Jar) the loader
-            project.dependencies.add("include", fullLoaderDependency)
-        } else {
-            // Embed the loader
-            val usingShadow = project.pluginManager.hasPlugin("dev.deftu.gradle.tools.shadow")
-//            project.dependencies.add(if (usingShadow) "shade" else "implementation", fullLoaderDependency)
-
-            if (usingShadow) {
-                project.dependencies.add("shade", fullLoaderDependency)
-            } else {
-                project.logger.warn("It is recommended to use DGT Shadow to embed the OneConfig loader inside your built mod JAR.")
-            }
-        }
-
-        project.dependencies.add("implementation", fullLoaderDependency)
-
-        // Set up OneConfig dependencies
-        val dependencies = modules.map { module -> module to false } + ("$minecraftVersion-$modLoader" to true)
-        for (dep in dependencies) {
-            val dependency = "org.polyfrost.oneconfig:${dep.first}"
-            project.dependencies.add(if (dep.second) "modCompileOnly" else "compileOnly", "$dependency:$libVersion")
-        }
-    }
-
-    @Deprecated("Use the builder instead.", ReplaceWith("useOneConfig(loaderVersion, libVersion, builder)"))
-    fun useOneConfig(loaderVersion: String, libVersion: String, mcData: MCData, vararg modules: String) {
-        useOneConfig(loaderVersion, libVersion, mcData.version, mcData.loader, *modules)
-    }
-
-    fun useMixinExtras() {
     fun useMixinExtras(version: String) {
         val repository = "https://jitpack.io"
         project.repositories.maven {
