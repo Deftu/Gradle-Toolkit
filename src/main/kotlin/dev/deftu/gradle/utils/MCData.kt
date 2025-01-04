@@ -192,7 +192,7 @@ class MCDependencies(
                     return neoForgeVersionOverride
                 }
 
-                return MinecraftInfo.NeoForged.getNeoForgedVersion(mcData.version)
+                return MinecraftInfo.NeoForge.getNeoForgeVersion(mcData.version)
             }
 
     }

@@ -4,10 +4,13 @@ object MinecraftInfo {
 
     object Fabric {
 
-        const val LOADER_VERSION = "0.16.4"
-        const val KOTLIN_DEP_VERSION = "1.12.1+kotlin.2.0.20"
+        const val LOADER_VERSION = "0.16.9"
+        const val KOTLIN_DEP_VERSION = "1.13.0+kotlin.2.1.0"
 
         private val yarnVersions = MinecraftVersionMap(
+            MinecraftVersion.VERSION_1_21_4 to "1.21.4+build.7",
+            MinecraftVersion.VERSION_1_21_3 to "1.21.3+build.2",
+            MinecraftVersion.VERSION_1_21_2 to "1.21.2+build.1",
             MinecraftVersion.VERSION_1_21_1 to "1.21.1+build.3",
             MinecraftVersion.VERSION_1_21 to "1.21+build.9",
             MinecraftVersion.VERSION_1_20_6 to "1.20.6+build.3",
@@ -50,14 +53,17 @@ object MinecraftInfo {
         )
 
         private val fabricApiVersions = MinecraftVersionMap(
-            MinecraftVersion.VERSION_1_21_1 to "0.103.0+1.21.1",
+            MinecraftVersion.VERSION_1_21_4 to "0.114.0+1.21.4",
+            MinecraftVersion.VERSION_1_21_3 to "0.114.0+1.21.3",
+            MinecraftVersion.VERSION_1_21_2 to "0.106.1+1.21.2",
+            MinecraftVersion.VERSION_1_21_1 to "0.114.0+1.21.1",
             MinecraftVersion.VERSION_1_21 to "0.102.0+1.21",
             MinecraftVersion.VERSION_1_20_6 to "0.100.8+1.20.6",
             MinecraftVersion.VERSION_1_20_5 to "0.97.8+1.20.5",
-            MinecraftVersion.VERSION_1_20_4 to "0.91.2+1.20.4",
+            MinecraftVersion.VERSION_1_20_4 to "0.97.2+1.20.4",
             MinecraftVersion.VERSION_1_20_3 to "0.91.1+1.20.3",
             MinecraftVersion.VERSION_1_20_2 to "0.91.6+1.20.2",
-            MinecraftVersion.VERSION_1_20_1 to "0.92.2+1.20.1",
+            MinecraftVersion.VERSION_1_20_1 to "0.92.3+1.20.1",
             MinecraftVersion.VERSION_1_20 to "0.83.0+1.20",
 
             MinecraftVersion.VERSION_1_19_4 to "0.87.2+1.19.4",
@@ -91,8 +97,11 @@ object MinecraftInfo {
         )
 
         private val modMenuDependencies = MinecraftVersionMap(
-            MinecraftVersion.VERSION_1_21_1 to ("com.terraformersmc:modmenu:" to "11.0.2"),
-            MinecraftVersion.VERSION_1_21 to ("com.terraformersmc:modmenu:" to "11.0.0-beta.1"),
+            MinecraftVersion.VERSION_1_21_4 to ("com.terraformersmc:modmenu:" to "13.0.0-beta.1"),
+            MinecraftVersion.VERSION_1_21_3 to ("com.terraformersmc:modmenu:" to "12.0.0"),
+            MinecraftVersion.VERSION_1_21_2 to ("com.terraformersmc:modmenu:" to "12.0.0"),
+            MinecraftVersion.VERSION_1_21_1 to ("com.terraformersmc:modmenu:" to "11.0.3"),
+            MinecraftVersion.VERSION_1_21 to ("com.terraformersmc:modmenu:" to "11.0.3"),
 
             MinecraftVersion.VERSION_1_20_6 to ("com.terraformersmc:modmenu:" to "10.0.0-beta.1"),
             MinecraftVersion.VERSION_1_20_5 to ("com.terraformersmc:modmenu:" to "10.0.0-beta.1"),
@@ -169,7 +178,7 @@ object MinecraftInfo {
         @JvmStatic
         fun getKotlinForForgeVersion(version: MinecraftVersion): String {
             return when {
-                version >= MinecraftVersion.VERSION_1_20_6 -> "5.4.0"
+                version >= MinecraftVersion.VERSION_1_20_6 -> "5.7.0"
                 version >= MinecraftVersion.VERSION_1_20_5 -> "5.0.2"
                 version >= MinecraftVersion.VERSION_1_19_3 -> "4.11.0"
                 version >= MinecraftVersion.VERSION_1_18 -> "3.12.0"
@@ -184,10 +193,12 @@ object MinecraftInfo {
     object Forge {
 
         private val forgeVersions = MinecraftVersionMap(
-            MinecraftVersion.VERSION_1_21_1 to "1.21.1-52.0.9",
+            MinecraftVersion.VERSION_1_21_4 to "1.21.4-54.0.16",
+            MinecraftVersion.VERSION_1_21_3 to "1.21.3-53.0.37",
+            MinecraftVersion.VERSION_1_21_1 to "1.21.1-52.0.40",
             MinecraftVersion.VERSION_1_21 to "1.21-51.0.33",
 
-            MinecraftVersion.VERSION_1_20_6 to "1.20.6-50.1.14",
+            MinecraftVersion.VERSION_1_20_6 to "1.20.6-50.1.31",
             MinecraftVersion.VERSION_1_20_4 to "1.20.4-49.1.0",
             MinecraftVersion.VERSION_1_20_3 to "1.20.3-49.0.2",
             MinecraftVersion.VERSION_1_20_2 to "1.20.2-48.0.18",
@@ -278,10 +289,13 @@ object MinecraftInfo {
 
     }
 
-    object NeoForged {
+    object NeoForge {
 
-        private val neoForgedVersions = MinecraftVersionMap(
-            MinecraftVersion.VERSION_1_21_1 to "21.1.37",
+        private val neoForgeVersions = MinecraftVersionMap(
+            MinecraftVersion.VERSION_1_21_4 to "21.4.49",
+            MinecraftVersion.VERSION_1_21_3 to "21.3.58",
+            MinecraftVersion.VERSION_1_21_2 to "21.2.2.1-beta",
+            MinecraftVersion.VERSION_1_21_1 to "21.1.93",
             MinecraftVersion.VERSION_1_21 to "21.0.167",
 
             MinecraftVersion.VERSION_1_20_6 to "20.6.121",
@@ -292,14 +306,17 @@ object MinecraftInfo {
         )
 
         @JvmStatic
-        fun getNeoForgedVersion(version: MinecraftVersion): String {
-            return neoForgedVersions[version] ?: throw IllegalArgumentException("Unknown version for NeoForged: $version")
+        fun getNeoForgeVersion(version: MinecraftVersion): String {
+            return neoForgeVersions[version] ?: throw IllegalArgumentException("Unknown version for NeoForged: $version")
         }
 
     }
 
     private val parchmentVersions = MinecraftVersionMap(
-        MinecraftVersion.VERSION_1_21_1 to "1.21:2024.07.07",
+        MinecraftVersion.VERSION_1_21_4 to "1.21.4:2024.12.29",
+        MinecraftVersion.VERSION_1_21_3 to "1.21.3:2024.12.07",
+        MinecraftVersion.VERSION_1_21_2 to "1.21.1:2024.11.17",
+        MinecraftVersion.VERSION_1_21_1 to "1.21.1:2024.11.17",
         MinecraftVersion.VERSION_1_21 to "1.21:2024.07.07",
         MinecraftVersion.VERSION_1_20_6 to "1.20.6:2024.06.16",
         MinecraftVersion.VERSION_1_20_4 to "1.20.4:2024.04.14",
