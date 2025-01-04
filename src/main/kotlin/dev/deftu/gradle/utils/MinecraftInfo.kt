@@ -5,7 +5,7 @@ object MinecraftInfo {
     object Fabric {
 
         const val LOADER_VERSION = "0.16.9"
-        const val KOTLIN_DEP_VERSION = "1.13.0+kotlin.2.1.0"
+        const val KOTLIN_DEP_VERSION = "1.12.1+kotlin.2.0.20"
 
         private val yarnVersions = MinecraftVersionMap(
             MinecraftVersion.VERSION_1_21_4 to "1.21.4+build.7",
