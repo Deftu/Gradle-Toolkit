@@ -196,7 +196,7 @@ abstract class LoomHelperExtension(
         }
 
         if (isUsingLoader()) {
-            val loaderModule = "launchwrapper" // Module used for 1.8.9 & 1.12.2 Forge
+            val loaderModule = "all" // Shadowed dependencies
             val loaderDependency = "org.polyfrost.oneconfig:stage0"
             val fullLoaderDependency = "$loaderDependency:${builder.loaderVersion}:$loaderModule"
             val usingShadow = project.pluginManager.hasPlugin("dev.deftu.gradle.tools.shadow")
