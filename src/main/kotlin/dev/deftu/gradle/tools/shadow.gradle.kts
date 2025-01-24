@@ -3,6 +3,7 @@ package dev.deftu.gradle.tools
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import dev.deftu.gradle.ToolkitConstants
 import dev.deftu.gradle.utils.ModData
+import dev.deftu.gradle.utils.isLoomPluginPresent
 import org.gradle.jvm.tasks.Jar
 import dev.deftu.gradle.utils.withLoom
 import gradle.kotlin.dsl.accessors._0935894d714bf6b98fac60b9fc45a2f5.remapJar
@@ -44,6 +45,24 @@ project.artifacts.add("shade", fatJar)
 
 pluginManager.withPlugin("java") {
     tasks["assemble"].dependsOn(fatJar)
+}
+
+if (isLoomPluginPresent) {
+    // Set up a non-transitive version of the shade configuration for parity with Loom's `include` configuration.
+    // This is mostly only for use with our own `includeOrShade` configuration, which chooses one of the two
+    // depending on the mod loader and Minecraft version currently in use. Certain versions may not support
+    // Jar-in-Jar which is what `include` uses, and it does NOT shade as a fallback. Thus, meaning our Shadow
+    // plugin is still useful. Using them interchangeably with an extended configuration such as `includeOrShade`
+    // is useful for that exact reason.
+    val shadeNonTransitive by configurations.creating {
+        isCanBeConsumed = false
+        isCanBeResolved = true
+        isTransitive = false
+    }
+
+    fatJar.configure {
+        configurations.add(shadeNonTransitive)
+    }
 }
 
 tasks {
