@@ -3,6 +3,7 @@ package dev.deftu.gradle.tools
 import dev.deftu.gradle.tools.minecraft.LoomHelperExtension
 import dev.deftu.gradle.ToolkitConstants
 import dev.deftu.gradle.utils.*
+import gradle.kotlin.dsl.accessors._8c47cae829ea3d03260d5ff13fb2398e.processResources
 
 plugins {
     java
@@ -134,7 +135,7 @@ afterEvaluate {
         }
 
         // Only exclude our mods.toml if we're NOT on Forge 1.14+ (ModLauncher) or we're NOT on NeoForge for 1.20.4 and below
-        if (!mcData.isModLauncher && (mcData.isNeoForge && mcData.version > MinecraftVersion.VERSION_1_20_4)) {
+        if (!mcData.isModLauncher || (mcData.isNeoForge && mcData.version > MinecraftVersion.VERSION_1_20_4)) {
             exclude("META-INF/mods.toml")
         }
 
