@@ -3,7 +3,6 @@ package dev.deftu.gradle.tools
 import dev.deftu.gradle.tools.minecraft.LoomHelperExtension
 import dev.deftu.gradle.ToolkitConstants
 import dev.deftu.gradle.utils.*
-import gradle.kotlin.dsl.accessors._0935894d714bf6b98fac60b9fc45a2f5.processResources
 
 plugins {
     java
