@@ -292,10 +292,10 @@ object MinecraftInfo {
     object NeoForge {
 
         private val neoForgeVersions = MinecraftVersionMap(
-            MinecraftVersion.VERSION_1_21_4 to "21.4.49",
-            MinecraftVersion.VERSION_1_21_3 to "21.3.58",
-            MinecraftVersion.VERSION_1_21_2 to "21.2.2.1-beta",
-            MinecraftVersion.VERSION_1_21_1 to "21.1.93",
+            MinecraftVersion.VERSION_1_21_4 to "21.4.88-beta",
+            MinecraftVersion.VERSION_1_21_3 to "21.3.63",
+            MinecraftVersion.VERSION_1_21_2 to "21.2.1-beta",
+            MinecraftVersion.VERSION_1_21_1 to "21.1.117",
             MinecraftVersion.VERSION_1_21 to "21.0.167",
 
             MinecraftVersion.VERSION_1_20_6 to "20.6.121",
