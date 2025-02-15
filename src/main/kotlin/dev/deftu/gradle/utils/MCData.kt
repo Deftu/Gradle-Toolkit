@@ -1,5 +1,6 @@
 package dev.deftu.gradle.utils
 
+import dev.deftu.gradle.ToolkitConstants
 import dev.deftu.gradle.exceptions.LoaderSpecificException
 import org.gradle.api.Project
 
@@ -263,7 +264,13 @@ data class MCData(
             if (extension != null) return extension
 
             val isValidProject = project.hasProperty("minecraft.version") || project.isMultiversionProject()
-            if (!isValidProject) return MCData(project, false, MinecraftVersion.UNKNOWN, ModLoader.OTHER)
+            if (!isValidProject) {
+                if (ToolkitConstants.debug) {
+                    project.logger.warn("Project ${project.name} is not a valid Minecraft-relating project.")
+                }
+
+                return MCData(project, false, MinecraftVersion.UNKNOWN, ModLoader.OTHER)
+            }
 
             val (major, minor, patch) = match(project.minecraftVersion)
             val data = MCData(project, true, MinecraftVersion.from(major, minor, patch), project.modLoader)

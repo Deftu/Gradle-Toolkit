@@ -2,6 +2,7 @@
 package dev.deftu.gradle.tools.minecraft
 
 import dev.architectury.pack200.java.Pack200Adapter
+import dev.deftu.gradle.ToolkitConstants
 import org.gradle.kotlin.dsl.dependencies
 import dev.deftu.gradle.utils.*
 import gradle.kotlin.dsl.accessors._523dc74e2e9552463686721a7434f18b.loom
@@ -79,6 +80,10 @@ dependencies {
         val mappingsFlavor = if (defaultMappings.second) "" else propertyOr("loom.mappings.flavor", "")
 
         if (mappingsFlavor.isNotEmpty()) {
+            if (ToolkitConstants.debug) {
+                logger.lifecycle("Using mappings flavor: $mappingsFlavor")
+            }
+
             mappings(loom.layered {
                 when(mappingsNotation) {
                     "official", "mojang", "mojmap" -> officialMojangMappings()

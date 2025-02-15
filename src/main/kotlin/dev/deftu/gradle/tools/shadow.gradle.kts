@@ -6,6 +6,7 @@ import dev.deftu.gradle.utils.ModData
 import dev.deftu.gradle.utils.isLoomPluginPresent
 import org.gradle.jvm.tasks.Jar
 import dev.deftu.gradle.utils.withLoom
+import dev.deftu.gradle.utils.withLoomPlugin
 import gradle.kotlin.dsl.accessors._523dc74e2e9552463686721a7434f18b.remapJar
 
 plugins {
@@ -47,7 +48,7 @@ pluginManager.withPlugin("java") {
     tasks["assemble"].dependsOn(fatJar)
 }
 
-if (isLoomPluginPresent) {
+pluginManager.withLoomPlugin {
     // Set up a non-transitive version of the shade configuration for parity with Loom's `include` configuration.
     // This is mostly only for use with our own `includeOrShade` configuration, which chooses one of the two
     // depending on the mod loader and Minecraft version currently in use. Certain versions may not support
