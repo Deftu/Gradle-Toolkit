@@ -3,11 +3,10 @@ package dev.deftu.gradle.tools
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import dev.deftu.gradle.ToolkitConstants
 import dev.deftu.gradle.utils.ModData
-import dev.deftu.gradle.utils.isLoomPluginPresent
 import org.gradle.jvm.tasks.Jar
 import dev.deftu.gradle.utils.withLoom
 import dev.deftu.gradle.utils.withLoomPlugin
-import gradle.kotlin.dsl.accessors._523dc74e2e9552463686721a7434f18b.remapJar
+import gradle.kotlin.dsl.accessors._7f302803de3c8e8ef0ce80f8d318d1c9.remapJar
 
 plugins {
     java

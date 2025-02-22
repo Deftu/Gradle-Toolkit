@@ -2,7 +2,7 @@
 
 package dev.deftu.gradle.utils
 
-import gradle.kotlin.dsl.accessors._8c47cae829ea3d03260d5ff13fb2398e.implementation
+import gradle.kotlin.dsl.accessors._7f302803de3c8e8ef0ce80f8d318d1c9.implementation
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.DependencyHandlerScope
 

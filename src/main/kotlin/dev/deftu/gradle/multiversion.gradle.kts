@@ -3,7 +3,7 @@ package dev.deftu.gradle
 import com.replaymod.gradle.preprocess.PreprocessExtension
 import com.replaymod.gradle.preprocess.PreprocessPlugin
 import dev.deftu.gradle.utils.*
-import gradle.kotlin.dsl.accessors._8c47cae829ea3d03260d5ff13fb2398e.jar
+import gradle.kotlin.dsl.accessors._7f302803de3c8e8ef0ce80f8d318d1c9.jar
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
@@ -52,7 +52,7 @@ val buildTaskName = "buildVersions"
 if (rootProject.tasks.none { task ->
     task.name == buildTaskName
 }) {
-    rootProject.tasks.create(buildTaskName) {
+    rootProject.tasks.register(buildTaskName) {
         group = ToolkitConstants.TASK_GROUP
         description = "Build all versions"
 

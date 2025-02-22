@@ -5,10 +5,10 @@ import dev.architectury.pack200.java.Pack200Adapter
 import dev.deftu.gradle.ToolkitConstants
 import org.gradle.kotlin.dsl.dependencies
 import dev.deftu.gradle.utils.*
-import gradle.kotlin.dsl.accessors._523dc74e2e9552463686721a7434f18b.loom
-import gradle.kotlin.dsl.accessors._523dc74e2e9552463686721a7434f18b.mappings
-import gradle.kotlin.dsl.accessors._523dc74e2e9552463686721a7434f18b.minecraft
-import gradle.kotlin.dsl.accessors._523dc74e2e9552463686721a7434f18b.modImplementation
+import gradle.kotlin.dsl.accessors._7f302803de3c8e8ef0ce80f8d318d1c9.loom
+import gradle.kotlin.dsl.accessors._7f302803de3c8e8ef0ce80f8d318d1c9.mappings
+import gradle.kotlin.dsl.accessors._7f302803de3c8e8ef0ce80f8d318d1c9.minecraft
+import gradle.kotlin.dsl.accessors._7f302803de3c8e8ef0ce80f8d318d1c9.modImplementation
 
 // Set XML parsers so Gradle stops complaining.
 extra.set("systemProp.javax.xml.parsers.DocumentBuilderFactory", "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl")

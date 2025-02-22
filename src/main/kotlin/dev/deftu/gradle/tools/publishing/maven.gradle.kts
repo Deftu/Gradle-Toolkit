@@ -2,6 +2,9 @@ package dev.deftu.gradle.tools.publishing
 
 import dev.deftu.gradle.ToolkitConstants
 import dev.deftu.gradle.utils.*
+import gradle.kotlin.dsl.accessors._8c47cae829ea3d03260d5ff13fb2398e.java
+import gradle.kotlin.dsl.accessors._cf462a91a4b85ccd33ed231d9a8caba4.publishing
+import gradle.kotlin.dsl.accessors._cf462a91a4b85ccd33ed231d9a8caba4.signing
 import java.util.*
 
 plugins {
@@ -122,7 +125,7 @@ afterEvaluate {
                 return@any task.name == name
             }) return@forEach
 
-            rootProject.tasks.create(name) {
+            rootProject.tasks.register(name) {
                 group = ToolkitConstants.TASK_GROUP
                 description = "Publish all versions of the mod to $repo"
 

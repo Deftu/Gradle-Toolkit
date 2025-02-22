@@ -6,7 +6,7 @@ import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.*
 import dev.deftu.gradle.utils.withLoom
-import gradle.kotlin.dsl.accessors._8c47cae829ea3d03260d5ff13fb2398e.sourceSets
+import gradle.kotlin.dsl.accessors._7f302803de3c8e8ef0ce80f8d318d1c9.sourceSets
 
 abstract class ApiExtension(
     val project: Project
