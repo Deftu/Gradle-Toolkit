@@ -2,6 +2,8 @@ package dev.deftu.gradle.utils
 
 import dev.deftu.gradle.ToolkitConstants
 import dev.deftu.gradle.exceptions.LoaderSpecificException
+import dev.deftu.gradle.utils.version.MinecraftVersion
+import dev.deftu.gradle.utils.version.MinecraftVersions
 import org.gradle.api.Project
 
 class MCDependencies(
@@ -209,7 +211,7 @@ class MCDependencies(
 data class MCData(
     val project: Project,
     val isPresent: Boolean,
-    val version: MinecraftVersion,
+    val version: MinecraftVersion<*>,
     val loader: ModLoader
 ) {
 
@@ -217,7 +219,7 @@ data class MCData(
         get() = loader == ModLoader.FABRIC
 
     val isLegacyFabric: Boolean
-        get() = loader == ModLoader.FABRIC && version < MinecraftVersion.VERSION_1_13_2
+        get() = loader == ModLoader.FABRIC && version < MinecraftVersions.VERSION_1_13_2
 
     val isForge: Boolean
         get() = loader == ModLoader.FORGE
@@ -229,10 +231,10 @@ data class MCData(
         get() = isForge || isNeoForge
 
     val isModLauncher: Boolean
-        get() = loader == ModLoader.FORGE && version >= MinecraftVersion.VERSION_1_14
+        get() = loader == ModLoader.FORGE && version >= MinecraftVersions.VERSION_1_14
 
     val isLegacyForge: Boolean
-        get() = loader == ModLoader.FORGE && version < MinecraftVersion.VERSION_1_14
+        get() = loader == ModLoader.FORGE && version < MinecraftVersions.VERSION_1_14
 
     val dependencies = MCDependencies(this)
 
@@ -241,9 +243,6 @@ data class MCData(
     }
 
     companion object {
-
-        @JvmStatic
-        val versionRegex = "(?<major>\\d+).(?<minor>\\d+).?(?<patch>\\d+)?".toRegex()
 
         /**
          * Gets the project's Minecraft version, either by the property or by inferring it from the project's name.
@@ -261,7 +260,9 @@ data class MCData(
         @JvmStatic
         fun from(project: Project): MCData {
             val extension = project.extensions.findByName("mcData") as MCData?
-            if (extension != null) return extension
+            if (extension != null) {
+                return extension
+            }
 
             val isValidProject = project.hasProperty("minecraft.version") || project.isMultiversionProject()
             if (!isValidProject) {
@@ -269,23 +270,13 @@ data class MCData(
                     project.logger.warn("Project ${project.name} is not a valid Minecraft-relating project.")
                 }
 
-                return MCData(project, false, MinecraftVersion.UNKNOWN, ModLoader.OTHER)
+                return MCData(project, false, MinecraftVersions.UNKNOWN, ModLoader.OTHER)
             }
 
-            val (major, minor, patch) = match(project.minecraftVersion)
-            val data = MCData(project, true, MinecraftVersion.from(major, minor, patch), project.modLoader)
+            val version = MinecraftVersions.get(project, project.minecraftVersion)
+            val data = MCData(project, true, version, project.modLoader)
             project.extensions.add("mcData", data)
             return data
-        }
-
-        private fun match(version: String): Triple<Int, Int, Int> {
-            val match = versionRegex.find(version) ?: throw IllegalArgumentException("Invalid version format: $version")
-            val groups = match.groups
-
-            val major = groups["major"]?.value?.toInt() ?: throw IllegalArgumentException("Invalid version format: $version")
-            val minor = groups["minor"]?.value?.toInt() ?: throw IllegalArgumentException("Invalid version format: $version")
-            val patch = groups["patch"]?.value?.toInt() ?: 0
-            return Triple(major, minor, patch)
         }
 
     }

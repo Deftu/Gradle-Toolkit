@@ -1,5 +1,6 @@
 package dev.deftu.gradle.utils
 
+import dev.deftu.gradle.utils.version.MinecraftVersions
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 
@@ -30,7 +31,7 @@ val Project.includeOrShade: Configuration
             val mcData = MCData.from(project)
             val configuration = configurations.create("includeOrShade")
 
-            val childConfigName = if (mcData.isFabric || (mcData.isForgeLike && mcData.version >= MinecraftVersion.VERSION_1_18)) "include" else "shadeNonTransitive"
+            val childConfigName = if (mcData.isFabric || (mcData.isForgeLike && mcData.version >= MinecraftVersions.VERSION_1_18)) "include" else "shadeNonTransitive"
             val childConfig = configurations.findByName(childConfigName)
                 ?: throw IllegalStateException("Configuration '$childConfigName' not found!")
             childConfig.extendsFrom(configuration)

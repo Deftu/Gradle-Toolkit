@@ -6,8 +6,8 @@ import dev.deftu.gradle.ToolkitConstants
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
 import org.gradle.kotlin.dsl.*
 import dev.deftu.gradle.utils.*
+import dev.deftu.gradle.utils.version.MinecraftVersion
 import java.nio.charset.StandardCharsets
-import java.util.*
 
 plugins {
     java
@@ -164,7 +164,7 @@ fun setupModrinth(token: String) {
         }
 
         changelog.set(extension.changelog.get())
-        gameVersions.addAll(extension.getGameVersions().map(MinecraftVersion::toString))
+        gameVersions.addAll(extension.getGameVersions().map(MinecraftVersion<*>::toString))
         loaders.addAll(extension.getLoaders().map(ModLoader::toString))
         if (mcData.isFabric && extension.describeFabricWithQuilt.getOrElse(false)) {
             loaders.add("quilt")

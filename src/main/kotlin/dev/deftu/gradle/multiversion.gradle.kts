@@ -19,7 +19,7 @@ setupLoom(mcData)
 // Set up preprocessor
 apply<PreprocessPlugin>()
 extensions.configure<PreprocessExtension> {
-    vars.put("MC", mcData.version.rawVersion)
+    vars.put("MC", mcData.version.preprocessorKey)
     vars.put("FABRIC", if (mcData.isFabric) 1 else 0)
     vars.put("FORGE-LIKE", if (mcData.isForge || mcData.isNeoForge) 1 else 0)
     vars.put("FORGE", if (mcData.isForge) 1 else 0)

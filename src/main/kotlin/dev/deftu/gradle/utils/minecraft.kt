@@ -3,6 +3,7 @@ package dev.deftu.gradle.utils
 import net.fabricmc.loom.api.LoomGradleExtensionAPI
 import net.fabricmc.loom.bootstrap.LoomGradlePluginBootstrap
 import org.gradle.api.Action
+import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
@@ -25,6 +26,15 @@ private val preprocessorIds = listOf(
     "dev.deftu.gradle.multiversion-root",
     "dev.deftu.gradle.multiversion"
 )
+
+val JavaVersion.minecraftJavaVersion: String
+    get() = when (this) {
+        JavaVersion.VERSION_1_8 -> "JAVA_8"
+        JavaVersion.VERSION_16 -> "JAVA_16"
+        JavaVersion.VERSION_17 -> "JAVA_17"
+        JavaVersion.VERSION_21 -> "JAVA_21"
+        else -> "UNKNOWN"
+    }
 
 fun Project.isLoomPresent() = loomIds.any { id ->
     pluginManager.hasPlugin(id)

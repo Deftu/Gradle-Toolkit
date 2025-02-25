@@ -3,6 +3,9 @@ package dev.deftu.gradle.tools
 import dev.deftu.gradle.tools.minecraft.LoomHelperExtension
 import dev.deftu.gradle.ToolkitConstants
 import dev.deftu.gradle.utils.*
+import dev.deftu.gradle.utils.version.MinecraftVersions
+import dev.deftu.gradle.utils.version.patchless
+import dev.deftu.gradle.utils.version.rawVersionString
 import gradle.kotlin.dsl.accessors._8c47cae829ea3d03260d5ff13fb2398e.processResources
 
 plugins {
@@ -50,8 +53,8 @@ afterEvaluate {
         if (mcData.isPresent) {
             inputs.property("mc_version", mcData.version.toString())
             inputs.property("patchless_mc_version", mcData.version.patchless)
-            inputs.property("padded_mc_version", mcData.version.rawVersion.toString())
-            inputs.property("java_version", mcData.version.javaVersionString)
+            inputs.property("padded_mc_version", mcData.version.rawVersionString)
+            inputs.property("java_version", mcData.version.javaVersion.minecraftJavaVersion)
         }
 
         if (modData.isPresent) {
@@ -86,8 +89,8 @@ afterEvaluate {
                 if (mcData.isPresent) {
                     put("mc_version", mcData.version.toString())
                     put("minor_mc_version", mcData.version.patchless)
-                    put("format_mc_version", mcData.version.rawVersion.toString())
-                    put("java_version", mcData.version.javaVersionString)
+                    put("format_mc_version", mcData.version.rawVersionString)
+                    put("java_version", mcData.version.javaVersion.minecraftJavaVersion)
                 }
 
                 if (modData.isPresent) {
@@ -135,12 +138,12 @@ afterEvaluate {
         }
 
         // Only exclude our mods.toml if we're NOT on Forge 1.14+ (ModLauncher) or we're NOT on NeoForge for 1.20.4 and below
-        if (!mcData.isModLauncher || (mcData.isNeoForge && mcData.version > MinecraftVersion.VERSION_1_20_4)) {
+        if (!mcData.isModLauncher || (mcData.isNeoForge && mcData.version > MinecraftVersions.VERSION_1_20_4)) {
             exclude("META-INF/mods.toml")
         }
 
         // Only exclude our neoforge.mods.toml if we're NOT using NeoForge for 1.20.6 and above
-        if (!mcData.isNeoForge || mcData.version < MinecraftVersion.VERSION_1_20_6) {
+        if (!mcData.isNeoForge || mcData.version < MinecraftVersions.VERSION_1_20_6) {
             exclude("META-INF/neoforge.mods.toml")
         }
 

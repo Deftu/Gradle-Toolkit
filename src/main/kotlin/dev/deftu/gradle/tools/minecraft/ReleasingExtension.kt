@@ -9,9 +9,9 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.bundling.Zip
 import dev.deftu.gradle.utils.MCData
-import dev.deftu.gradle.utils.MinecraftVersion
 import dev.deftu.gradle.utils.ModLoader
 import dev.deftu.gradle.utils.VersionType
+import dev.deftu.gradle.utils.version.MinecraftVersion
 import java.io.File
 
 abstract class ReleasingExtension(
@@ -20,7 +20,7 @@ abstract class ReleasingExtension(
     abstract val version: Property<String>
     abstract val versionType: Property<VersionType>
     abstract val detectVersionType: Property<Boolean>
-    abstract val gameVersions: ListProperty<MinecraftVersion>
+    abstract val gameVersions: ListProperty<MinecraftVersion<*>>
     abstract val loaders: ListProperty<ModLoader>
     abstract val file: Property<Zip>
 

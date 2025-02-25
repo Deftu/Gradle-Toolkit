@@ -5,6 +5,7 @@ import dev.architectury.pack200.java.Pack200Adapter
 import dev.deftu.gradle.ToolkitConstants
 import org.gradle.kotlin.dsl.dependencies
 import dev.deftu.gradle.utils.*
+import dev.deftu.gradle.utils.version.MinecraftVersions
 import gradle.kotlin.dsl.accessors._7f302803de3c8e8ef0ce80f8d318d1c9.loom
 import gradle.kotlin.dsl.accessors._7f302803de3c8e8ef0ce80f8d318d1c9.mappings
 import gradle.kotlin.dsl.accessors._7f302803de3c8e8ef0ce80f8d318d1c9.minecraft
@@ -68,7 +69,7 @@ dependencies {
         val defaultMappings: Pair<String, Boolean> = when {
             mcData.isLegacyFabric -> "net.legacyfabric:yarn:${mcData.dependencies.legacyFabric.legacyYarnVersion}" to true
             mcData.isFabric -> "net.fabricmc:yarn:${mcData.dependencies.fabric.yarnVersion}" to false
-            mcData.isForge && mcData.version <= MinecraftVersion.VERSION_1_15_2 -> mcData.dependencies.forge.mcpDependency to true
+            mcData.isForge && mcData.version <= MinecraftVersions.VERSION_1_15_2 -> mcData.dependencies.forge.mcpDependency to true
             else -> "official" to false
         }
 
@@ -89,7 +90,7 @@ dependencies {
                     "official", "mojang", "mojmap" -> officialMojangMappings()
 
                     "official-like" -> {
-                        if (mcData.version <= MinecraftVersion.VERSION_1_12_2) {
+                        if (mcData.version <= MinecraftVersions.VERSION_1_12_2) {
                             if (mcData.isForge) {
                                 mappings(mcData.dependencies.forge.mcpDependency)
                             } else {
@@ -107,7 +108,7 @@ dependencies {
 
                 when(mappingsFlavor) {
                     "parchment" -> {
-                        if (mcData.version >= MinecraftVersion.VERSION_1_16_5) {
+                        if (mcData.version >= MinecraftVersions.VERSION_1_16_5) {
                             repositories {
                                 maven("https://maven.parchmentmc.org")
                             }
@@ -122,7 +123,7 @@ dependencies {
                 "official", "mojang", "mojmap" -> loom.officialMojangMappings()
 
                 "official-like" -> {
-                    if (mcData.version <= MinecraftVersion.VERSION_1_12_2) {
+                    if (mcData.version <= MinecraftVersions.VERSION_1_12_2) {
                         if (mcData.isForge) {
                             mcData.dependencies.forge.mcpDependency
                         } else {
@@ -190,7 +191,7 @@ if (propertyBoolOr("loom.appleSiliconFix", true)) {
         System.getProperty("os.arch") == "aarch64" &&
         System.getProperty("os.name") == "Mac OS X"
     ) {
-        val lwjglVersion = if (mcData.version >= MinecraftVersion.VERSION_1_19) "3.3.1" else "3.3.0"
+        val lwjglVersion = if (mcData.version >= MinecraftVersions.VERSION_1_19) "3.3.1" else "3.3.0"
         val lwjglNatives = "natives-macos-arm64"
         logger.error("Setting up fix with Apple Silicon for Minecraft ${mcData.version} ($lwjglVersion, $lwjglNatives)")
 

@@ -2,6 +2,7 @@ package dev.deftu.gradle.tools.minecraft
 
 import dev.deftu.gradle.ToolkitConstants
 import dev.deftu.gradle.utils.*
+import dev.deftu.gradle.utils.version.MinecraftVersions
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.*
@@ -178,7 +179,7 @@ abstract class LoomHelperExtension(
         val modLoader = mcData.loader
 
         fun isUsingLoader(): Boolean {
-            return modLoader == ModLoader.FORGE && minecraftVersion <= MinecraftVersion.VERSION_1_12_2
+            return modLoader == ModLoader.FORGE && minecraftVersion <= MinecraftVersions.VERSION_1_12_2
         }
 
         val builder = OneConfigBuilder().apply(block)
@@ -240,7 +241,7 @@ abstract class LoomHelperExtension(
 
         val mcData = MCData.from(project)
         val dependencies = "io.github.llamalad7:mixinextras-common"
-        project.dependencies.add(if (usingOneConfig && mcData.loader == ModLoader.FORGE && mcData.version <= MinecraftVersion.VERSION_1_12_2) "modCompileOnly" else "modImplementation", "$dependencies:$version")
+        project.dependencies.add(if (usingOneConfig && mcData.loader == ModLoader.FORGE && mcData.version <= MinecraftVersions.VERSION_1_12_2) "modCompileOnly" else "modImplementation", "$dependencies:$version")
         project.dependencies.add("annotationProcessor", "$dependencies:$version")
     }
 
@@ -255,7 +256,7 @@ abstract class LoomHelperExtension(
 
         val mcData = MCData.from(project)
 
-        val module = if (mcData.isFabric) "fabric" else if (mcData.isForge && mcData.version <= MinecraftVersion.VERSION_1_12_2) "forge-legacy" else "forge-latest"
+        val module = if (mcData.isFabric) "fabric" else if (mcData.isForge && mcData.version <= MinecraftVersions.VERSION_1_12_2) "forge-legacy" else "forge-latest"
         val dependency = "me.djtheredstoner:DevAuth-$module"
         project.dependencies.add("modRuntimeOnly", "$dependency:$version")
     }

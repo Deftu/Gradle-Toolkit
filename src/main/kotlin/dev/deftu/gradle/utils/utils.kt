@@ -17,11 +17,15 @@ private const val DEFAULT_PROPERTY_PREFIX = "dgt."
 val Gradle.projectCacheDir: File
     get() = gradle.rootProject.layout.projectDirectory.file(".gradle").asFile
 
-fun Project.getMajorJavaVersion(): Int {
-    val mcData = MCData.from(this)
-    val rawVersion = if (mcData.isPresent) {
-        mcData.version.javaVersion.toString()
-    } else propertyOr("java.version", JavaVersion.current().toString())
+fun Project.getMajorJavaVersion(checkMinecraft: Boolean = true): Int {
+    val property = propertyOr("java.version", JavaVersion.current().toString())
+    val rawVersion = if (checkMinecraft) {
+        val mcData = MCData.from(this)
+        if (mcData.isPresent) {
+            mcData.version.javaVersion.toString()
+        } else property
+    } else property
+
     val formattedVersion = if (rawVersion.startsWith("1.")) {
         rawVersion.substring(2)
     } else {
