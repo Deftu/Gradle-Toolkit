@@ -40,10 +40,16 @@ afterEvaluate {
             publications {
                 create<MavenPublication>("mavenJava") {
                     if (modData.isPresent) {
-                        artifactId = (if (isMultiversionProject()) {
-                            "${extension.getArtifactName(true)}-${mcData.version}-${mcData.loader.friendlyString}"
-                        } else extension.getArtifactName(true))
+                        artifactId = buildString {
+                            val artifactName = extension.getArtifactName(true)
+                            if (artifactName.isNotEmpty()) {
+                                append(artifactName).append("-")
+                            }
 
+                            if (isMultiversionProject()) {
+                                append(mcData.version).append("-").append(mcData.loader.friendlyString)
+                            }
+                        }.ifEmpty(project::getName)
                         groupId = modData.group
                         version = modData.version
                     } else if (projectData.isPresent) {
@@ -62,9 +68,12 @@ afterEvaluate {
                             classifier = null
                         }
 
-                        artifact(getSourcesJarTask())
-
                         pluginManager.withPlugin("java") {
+                            val sourcesJar = getSourcesJarTask().orNull
+                            if (sourcesJar != null && sourcesJar.enabled) {
+                                artifact(sourcesJar)
+                            }
+
                             val javadocJar = project.tasks.findByName("javadocJar") as Jar?
                             if (javadocJar != null && javadocJar.enabled) {
                                 artifact(javadocJar)
