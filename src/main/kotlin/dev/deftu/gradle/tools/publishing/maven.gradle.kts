@@ -28,12 +28,6 @@ fun MavenPublishingExtension.getArtifactName(
     isMod: Boolean
 ) = artifactName.getOrElse(if (isMod) modData.name else projectData.name)
 
-pluginManager.withPlugin("java") {
-    java {
-        withSourcesJar()
-    }
-}
-
 afterEvaluate {
     publishing {
         if (extension.setupPublication.getOrElse(true)) {
