@@ -38,7 +38,7 @@ dependencies {
     implementation(kotlin("gradle-plugin"))
 
     // Architectury Loom
-    implementation("gg.essential:architectury-loom:1.9.24")
+    implementation("gg.essential:architectury-loom:1.9.26")
     implementation("dev.architectury:architectury-pack200:0.1.3")
 
     // Preprocessing/multi-versioning
@@ -50,7 +50,7 @@ dependencies {
 
     // Publishing
     implementation("com.modrinth.minotaur:Minotaur:2.8.7")
-    implementation("net.darkhax.curseforgegradle:CurseForgeGradle:1.1.24")
+    implementation("net.darkhax.curseforgegradle:CurseForgeGradle:1.1.26")
     implementation("com.github.breadmoirai:github-release:2.5.2")
 
     // Other
