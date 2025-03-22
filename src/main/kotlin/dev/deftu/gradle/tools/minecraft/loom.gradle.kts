@@ -186,24 +186,36 @@ if (mcData.isLegacyForge) {
     }
 }
 
-if (propertyBoolOr("loom.appleSiliconFix", true)) {
+if (propertyBoolOr("loom.appleSiliconFix", true) && mcData.version < MinecraftVersions.VERSION_1_13) {
     if (
         System.getProperty("os.arch") == "aarch64" &&
         System.getProperty("os.name") == "Mac OS X"
     ) {
-        val lwjglVersion = if (mcData.version >= MinecraftVersions.VERSION_1_19) "3.3.1" else "3.3.0"
-        val lwjglNatives = "natives-macos-arm64"
-        logger.error("Setting up fix with Apple Silicon for Minecraft ${mcData.version} ($lwjglVersion, $lwjglNatives)")
+        logger.error("Setting up fix with Apple Silicon for Minecraft ${mcData.version}")
+
+        repositories {
+            maven("https://maven.legacyfabric.net/") {
+                content {
+                    includeGroup("org.lwjgl.lwjgl")
+                }
+            }
+        }
+
+        val lwjglVersion = "2.9.4+legacyfabric.8"
 
         configurations.all {
             resolutionStrategy {
-                force("org.lwjgl:lwjgl:$lwjglVersion")
-                force("org.lwjgl:lwjgl-openal:$lwjglVersion")
-                force("org.lwjgl:lwjgl-opengl:$lwjglVersion")
-                force("org.lwjgl:lwjgl-jemalloc:$lwjglVersion")
-                force("org.lwjgl:lwjgl-glfw:$lwjglVersion")
-                force("org.lwjgl:lwjgl-stb:$lwjglVersion")
-                force("org.lwjgl:lwjgl-tinyfd:$lwjglVersion")
+                dependencySubstitution {
+                    all {
+                        if (requested is ModuleComponentSelector) {
+                            val module = (requested as ModuleComponentSelector)
+                            if (module.group == "org.lwjgl.lwjgl") {
+                                logger.warn("Substituting ${module.group}:${module.module}:${module.version} with ${module.group}:${module.module}:$lwjglVersion")
+                                useTarget(module.group + ":" + module.module + ":" + lwjglVersion)
+                            }
+                        }
+                    }
+                }
             }
         }
     }
