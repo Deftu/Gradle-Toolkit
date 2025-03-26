@@ -104,7 +104,7 @@ object MinecraftInfo {
 
         private val modMenuDependencies = MinecraftVersionMap(
             MinecraftVersions.VERSION_1_21_5 to ("com.terraformersmc:modmenu:" to "14.0.0-rc.2"),
-            MinecraftVersions.VERSION_1_21_4 to ("com.terraformersmc:modmenu:" to "13.0.0-beta.1"),
+            MinecraftVersions.VERSION_1_21_4 to ("com.terraformersmc:modmenu:" to "13.0.3"),
             MinecraftVersions.VERSION_1_21_3 to ("com.terraformersmc:modmenu:" to "12.0.0"),
             MinecraftVersions.VERSION_1_21_2 to ("com.terraformersmc:modmenu:" to "12.0.0"),
             MinecraftVersions.VERSION_1_21_1 to ("com.terraformersmc:modmenu:" to "11.0.3"),
@@ -300,8 +300,8 @@ object MinecraftInfo {
     object NeoForge {
 
         private val neoForgeVersions = MinecraftVersionMap(
-            MinecraftVersions.VERSION_1_21_4 to "21.4.88-beta",
             MinecraftVersions.VERSION_1_21_5 to "21.5.2-beta",
+            MinecraftVersions.VERSION_1_21_4 to "21.4.123",
             MinecraftVersions.VERSION_1_21_3 to "21.3.63",
             MinecraftVersions.VERSION_1_21_2 to "21.2.1-beta",
             MinecraftVersions.VERSION_1_21_1 to "21.1.117",
