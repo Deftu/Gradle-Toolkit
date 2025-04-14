@@ -13,7 +13,7 @@ object MinecraftInfo {
 
         private val yarnVersions = MinecraftVersionMap(
             MinecraftVersions.VERSION_1_21_5 to "1.21.5+build.1",
-            MinecraftVersions.VERSION_1_21_4 to "1.21.4+build.7",
+            MinecraftVersions.VERSION_1_21_4 to "1.21.4+build.8",
             MinecraftVersions.VERSION_1_21_3 to "1.21.3+build.2",
             MinecraftVersions.VERSION_1_21_2 to "1.21.2+build.1",
             MinecraftVersions.VERSION_1_21_1 to "1.21.1+build.3",
