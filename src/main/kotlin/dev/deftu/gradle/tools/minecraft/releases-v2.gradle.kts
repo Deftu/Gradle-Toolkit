@@ -62,20 +62,23 @@ fun setupModrinth(token: String) {
         this.token.set(token)
         this.projectId.set(projectId)
 
-        this.versionName.set(extension.getReleaseName())
-        this.versionNumber.set(extension.getReleaseVersion())
-        this.versionType.set(extension.versionType.getOrElse(VersionType.RELEASE).value)
+        this.versionName.set(extension.releaseName)
+        this.versionNumber.set(extension.releaseVersion)
+        this.versionType.set(extension.versionType.map(VersionType::value))
         this.changelog.set(extension.changelog.content)
 
-        this.uploadFile.set(extension.uploadFile)
-        if (extension.isUsingSourcesJar) this.additionalFiles.add(extension.jars.sourcesJar.orElse(getSourcesJarTask()))
-        if (extension.isUsingJavadocJar) this.additionalFiles.add(extension.jars.javadocJar.orElse(tasks.named<Jar>("javadocJar")))
+        this.uploadFile.set(extension.file)
+        if (extension.jars.isUsingSourcesJar) this.additionalFiles.add(extension.jars.uploadedSourcesJar)
+        if (extension.jars.isUsingJavadocJar) this.additionalFiles.add(extension.jars.uploadedJavadocJar)
 
-        this.gameVersions.addAll(extension.gameVersions.getOrElse(listOf(mcData.version)).map(MinecraftVersion<*>::toString))
-        this.loaders.addAll(extension.loaders.getOrElse(listOf(mcData.loader)).map(ModLoader::toString))
+        this.gameVersions.addAll(extension.gameVersions.get().map(MinecraftVersion<*>::toString))
+        this.loaders.addAll(extension.loaders.get().map(ModLoader::toString))
 
         this.dependencies.addAll(extension.dependencies.map { dependency ->
-            val type = when (dependency.type.getOrElse(DependencyType.OPTIONAL)) {
+            val dependencyProjectId = dependency.projectId.orNull
+                ?: dependency.modrinth.projectId.orNull
+                ?: throw IllegalStateException("Could not attain Modrinth dependency project ID for ${dependency.name}")
+            val type = when (dependency.type.get()) {
                 DependencyType.REQUIRED -> com.modrinth.minotaur.dependencies.DependencyType.REQUIRED
                 DependencyType.OPTIONAL -> com.modrinth.minotaur.dependencies.DependencyType.OPTIONAL
                 DependencyType.INCOMPATIBLE -> com.modrinth.minotaur.dependencies.DependencyType.INCOMPATIBLE
@@ -83,7 +86,7 @@ fun setupModrinth(token: String) {
                 else -> throw IllegalArgumentException("Could not map DGT dependency type to Minotaur")
             }
 
-            ModDependency(dependency.projectId.get(), type)
+            ModDependency(dependencyProjectId, type)
         })
     }
 
@@ -95,30 +98,33 @@ fun setupModrinth(token: String) {
 
 fun setupCurseForge(token: String) {
     val projectId = extension.projectIds.curseforge.orNull ?: return
-    tasks.register<TaskPublishCurseForge>(CURSEFORGE_TASK_NAME) {
+    val task = tasks.register<TaskPublishCurseForge>(CURSEFORGE_TASK_NAME) {
         group = ToolkitConstants.TASK_GROUP
 
         this.debugMode = extension.debugMode.getOrElse(false)
         this.apiToken = token
 
-        upload(projectId, extension.uploadFile) {
+        upload(projectId, extension.file) {
             disableVersionDetection()
 
-            this.displayName = extension.getReleaseName()
+            this.displayName = extension.releaseName
             // There is no concept of a "version number" on CurseForge
             this.releaseType = extension.versionType.getOrElse(VersionType.RELEASE).value
             this.changelog = extension.changelog.content
             this.changelogType = extension.changelog.type
 
-            if (extension.isUsingSourcesJar) withAdditionalFile(extension.jars.sourcesJar.orElse(getSourcesJarTask()))
-            if (extension.isUsingJavadocJar) withAdditionalFile(extension.jars.javadocJar.orElse(tasks.named<Jar>("javadocJar")))
+            if (extension.jars.isUsingSourcesJar) withAdditionalFile(extension.jars.uploadedSourcesJar)
+            if (extension.jars.isUsingJavadocJar) withAdditionalFile(extension.jars.uploadedJavadocJar)
 
-            extension.gameVersions.getOrElse(listOf(mcData.version)).map(MinecraftVersion<*>::toString).forEach(this::addGameVersion)
-            extension.loaders.getOrElse(listOf(mcData.loader)).map(ModLoader::toString).forEach(this::addModLoader)
+            extension.gameVersions.get().map(MinecraftVersion<*>::toString).forEach(this::addGameVersion)
+            extension.loaders.get().map(ModLoader::toString).forEach(this::addModLoader)
 
             extension.dependencies.forEach { dependency ->
-                val dependencyProjectId = dependency.projectId.orNull ?: return@forEach
-                val type = dependency.type.getOrElse(DependencyType.OPTIONAL)
+                val dependencyProjectId = dependency.projectId.orNull
+                    ?: dependency.curseforge.projectId.orNull
+                    ?: throw IllegalStateException("Could not attain CurseForge dependency project ID for ${dependency.name}")
+
+                val type = dependency.type.get()
                 when (type) {
                     DependencyType.REQUIRED -> addRequirement(dependencyProjectId)
                     DependencyType.OPTIONAL -> addOptional(dependencyProjectId)
@@ -129,74 +135,6 @@ fun setupCurseForge(token: String) {
             }
         }
     }
-}
-
-val ReleasingV2Extension.uploadFile: Zip
-    get() = file.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get())
-
-val ReleasingV2Extension.isUsingSourcesJar: Boolean
-    get() = jars.includeSourcesJar.getOrElse(false) && tasks.findByName("sourcesJar").let { it != null && it.enabled }
-
-val ReleasingV2Extension.isUsingJavadocJar: Boolean
-    get() = jars.includeJavadocJar.getOrElse(false) && tasks.findByName("javadocJar").let { it != null && it.enabled }
-
-fun ReleasingV2Extension.getReleaseName(): String {
-    val configuredReleaseName = releaseName.orNull
-    if (!configuredReleaseName.isNullOrBlank()) {
-        return configuredReleaseName
-    }
-
-    val prefix = buildString {
-        var content = ""
-        if (isMultiversionProject()) {
-            content += buildString {
-                append(mcData.loader.friendlyName).append(" ").append(mcData.version)
-            }
-        }
-
-        if (content.isNotBlank()) {
-            append("[").append(content).append("] ")
-        }
-    }
-
-    return "${prefix}${modData.name} ${modData.version}"
-}
-
-// 1.0.0+main-12345-1.12.2-forge
-fun ReleasingV2Extension.getReleaseVersion(): String {
-    val version = releaseVersion.getOrElse(modData.version)
-    val suffix = buildString {
-        var content = ""
-
-        val includingGitData = gitData.shouldAppendVersion(project)
-        if (includingGitData) {
-            content += buildString {
-                append(gitData.branch)
-                append("-")
-                append(gitData.commit)
-            }
-        }
-
-        if (isMultiversionProject()) {
-            content += buildString {
-                if (includingGitData) {
-                    append("-")
-                }
-
-                append(mcData.version)
-                append("-")
-                append(mcData.loader.friendlyString)
-            }
-        }
-
-        if (content.isNotBlank()) {
-            if (!version.endsWith("+")) {
-                append("+")
-            }
-
-            append(content)
-        }
-    }
-
-    return "${version}${suffix}"
+    
+    tasks[ALL_PLATFORM_TASK_NAME].dependsOn(task)
 }

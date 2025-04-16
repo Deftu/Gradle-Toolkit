@@ -2,11 +2,9 @@
 
 package dev.deftu.gradle.tools.minecraft
 
-import dev.deftu.gradle.utils.DependencyType
-import dev.deftu.gradle.utils.ModLoader
-import dev.deftu.gradle.utils.VersionType
-import dev.deftu.gradle.utils.propertyOr
+import dev.deftu.gradle.utils.*
 import dev.deftu.gradle.utils.version.MinecraftVersion
+import net.fabricmc.loom.task.RemapJarTask
 import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.file.RegularFile
@@ -14,14 +12,16 @@ import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.bundling.Zip
+import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.domainObjectContainer
+import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.newInstance
 import org.gradle.kotlin.dsl.property
 import org.jetbrains.annotations.ApiStatus
 import java.nio.charset.StandardCharsets
 import javax.inject.Inject
 
-abstract class ReleasingV2Extension @Inject constructor(private val objects: ObjectFactory) {
+abstract class ReleasingV2Extension @Inject constructor(private val project: Project, private val objects: ObjectFactory) {
 
     abstract val debugMode: Property<Boolean>
 
@@ -33,11 +33,11 @@ abstract class ReleasingV2Extension @Inject constructor(private val objects: Obj
 
     abstract val loaders: ListProperty<ModLoader>
 
-    val versionType: Property<VersionType> = this.objects.property<VersionType>().convention(VersionType.RELEASE)
+    val versionType: Property<VersionType> = this.objects.property()
 
     val file: Property<Zip> = this.objects.property()
 
-    val detectVersionType: Property<Boolean> = this.objects.property<Boolean>().convention(false)
+    val detectVersionType: Property<Boolean> = this.objects.property()
 
     val changelog: ChangelogExtension = this.objects.newInstance()
 
@@ -49,6 +49,17 @@ abstract class ReleasingV2Extension @Inject constructor(private val objects: Obj
 
     val dependencies = this.objects.domainObjectContainer(ModDependency::class) { name ->
         this.objects.newInstance(ModDependency::class, name)
+    }
+
+    init {
+        this.debugMode.convention(false)
+        this.releaseName.convention(defaultReleaseName())
+        this.releaseVersion.convention(defaultReleaseVersion())
+        this.gameVersions.convention(defaultGameVersions())
+        this.loaders.convention(defaultLoaders())
+        this.versionType.convention(VersionType.RELEASE)
+        this.file.convention(project.tasks.named<RemapJarTask>("remapJar").get())
+        this.detectVersionType.convention(false)
     }
 
     fun projectIds(action: Action<in ProjectIdExtension>) {
@@ -68,13 +79,90 @@ abstract class ReleasingV2Extension @Inject constructor(private val objects: Obj
         this.mod(name, DependencyType.OPTIONAL, action)
     }
 
+    private fun defaultReleaseName(): String {
+        val mcData = MCData.from(project)
+        val modData = ModData.from(project)
+
+        val prefix = buildString {
+            var content = ""
+            if (project.isMultiversionProject()) {
+                content += buildString {
+                    append(mcData.loader.friendlyName).append(" ").append(mcData.version)
+                }
+            }
+
+            if (content.isNotBlank()) {
+                append("[").append(content).append("] ")
+            }
+        }
+
+        return "${prefix}${modData.name} ${modData.version}"
+    }
+
+    private fun defaultReleaseVersion(): String {
+        val mcData = MCData.from(project)
+        val modData = ModData.from(project)
+        val gitData = GitData.from(project)
+
+        val version = modData.version
+        val suffix = buildString {
+            var content = ""
+
+            val includingGitData = gitData.shouldAppendVersion(project)
+            if (includingGitData) {
+                content += buildString {
+                    append(gitData.branch)
+                    append("-")
+                    append(gitData.commit)
+                }
+            }
+
+            if (project.isMultiversionProject()) {
+                content += buildString {
+                    if (includingGitData) {
+                        append("-")
+                    }
+
+                    append(mcData.version)
+                    append("-")
+                    append(mcData.loader.friendlyString)
+                }
+            }
+
+            if (content.isNotBlank()) {
+                if (!version.endsWith("+")) {
+                    append("+")
+                }
+
+                append(content)
+            }
+        }
+
+        return "${version}${suffix}"
+    }
+
+    private fun defaultGameVersions(): List<MinecraftVersion<*>> {
+        val mcData = MCData.from(project)
+        return listOf(mcData.version)
+    }
+
+    private fun defaultLoaders(): List<ModLoader> {
+        val mcData = MCData.from(project)
+        return listOf(mcData.loader)
+    }
+
 }
 
 abstract class ChangelogExtension @Inject constructor(objects: ObjectFactory) {
 
-    val content: Property<String> = objects.property<String>().convention("No changelog provided.")
+    val content: Property<String> = objects.property()
 
-    val type: Property<ChangelogType> = objects.property<ChangelogType>().convention(ChangelogType.TEXT)
+    val type: Property<ChangelogType> = objects.property()
+
+    init {
+        content.convention("No changelog provided.")
+        type.convention(ChangelogType.TEXT)
+    }
 
     fun content(content: String) {
         this.content.set(content)
@@ -98,13 +186,18 @@ abstract class ChangelogExtension @Inject constructor(objects: ObjectFactory) {
 
 abstract class TokenExtension @Inject constructor(project: Project, objects: ObjectFactory) {
 
-    val modrinthToken: Property<String> = objects.property<String>().convention(project.propertyOr("publish.modrinth.token", ""))
+    val modrinthToken: Property<String> = objects.property()
 
-    val curseForgeToken: Property<String> = objects.property<String>().convention(project.propertyOr("publish.curseforge.apikey", ""))
+    val curseForgeToken: Property<String> = objects.property()
+
+    init {
+        modrinthToken.convention(project.propertyOr("publish.modrinth.token", ""))
+        curseForgeToken.convention(project.propertyOr("publish.curseforge.apikey", ""))
+    }
 
 }
 
-abstract class JarsExtension {
+abstract class JarsExtension @Inject constructor(val project: Project) {
 
     abstract val sourcesJar: Property<Zip>
 
@@ -113,6 +206,18 @@ abstract class JarsExtension {
     abstract val javadocJar: Property<Zip>
 
     abstract val includeJavadocJar: Property<Boolean>
+
+    val isUsingSourcesJar: Boolean
+        get() = includeSourcesJar.getOrElse(false) && project.tasks.findByName("sourcesJar").let { it != null && it.enabled }
+
+    val isUsingJavadocJar: Boolean
+        get() = includeJavadocJar.getOrElse(false) && project.tasks.findByName("javadocJar").let { it != null && it.enabled }
+
+    val uploadedSourcesJar: Zip
+        get() = sourcesJar.orElse(project.getSourcesJarTask()).get()
+
+    val uploadedJavadocJar: Zip
+        get() = javadocJar.orElse(project.tasks.named<Jar>("javadocJar")).get()
 
 }
 
@@ -136,6 +241,10 @@ abstract class ModDependency @Inject constructor(@ApiStatus.Internal val name: S
 
     private val platformOverrides: MutableMap<Pair<String, String>, DependencyType> = mutableMapOf()
 
+    init {
+        type.convention(DependencyType.OPTIONAL)
+    }
+
     fun typeForPlatform(type: DependencyType, vararg versions: String) {
         for (version in versions) {
             platformOverrides["default" to version] = type
@@ -143,7 +252,7 @@ abstract class ModDependency @Inject constructor(@ApiStatus.Internal val name: S
     }
 
     fun getPlatformOverrides(): Map<Pair<String, String>, DependencyType> {
-        return platformOverrides
+        return platformOverrides.toMap()
     }
 
 }
