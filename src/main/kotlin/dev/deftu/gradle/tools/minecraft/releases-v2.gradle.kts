@@ -67,7 +67,7 @@ fun setupModrinth(token: String) {
         this.versionType.set(extension.versionType.getOrElse(VersionType.RELEASE).value)
         this.changelog.set(extension.changelog.content)
 
-        this.uploadFile.set(extension.file)
+        this.uploadFile.set(extension.uploadFile)
         if (extension.isUsingSourcesJar) this.additionalFiles.add(extension.jars.sourcesJar.orElse(getSourcesJarTask()))
         if (extension.isUsingJavadocJar) this.additionalFiles.add(extension.jars.javadocJar.orElse(tasks.named<Jar>("javadocJar")))
 
@@ -101,7 +101,7 @@ fun setupCurseForge(token: String) {
         this.debugMode = extension.debugMode.getOrElse(false)
         this.apiToken = token
 
-        upload(projectId, extension.file) {
+        upload(projectId, extension.uploadFile) {
             disableVersionDetection()
 
             this.displayName = extension.getReleaseName()
@@ -130,6 +130,9 @@ fun setupCurseForge(token: String) {
         }
     }
 }
+
+val ReleasingV2Extension.uploadFile: Zip
+    get() = file.getOrElse(tasks.named<org.gradle.jvm.tasks.Jar>("remapJar").get())
 
 val ReleasingV2Extension.isUsingSourcesJar: Boolean
     get() = jars.includeSourcesJar.getOrElse(false) && tasks.findByName("sourcesJar").let { it != null && it.enabled }
