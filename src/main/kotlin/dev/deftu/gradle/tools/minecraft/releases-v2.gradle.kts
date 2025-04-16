@@ -111,7 +111,7 @@ fun setupCurseForge(token: String) {
             // There is no concept of a "version number" on CurseForge
             this.releaseType = extension.versionType.getOrElse(VersionType.RELEASE).value
             this.changelog = extension.changelog.content
-            this.changelogType = extension.changelog.type
+            this.changelogType = extension.changelog.type.map(ChangelogExtension.ChangelogType::toString).map(String::lowercase)
 
             if (extension.jars.isUsingSourcesJar) withAdditionalFile(extension.jars.uploadedSourcesJar)
             if (extension.jars.isUsingJavadocJar) withAdditionalFile(extension.jars.uploadedJavadocJar)
