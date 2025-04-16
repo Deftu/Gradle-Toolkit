@@ -135,6 +135,6 @@ fun setupCurseForge(token: String) {
             }
         }
     }
-    
+
     tasks[ALL_PLATFORM_TASK_NAME].dependsOn(task)
 }
