@@ -13,9 +13,9 @@ repositories {
 
     // Minecraft
     optionalMaven("repo.essential", "Essential", "https://repo.essential.gg/repository/maven-public/")
-    optionalMaven("repo.sponge", "SpongePowered", "https://repo.spongepowered.org/maven/")
     optionalMaven("repo.kff", "KotlinForForge", "https://thedarkcolour.github.io/KotlinForForge/")
     optionalMaven("repo.terraformers", "Terraformers", "https://maven.terraformersmc.com/releases/")
+    optionalMaven("repo.sponge", "SpongePowered", "https://repo.spongepowered.org/maven/")
 }
 
 fun RepositoryHandler.optionalMaven(propertyName: String, name: String? = null, url: String) {

@@ -1,4 +1,4 @@
-package dev.deftu.gradle.tools
+package dev.deftu.gradle.tools.jvm
 
 import dev.deftu.gradle.utils.*
 import gradle.kotlin.dsl.accessors._7f302803de3c8e8ef0ce80f8d318d1c9.base

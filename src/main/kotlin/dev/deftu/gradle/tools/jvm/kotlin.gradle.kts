@@ -1,4 +1,4 @@
-package dev.deftu.gradle.tools
+package dev.deftu.gradle.tools.jvm
 
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile

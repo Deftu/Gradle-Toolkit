@@ -7,7 +7,6 @@ import dev.deftu.gradle.utils.shadeOptionally
 GitData.from(project)
 
 // Apply default plugins.
-apply(plugin = "dev.deftu.gradle.tools.configure")
 apply(plugin = "dev.deftu.gradle.tools.repo")
 
 // Add default configurations
