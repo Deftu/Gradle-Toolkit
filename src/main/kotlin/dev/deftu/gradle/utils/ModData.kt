@@ -5,12 +5,12 @@ import java.util.*
 
 data class ModData(
     val isPresent: Boolean,
-    val name: String,
+    override val name: String,
     val id: String,
-    val version: String,
-    val group: String,
+    override val version: String,
+    override val group: String,
     val description: String
-) {
+) : ProjectInfo {
 
     companion object {
 

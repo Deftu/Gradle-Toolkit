@@ -4,11 +4,11 @@ import org.gradle.api.Project
 
 class ProjectData(
     val isPresent: Boolean,
-    val name: String,
-    val version: String,
-    val group: String,
+    override val name: String,
+    override val version: String,
+    override val group: String,
     val description: String
-) {
+) : ProjectInfo {
 
     companion object {
 
