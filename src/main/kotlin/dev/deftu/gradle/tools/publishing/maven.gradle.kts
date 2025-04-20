@@ -9,7 +9,6 @@ import java.util.*
 plugins {
     `maven-publish`
     signing
-    java
 }
 
 val RELEASES_REPO_NAME = "DeftuReleases"
@@ -29,33 +28,35 @@ fun MavenPublishingExtension.getArtifactName(
 
 afterEvaluate {
     publishing {
-        if (extension.setupPublication.getOrElse(true)) {
-            publications {
-                create<MavenPublication>("mavenJava") {
-                    if (modData.isPresent) {
-                        artifactId = buildString {
-                            val artifactName = extension.getArtifactName(true)
-                            if (artifactName.isNotEmpty()) {
-                                append(artifactName).append("-")
-                            }
+        pluginManager.withPlugin("java") {
+            if (extension.setupPublication.getOrElse(true)) {
+                publications {
+                    create<MavenPublication>("mavenJava") {
+                        if (modData.isPresent) {
+                            artifactId = buildString {
+                                val artifactName = extension.getArtifactName(true)
+                                if (artifactName.isNotEmpty()) {
+                                    append(artifactName).append("-")
+                                }
 
-                            if (isMultiversionProject()) {
-                                append(mcData.version).append("-").append(mcData.loader.friendlyString)
-                            }
-                        }.ifEmpty(project::getName)
-                        groupId = modData.group
-                        version = modData.version
-                    } else if (projectData.isPresent) {
-                        artifactId = extension.getArtifactName(false)
-                        groupId = projectData.group
-                        version = projectData.version
+                                if (isMultiversionProject()) {
+                                    append(mcData.version).append("-").append(mcData.loader.friendlyString)
+                                }
+                            }.ifEmpty(project::getName)
+                            groupId = modData.group
+                            version = modData.version
+                        } else if (projectData.isPresent) {
+                            artifactId = extension.getArtifactName(false)
+                            groupId = projectData.group
+                            version = projectData.version
+                        }
+
+                        if (extension.forceLowercase.getOrElse(false)) {
+                            artifactId = artifactId.lowercase(Locale.US)
+                        }
+
+                        from(components["java"])
                     }
-
-                    if (extension.forceLowercase.getOrElse(false)) {
-                        artifactId = artifactId.lowercase(Locale.US)
-                    }
-
-                    from(components["java"])
                 }
             }
         }
