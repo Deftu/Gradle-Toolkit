@@ -18,5 +18,5 @@ pluginManager.withPlugin("java") {
 }
 
 pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
-    apply(plugin = "dev.deftu.gradle.tools.kotlin")
+    apply(plugin = "dev.deftu.gradle.tools.jvm.kotlin")
 }
