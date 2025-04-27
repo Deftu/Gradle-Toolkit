@@ -79,7 +79,10 @@ fun applyProjectInfo(info: ProjectInfo, prefix: String, setupBlock: () -> Unit) 
     }
 
     if (propertyBoolOr("$prefix.name.setup", true)) {
-        base.archivesName.set(info.name)
+        pluginManager.withPlugin("base") {
+            base.archivesName.set(info.name)
+        }
+
         setupBlock.invoke()
     }
 }
