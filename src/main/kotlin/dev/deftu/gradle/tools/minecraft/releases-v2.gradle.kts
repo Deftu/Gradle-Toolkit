@@ -75,8 +75,8 @@ fun setupModrinth(token: String) {
         this.loaders.addAll(extension.loaders.get().map(ModLoader::toString))
 
         this.dependencies.addAll(extension.dependencies.map { dependency ->
-            val dependencyProjectId = dependency.projectId.orNull
-                ?: dependency.modrinth.projectId.orNull
+            val dependencyProjectId = dependency.modrinth.projectId.orNull
+                ?: dependency.projectId.orNull
                 ?: throw IllegalStateException("Could not attain Modrinth dependency project ID for ${dependency.name}")
             val type = when (dependency.type.get()) {
                 DependencyType.REQUIRED -> com.modrinth.minotaur.dependencies.DependencyType.REQUIRED
@@ -120,8 +120,8 @@ fun setupCurseForge(token: String) {
             extension.loaders.get().map(ModLoader::toString).forEach(this::addModLoader)
 
             extension.dependencies.forEach { dependency ->
-                val dependencyProjectId = dependency.projectId.orNull
-                    ?: dependency.curseforge.projectId.orNull
+                val dependencyProjectId = dependency.curseforge.projectId.orNull
+                    ?: dependency.projectId.orNull
                     ?: throw IllegalStateException("Could not attain CurseForge dependency project ID for ${dependency.name}")
 
                 val type = dependency.type.get()
