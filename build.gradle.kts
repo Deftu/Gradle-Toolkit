@@ -1,12 +1,15 @@
+import org.jetbrains.kotlin.config.KotlinCompilerVersion
+
 plugins {
-    kotlin("jvm") version("2.0.10")
     `kotlin-dsl`
-    val dgtVersion = "2.28.0"
+    val dgtVersion = "2.35.0"
     id("dev.deftu.gradle.tools.repo") version(dgtVersion)
     id("dev.deftu.gradle.tools.configure") version(dgtVersion)
     id("dev.deftu.gradle.tools.publishing.maven") version(dgtVersion)
     id("dev.deftu.gradle.tools.publishing.github") version(dgtVersion)
 }
+
+logger.lifecycle("> Kotlin compiler version: ${KotlinCompilerVersion.VERSION}")
 
 toolkitGitHubPublishing {
     owner.set("Deftu")
@@ -34,19 +37,19 @@ repositories {
 dependencies {
     // Language
     implementation(gradleApi())
-    implementation(kotlin("stdlib"))
-    implementation(kotlin("gradle-plugin"))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:${property("kotlin.version")}")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${property("kotlin.version")}")
 
     // Architectury Loom
-    implementation("gg.essential:architectury-loom:1.9.29")
+    implementation("gg.essential:architectury-loom:1.9.31")
     implementation("dev.architectury:architectury-pack200:0.1.3")
 
     // Preprocessing/multi-versioning
     implementation("dev.deftu:preprocessor:0.7.1")
 
     // Documentation
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.9.20")
-    implementation("org.jetbrains.dokka:dokka-base:1.9.20")
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:2.0.0")
+    implementation("org.jetbrains.dokka:dokka-base:2.0.0")
 
     // Publishing
     implementation("com.modrinth.minotaur:Minotaur:2.8.7")
