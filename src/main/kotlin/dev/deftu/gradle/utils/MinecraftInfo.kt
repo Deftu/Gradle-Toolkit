@@ -199,7 +199,7 @@ object MinecraftInfo {
     object Forge {
 
         private val forgeVersions = MinecraftVersionMap(
-            // TODO: 1.21.5
+            MinecraftVersions.VERSION_1_21_5 to "1.21.5-55.0.23",
             MinecraftVersions.VERSION_1_21_4 to "1.21.4-54.0.16",
             MinecraftVersions.VERSION_1_21_3 to "1.21.3-53.0.37",
             MinecraftVersions.VERSION_1_21_1 to "1.21.1-52.0.40",
