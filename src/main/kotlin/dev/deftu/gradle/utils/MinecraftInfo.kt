@@ -58,18 +58,18 @@ object MinecraftInfo {
         )
 
         private val fabricApiVersions = MinecraftVersionMap(
-            MinecraftVersions.VERSION_1_21_5 to "0.119.5+1.21.5",
-            MinecraftVersions.VERSION_1_21_4 to "0.114.0+1.21.4",
-            MinecraftVersions.VERSION_1_21_3 to "0.114.0+1.21.3",
+            MinecraftVersions.VERSION_1_21_5 to "0.127.1+1.21.5",
+            MinecraftVersions.VERSION_1_21_4 to "0.119.3+1.21.4",
+            MinecraftVersions.VERSION_1_21_3 to "0.114.1+1.21.3",
             MinecraftVersions.VERSION_1_21_2 to "0.106.1+1.21.2",
-            MinecraftVersions.VERSION_1_21_1 to "0.114.0+1.21.1",
+            MinecraftVersions.VERSION_1_21_1 to "0.116.3+1.21.1",
             MinecraftVersions.VERSION_1_21 to "0.102.0+1.21",
             MinecraftVersions.VERSION_1_20_6 to "0.100.8+1.20.6",
             MinecraftVersions.VERSION_1_20_5 to "0.97.8+1.20.5",
-            MinecraftVersions.VERSION_1_20_4 to "0.97.2+1.20.4",
+            MinecraftVersions.VERSION_1_20_4 to "0.97.3+1.20.4",
             MinecraftVersions.VERSION_1_20_3 to "0.91.1+1.20.3",
             MinecraftVersions.VERSION_1_20_2 to "0.91.6+1.20.2",
-            MinecraftVersions.VERSION_1_20_1 to "0.92.3+1.20.1",
+            MinecraftVersions.VERSION_1_20_1 to "0.92.6+1.20.1",
             MinecraftVersions.VERSION_1_20 to "0.83.0+1.20",
 
             MinecraftVersions.VERSION_1_19_4 to "0.87.2+1.19.4",
