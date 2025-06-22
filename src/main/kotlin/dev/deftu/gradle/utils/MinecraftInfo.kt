@@ -321,7 +321,8 @@ object MinecraftInfo {
     }
 
     private val parchmentVersions = MinecraftVersionMap(
-        MinecraftVersions.VERSION_1_21_4 to "1.21.4:2024.12.29",
+        MinecraftVersions.VERSION_1_21_5 to "1.21.5:2025.06.15",
+        MinecraftVersions.VERSION_1_21_4 to "1.21.4:2025.03.23",
         MinecraftVersions.VERSION_1_21_3 to "1.21.3:2024.12.07",
         MinecraftVersions.VERSION_1_21_2 to "1.21.1:2024.11.17",
         MinecraftVersions.VERSION_1_21_1 to "1.21.1:2024.11.17",
