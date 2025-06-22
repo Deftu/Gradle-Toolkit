@@ -12,6 +12,7 @@ object MinecraftInfo {
         const val KOTLIN_DEP_VERSION = "1.12.1+kotlin.2.0.20"
 
         private val yarnVersions = MinecraftVersionMap(
+            MinecraftVersions.VERSION_1_21_6 to "1.21.6+build.1",
             MinecraftVersions.VERSION_1_21_5 to "1.21.5+build.1",
             MinecraftVersions.VERSION_1_21_4 to "1.21.4+build.8",
             MinecraftVersions.VERSION_1_21_3 to "1.21.3+build.2",
@@ -58,6 +59,7 @@ object MinecraftInfo {
         )
 
         private val fabricApiVersions = MinecraftVersionMap(
+            MinecraftVersions.VERSION_1_21_6 to "0.127.1+1.21.6",
             MinecraftVersions.VERSION_1_21_5 to "0.127.1+1.21.5",
             MinecraftVersions.VERSION_1_21_4 to "0.119.3+1.21.4",
             MinecraftVersions.VERSION_1_21_3 to "0.114.1+1.21.3",
@@ -103,6 +105,7 @@ object MinecraftInfo {
         )
 
         private val modMenuDependencies = MinecraftVersionMap(
+            MinecraftVersions.VERSION_1_21_6 to ("com.terraformersmc:modmenu:" to "15.0.0-beta.3"),
             MinecraftVersions.VERSION_1_21_5 to ("com.terraformersmc:modmenu:" to "14.0.0-rc.2"),
             MinecraftVersions.VERSION_1_21_4 to ("com.terraformersmc:modmenu:" to "13.0.3"),
             MinecraftVersions.VERSION_1_21_3 to ("com.terraformersmc:modmenu:" to "12.0.0"),
@@ -199,6 +202,7 @@ object MinecraftInfo {
     object Forge {
 
         private val forgeVersions = MinecraftVersionMap(
+            MinecraftVersions.VERSION_1_21_6 to "1.21.6-56.0.7",
             MinecraftVersions.VERSION_1_21_5 to "1.21.5-55.0.23",
             MinecraftVersions.VERSION_1_21_4 to "1.21.4-54.0.16",
             MinecraftVersions.VERSION_1_21_3 to "1.21.3-53.0.37",
@@ -299,6 +303,7 @@ object MinecraftInfo {
     object NeoForge {
 
         private val neoForgeVersions = MinecraftVersionMap(
+            MinecraftVersions.VERSION_1_21_6 to "21.6.11-beta",
             MinecraftVersions.VERSION_1_21_5 to "21.5.79",
             MinecraftVersions.VERSION_1_21_4 to "21.4.140",
             MinecraftVersions.VERSION_1_21_3 to "21.3.79",
