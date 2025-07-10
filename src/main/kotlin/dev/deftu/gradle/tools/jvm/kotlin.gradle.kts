@@ -1,5 +1,6 @@
 package dev.deftu.gradle.tools.jvm
 
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import dev.deftu.gradle.utils.getMajorJavaVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -10,6 +11,12 @@ if (version != 0) {
     tasks.withType<KotlinCompile> {
         compilerOptions {
             jvmTarget.set(JvmTarget.fromTarget(javaVersion.toString()))
+        }
+    }
+
+    configure<KotlinJvmProjectExtension> {
+        jvmToolchain {
+            languageVersion.set(JavaLanguageVersion.of(version))
         }
     }
 }

@@ -1,6 +1,7 @@
 package dev.deftu.gradle.tools
 
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.java
 import org.gradle.kotlin.dsl.withType
 import dev.deftu.gradle.utils.getMajorJavaVersion
@@ -41,5 +42,9 @@ if (version != 0) {
         withType<JavaCompile> {
             applyCompilerOptions(this)
         }
+    }
+
+    extensions.configure<JavaPluginExtension> {
+        toolchain.languageVersion.set(JavaLanguageVersion.of(version))
     }
 }
