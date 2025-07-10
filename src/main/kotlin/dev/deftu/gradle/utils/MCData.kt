@@ -2,6 +2,7 @@ package dev.deftu.gradle.utils
 
 import dev.deftu.gradle.ToolkitConstants
 import dev.deftu.gradle.exceptions.LoaderSpecificException
+import dev.deftu.gradle.utils.mcinfo.MinecraftInfo
 import dev.deftu.gradle.utils.version.MinecraftVersion
 import dev.deftu.gradle.utils.version.MinecraftVersions
 import org.gradle.api.Project
@@ -23,7 +24,7 @@ class MCDependencies(
                     return fabricLoaderVersionOverride
                 }
 
-                return MinecraftInfo.Fabric.LOADER_VERSION
+                return MinecraftInfo.get(mcData.project).fabricLoaderVersion
             }
 
         val yarnVersion: String
@@ -37,7 +38,7 @@ class MCDependencies(
                     return yarnVersionOverride
                 }
 
-                return MinecraftInfo.Fabric.getYarnVersion(mcData.version)
+                return MinecraftInfo.get(mcData.project).getFabricYarnVersion(mcData.version)
             }
 
         val fabricApiVersion: String
@@ -51,7 +52,7 @@ class MCDependencies(
                     return fabricApiVersionOverride
                 }
 
-                return MinecraftInfo.Fabric.getFabricApiVersion(mcData.version)
+                return MinecraftInfo.get(mcData.project).getFabricApiVersion(mcData.version)
             }
 
         val fabricLanguageKotlinVersion: String
@@ -65,7 +66,7 @@ class MCDependencies(
                     return kotlinVersionOverride
                 }
 
-                return MinecraftInfo.Fabric.KOTLIN_DEP_VERSION
+                return MinecraftInfo.get(mcData.project).fabricLanguageKotlinVersion
             }
 
         val modMenuVersion: String
@@ -79,7 +80,7 @@ class MCDependencies(
                     return modMenuVersionOverride
                 }
 
-                val (_, version) = MinecraftInfo.Fabric.getModMenuDependency(mcData.version)
+                val (_, version) = MinecraftInfo.get(mcData.project).getFabricModMenuDefinition(mcData.version)
                 return version
             }
 
@@ -94,7 +95,7 @@ class MCDependencies(
                     return modMenuDependencyOverride
                 }
 
-                val (group, version) = MinecraftInfo.Fabric.getModMenuDependency(mcData.version)
+                val (group, version) = MinecraftInfo.get(mcData.project).getFabricModMenuDefinition(mcData.version)
                 return "$group$version"
             }
 
@@ -113,7 +114,7 @@ class MCDependencies(
                     return legacyYarnVersionOverride
                 }
 
-                return MinecraftInfo.LegacyFabric.getLegacyYarnVersion(mcData.version)
+                return MinecraftInfo.get(mcData.project).getLegacyFabricYarnVersion(mcData.version)
             }
 
         val legacyFabricApiVersion: String
@@ -127,7 +128,7 @@ class MCDependencies(
                     return legacyFabricApiVersionOverride
                 }
 
-                return MinecraftInfo.LegacyFabric.getLegacyFabricApiVersion(mcData.version)
+                return MinecraftInfo.get(mcData.project).getLegacyFabricApiVersion(mcData.version)
             }
 
     }
@@ -145,7 +146,7 @@ class MCDependencies(
                     return kotlinForForgeVersionOverride
                 }
 
-                return MinecraftInfo.ForgeLike.getKotlinForForgeVersion(mcData.version)
+                return MinecraftInfo.get(mcData.project).getKotlinForForgeVersion(mcData.version)
             }
 
     }
@@ -163,7 +164,7 @@ class MCDependencies(
                     return forgeVersionOverride
                 }
 
-                return MinecraftInfo.Forge.getForgeVersion(mcData.version)
+                return MinecraftInfo.get(mcData.project).getForgeVersion(mcData.version)
             }
 
         val mcpDependency: String
@@ -177,7 +178,7 @@ class MCDependencies(
                     return mcpDependencyOverride
                 }
 
-                return MinecraftInfo.Forge.getMcpDependency(mcData.version)
+                return MinecraftInfo.get(mcData.project).getMcpDefinition(mcData.version)
             }
 
     }
@@ -195,7 +196,7 @@ class MCDependencies(
                     return neoForgeVersionOverride
                 }
 
-                return MinecraftInfo.NeoForge.getNeoForgeVersion(mcData.version)
+                return MinecraftInfo.get(mcData.project).getNeoForgeVersion(mcData.version)
             }
 
     }

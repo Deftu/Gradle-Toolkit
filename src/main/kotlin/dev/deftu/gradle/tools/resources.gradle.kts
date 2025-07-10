@@ -3,6 +3,7 @@ package dev.deftu.gradle.tools
 import dev.deftu.gradle.tools.minecraft.LoomHelperExtension
 import dev.deftu.gradle.ToolkitConstants
 import dev.deftu.gradle.utils.*
+import dev.deftu.gradle.utils.mcinfo.MinecraftInfo
 import dev.deftu.gradle.utils.version.MinecraftVersions
 import dev.deftu.gradle.utils.version.patchless
 import dev.deftu.gradle.utils.version.rawVersionString
@@ -45,7 +46,7 @@ afterEvaluate {
                 return@run null
             }
 
-            val version = MinecraftInfo.ForgeLike.getKotlinForForgeVersion(mcData.version)
+            val version = MinecraftInfo.get(project).getKotlinForForgeVersion(mcData.version)
             val majorVersion = version.split(".")[0]
             "[$majorVersion,)"
         }

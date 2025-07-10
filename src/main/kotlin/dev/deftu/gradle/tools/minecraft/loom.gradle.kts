@@ -5,6 +5,7 @@ import dev.architectury.pack200.java.Pack200Adapter
 import dev.deftu.gradle.ToolkitConstants
 import org.gradle.kotlin.dsl.dependencies
 import dev.deftu.gradle.utils.*
+import dev.deftu.gradle.utils.mcinfo.MinecraftInfo
 import dev.deftu.gradle.utils.version.MinecraftVersions
 import gradle.kotlin.dsl.accessors._7f302803de3c8e8ef0ce80f8d318d1c9.loom
 import gradle.kotlin.dsl.accessors._7f302803de3c8e8ef0ce80f8d318d1c9.mappings
@@ -113,7 +114,7 @@ dependencies {
                                 maven("https://maven.parchmentmc.org")
                             }
 
-                            parchment("org.parchmentmc.data:parchment-${MinecraftInfo.getParchmentVersion(mcData.version)}@zip")
+                            parchment("org.parchmentmc.data:parchment-${MinecraftInfo.get(project).getParchmentVersion(mcData.version)}@zip")
                         }
                     }
                 }
