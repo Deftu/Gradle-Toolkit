@@ -14,6 +14,7 @@ sealed class MinecraftInfo {
             val revision = project.propertyIntOr("minecraft.revision", default = 0, prefix = "dgt.")
             return when (revision) {
                 0 -> MinecraftInfoV0
+                1 -> MinecraftInfoV1
                 else -> throw IllegalArgumentException(
                     "Unknown MinecraftInfo revision: $revision. " +
                             "Please update the toolkit to a newer version or check which revisions are available."

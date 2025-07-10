@@ -136,20 +136,20 @@ object MinecraftInfoV0 : MinecraftInfo() {
         ))
 
         legacyFabricYarnVersions.putAll(listOf(
-            MinecraftVersions.VERSION_1_13_2 to "1.13.2+build.571:v2",
-            MinecraftVersions.VERSION_1_12_2 to "1.12.2+build.571:v2",
-            MinecraftVersions.VERSION_1_11_2 to "1.11.2+build.571:v2",
-            MinecraftVersions.VERSION_1_10_2 to "1.10.2+build.571:v2",
-            MinecraftVersions.VERSION_1_9_4 to "1.9.4+build.571:v2",
-            MinecraftVersions.VERSION_1_8_9 to "1.8.9+build.571:v2"
+            MinecraftVersions.VERSION_1_13_2 to "1.13.2+build.563:v2",
+            MinecraftVersions.VERSION_1_12_2 to "1.12.2+build.563:v2",
+            MinecraftVersions.VERSION_1_11_2 to "1.11.2+build.563:v2",
+            MinecraftVersions.VERSION_1_10_2 to "1.10.2+build.562:v2",
+            MinecraftVersions.VERSION_1_9_4 to "1.9.4+build.563:v2",
+            MinecraftVersions.VERSION_1_8_9 to "1.8.9+build.563:v2"
         ))
 
         legacyFabricApiVersions.putAll(listOf(
-            MinecraftVersions.VERSION_1_12_2 to "1.12.0+1.12.2",
-            MinecraftVersions.VERSION_1_11_2 to "1.12.0+1.11.2",
-            MinecraftVersions.VERSION_1_10_2 to "1.12.0+1.10.2",
-            MinecraftVersions.VERSION_1_9_4 to "1.12.0+1.9.4",
-            MinecraftVersions.VERSION_1_8_9 to "1.12.0+1.8.9"
+            MinecraftVersions.VERSION_1_12_2 to "1.11.1+1.12.2",
+            MinecraftVersions.VERSION_1_11_2 to "1.11.1+1.11.2",
+            MinecraftVersions.VERSION_1_10_2 to "1.11.1+1.10.2",
+            MinecraftVersions.VERSION_1_9_4 to "1.11.1+1.9.4",
+            MinecraftVersions.VERSION_1_8_9 to "1.11.1+1.8.9"
         ))
 
         kotlinForForgeVersions.putAll(listOf(
@@ -250,18 +250,18 @@ object MinecraftInfoV0 : MinecraftInfo() {
         neoForgeVersions.putAll(listOf(
             MinecraftVersions.VERSION_1_21_7 to "21.7.1-beta",
             MinecraftVersions.VERSION_1_21_6 to "21.6.11-beta",
-            MinecraftVersions.VERSION_1_21_5 to "21.5.79",
-            MinecraftVersions.VERSION_1_21_4 to "21.4.140",
-            MinecraftVersions.VERSION_1_21_3 to "21.3.79",
+            MinecraftVersions.VERSION_1_21_5 to "21.5.39-beta",
+            MinecraftVersions.VERSION_1_21_4 to "21.4.123",
+            MinecraftVersions.VERSION_1_21_3 to "21.3.63",
             MinecraftVersions.VERSION_1_21_2 to "21.2.1-beta",
-            MinecraftVersions.VERSION_1_21_1 to "21.1.182",
+            MinecraftVersions.VERSION_1_21_1 to "21.1.117",
             MinecraftVersions.VERSION_1_21 to "21.0.167",
 
-            MinecraftVersions.VERSION_1_20_6 to "20.6.135",
+            MinecraftVersions.VERSION_1_20_6 to "20.6.121",
             MinecraftVersions.VERSION_1_20_5 to "20.5.21-beta",
-            MinecraftVersions.VERSION_1_20_4 to "20.4.248",
+            MinecraftVersions.VERSION_1_20_4 to "20.4.237",
             MinecraftVersions.VERSION_1_20_3 to "20.3.8-beta",
-            MinecraftVersions.VERSION_1_20_2 to "20.2.93"
+            MinecraftVersions.VERSION_1_20_2 to "20.2.88"
         ))
 
         parchmentVersions.putAll(listOf(
