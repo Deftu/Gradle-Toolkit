@@ -309,18 +309,18 @@ object MinecraftInfo {
         private val neoForgeVersions = MinecraftVersionMap(
             MinecraftVersions.VERSION_1_21_7 to "21.7.1-beta",
             MinecraftVersions.VERSION_1_21_6 to "21.6.11-beta",
-            MinecraftVersions.VERSION_1_21_5 to "21.5.79",
-            MinecraftVersions.VERSION_1_21_4 to "21.4.140",
-            MinecraftVersions.VERSION_1_21_3 to "21.3.79",
+            MinecraftVersions.VERSION_1_21_5 to "21.5.39-beta",
+            MinecraftVersions.VERSION_1_21_4 to "21.4.123",
+            MinecraftVersions.VERSION_1_21_3 to "21.3.63",
             MinecraftVersions.VERSION_1_21_2 to "21.2.1-beta",
-            MinecraftVersions.VERSION_1_21_1 to "21.1.182",
+            MinecraftVersions.VERSION_1_21_1 to "21.1.117",
             MinecraftVersions.VERSION_1_21 to "21.0.167",
 
-            MinecraftVersions.VERSION_1_20_6 to "20.6.135",
+            MinecraftVersions.VERSION_1_20_6 to "20.6.121",
             MinecraftVersions.VERSION_1_20_5 to "20.5.21-beta",
-            MinecraftVersions.VERSION_1_20_4 to "20.4.248",
+            MinecraftVersions.VERSION_1_20_4 to "20.4.237",
             MinecraftVersions.VERSION_1_20_3 to "20.3.8-beta",
-            MinecraftVersions.VERSION_1_20_2 to "20.2.93"
+            MinecraftVersions.VERSION_1_20_2 to "20.2.88"
         )
 
         @JvmStatic
