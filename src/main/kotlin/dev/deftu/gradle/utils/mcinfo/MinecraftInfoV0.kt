@@ -10,6 +10,7 @@ object MinecraftInfoV0 : MinecraftInfo() {
 
     override fun initialize() {
         fabricYarnVersions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_8 to "1.21.8+build.1",
             MinecraftVersions.VERSION_1_21_7 to "1.21.7+build.2",
             MinecraftVersions.VERSION_1_21_6 to "1.21.6+build.1",
             MinecraftVersions.VERSION_1_21_5 to "1.21.5+build.1",
@@ -58,6 +59,7 @@ object MinecraftInfoV0 : MinecraftInfo() {
         ))
 
         fabricApiVersions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_8 to "0.129.0+1.21.8",
             MinecraftVersions.VERSION_1_21_7 to "0.128.2+1.21.7",
             MinecraftVersions.VERSION_1_21_6 to "0.127.1+1.21.6",
             MinecraftVersions.VERSION_1_21_5 to "0.127.1+1.21.5",
@@ -105,6 +107,7 @@ object MinecraftInfoV0 : MinecraftInfo() {
         ))
 
         fabricModMenuDefinitions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_8 to ("com.terraformersmc:modmenu:" to "15.0.0-beta.3"),
             MinecraftVersions.VERSION_1_21_7 to ("com.terraformersmc:modmenu:" to "15.0.0-beta.3"),
             MinecraftVersions.VERSION_1_21_6 to ("com.terraformersmc:modmenu:" to "15.0.0-beta.3"),
             MinecraftVersions.VERSION_1_21_5 to ("com.terraformersmc:modmenu:" to "14.0.0-rc.2"),
@@ -162,6 +165,7 @@ object MinecraftInfoV0 : MinecraftInfo() {
         ))
 
         forgeVersions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_8 to "1.21.8-58.0.0",
             MinecraftVersions.VERSION_1_21_7 to "1.21.7-57.0.2",
             MinecraftVersions.VERSION_1_21_6 to "1.21.6-56.0.7",
             MinecraftVersions.VERSION_1_21_5 to "1.21.5-55.0.23",
@@ -248,6 +252,7 @@ object MinecraftInfoV0 : MinecraftInfo() {
         ))
 
         neoForgeVersions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_8 to "21.8.2-beta",
             MinecraftVersions.VERSION_1_21_7 to "21.7.1-beta",
             MinecraftVersions.VERSION_1_21_6 to "21.6.11-beta",
             MinecraftVersions.VERSION_1_21_5 to "21.5.39-beta",
