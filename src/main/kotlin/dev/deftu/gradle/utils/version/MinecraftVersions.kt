@@ -47,6 +47,9 @@ object MinecraftVersions {
     val UNKNOWN = MinecraftVersion.Unknown
 
     @JvmStatic
+    val VERSION_1_21_8 = MinecraftReleaseVersion.from(1_21_08)
+
+    @JvmStatic
     val VERSION_1_21_7 = MinecraftReleaseVersion.from(1_21_07)
 
     @JvmStatic
