@@ -1,7 +1,7 @@
 package dev.deftu.gradle.utils
 
+import net.fabricmc.loom.LoomGradlePlugin
 import net.fabricmc.loom.api.LoomGradleExtensionAPI
-import net.fabricmc.loom.bootstrap.LoomGradlePluginBootstrap
 import org.gradle.api.Action
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -52,7 +52,7 @@ fun Project.withLoom(action: Action<LoomGradleExtensionAPI>) {
 
 fun Project.setupLoom(mcData: MCData, action: LoomGradleExtensionAPI.(MCData) -> Unit = {}) {
     extra.set("loom.platform", mcData.loader.friendlyString)
-    apply<LoomGradlePluginBootstrap>()
+    apply<LoomGradlePlugin>()
     withLoom {
         action(mcData)
     }

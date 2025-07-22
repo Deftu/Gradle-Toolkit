@@ -41,7 +41,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${property("kotlin.version")}")
 
     // Architectury Loom
-    implementation("gg.essential:architectury-loom:1.9.31")
+    implementation("gg.essential:architectury-loom:1.10.33")
     implementation("dev.architectury:architectury-pack200:0.1.3")
 
     // Preprocessing/multi-versioning

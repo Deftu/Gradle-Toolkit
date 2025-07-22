@@ -2,8 +2,6 @@ package dev.deftu.gradle.tools.publishing
 
 import dev.deftu.gradle.ToolkitConstants
 import dev.deftu.gradle.utils.*
-import gradle.kotlin.dsl.accessors._76a779107637b25b34866585d88a55c4.publishing
-import gradle.kotlin.dsl.accessors._76a779107637b25b34866585d88a55c4.signing
 import java.util.*
 
 plugins {

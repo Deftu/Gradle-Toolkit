@@ -4,8 +4,6 @@ import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.java
 import org.gradle.kotlin.dsl.withType
 import dev.deftu.gradle.utils.getMajorJavaVersion
-import gradle.kotlin.dsl.accessors._8c47cae829ea3d03260d5ff13fb2398e.compileJava
-import gradle.kotlin.dsl.accessors._8c47cae829ea3d03260d5ff13fb2398e.java
 
 plugins {
     java

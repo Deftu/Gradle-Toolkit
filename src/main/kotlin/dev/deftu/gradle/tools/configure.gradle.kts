@@ -1,7 +1,7 @@
 package dev.deftu.gradle.tools
 
 import dev.deftu.gradle.utils.*
-import gradle.kotlin.dsl.accessors._7f302803de3c8e8ef0ce80f8d318d1c9.base
+import gradle.kotlin.dsl.accessors._2c95f20277cbe6143532f6e8d67e36cc.base
 
 val gitData = GitData.from(project)
 val mcData = MCData.from(project)

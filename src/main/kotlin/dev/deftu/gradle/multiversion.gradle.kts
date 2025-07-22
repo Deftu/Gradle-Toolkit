@@ -3,7 +3,6 @@ package dev.deftu.gradle
 import com.replaymod.gradle.preprocess.PreprocessExtension
 import com.replaymod.gradle.preprocess.PreprocessPlugin
 import dev.deftu.gradle.utils.*
-import gradle.kotlin.dsl.accessors._7f302803de3c8e8ef0ce80f8d318d1c9.jar
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {

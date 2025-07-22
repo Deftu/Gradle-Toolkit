@@ -7,10 +7,6 @@ import org.gradle.kotlin.dsl.dependencies
 import dev.deftu.gradle.utils.*
 import dev.deftu.gradle.utils.mcinfo.MinecraftInfo
 import dev.deftu.gradle.utils.version.MinecraftVersions
-import gradle.kotlin.dsl.accessors._7f302803de3c8e8ef0ce80f8d318d1c9.loom
-import gradle.kotlin.dsl.accessors._7f302803de3c8e8ef0ce80f8d318d1c9.mappings
-import gradle.kotlin.dsl.accessors._7f302803de3c8e8ef0ce80f8d318d1c9.minecraft
-import gradle.kotlin.dsl.accessors._7f302803de3c8e8ef0ce80f8d318d1c9.modImplementation
 
 // Set XML parsers so Gradle stops complaining.
 extra.set("systemProp.javax.xml.parsers.DocumentBuilderFactory", "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl")

@@ -4,7 +4,6 @@ import dev.deftu.gradle.utils.GitData
 import dev.deftu.gradle.utils.MCData
 import dev.deftu.gradle.utils.ModData
 import dev.deftu.gradle.utils.ProjectData
-import gradle.kotlin.dsl.accessors._27ff417d8068e8698d85749e91ce5b3f.bloom
 
 plugins {
     java
