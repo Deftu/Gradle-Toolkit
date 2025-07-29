@@ -9,8 +9,6 @@ plugins {
     id("dev.deftu.gradle.tools.publishing.github") version(dgtVersion)
 }
 
-logger.lifecycle("> Kotlin compiler version: ${KotlinCompilerVersion.VERSION}")
-
 toolkitGitHubPublishing {
     owner.set("Deftu")
     repository.set("Gradle-Toolkit")
@@ -57,7 +55,7 @@ dependencies {
     implementation("com.github.breadmoirai:github-release:2.5.2")
 
     // Other
-    implementation("com.github.johnrengelman:shadow:8.1.1")
+    implementation("com.gradleup.shadow:com.gradleup.shadow.gradle.plugin:8.3.8")
     implementation("dev.deftu:Bloom:0.1.2")
 }
 
