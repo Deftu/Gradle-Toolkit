@@ -15,14 +15,25 @@ repositories {
     optionalMaven("repo.essential", "Essential", "https://repo.essential.gg/repository/maven-public/")
     optionalMaven("repo.kff", "KotlinForForge", "https://thedarkcolour.github.io/KotlinForForge/")
     optionalMaven("repo.terraformers", "Terraformers", "https://maven.terraformersmc.com/releases/")
-    optionalMaven("repo.sponge", "SpongePowered", "https://repo.spongepowered.org/maven/")
+    optionalMaven("repo.sponge", "SpongePowered", "https://repo.spongepowered.org/maven/") {
+        content {
+            includeGroup("org.spongepowered")
+        }
+    }
 }
 
-fun RepositoryHandler.optionalMaven(propertyName: String, name: String? = null, url: String) {
+fun RepositoryHandler.optionalMaven(
+    propertyName: String,
+    name: String? = null,
+    url: String,
+    block: ArtifactRepository.() -> Unit = {  }
+) {
     if (project.propertyBoolOr(propertyName, false)) return
     maven(url) {
         name?.let { name ->
             setName(name)
         }
+
+        block()
     }
 }
