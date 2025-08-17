@@ -1,0 +1,60 @@
+package dev.deftu.gradle.utils.mcinfo
+
+import dev.deftu.gradle.utils.version.MinecraftVersions
+
+object MinecraftInfoV2 : MinecraftInfo() {
+
+    override fun initialize() {
+        inherit(MinecraftInfoV1)
+
+        fabricYarnVersions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_8 to "1.21.8+build.1:v2",
+            MinecraftVersions.VERSION_1_21_7 to "1.21.7+build.2:v2",
+            MinecraftVersions.VERSION_1_21_6 to "1.21.6+build.1:v2",
+            MinecraftVersions.VERSION_1_21_5 to "1.21.5+build.1:v2",
+            MinecraftVersions.VERSION_1_21_4 to "1.21.4+build.8:v2",
+            MinecraftVersions.VERSION_1_21_3 to "1.21.3+build.2:v2",
+            MinecraftVersions.VERSION_1_21_2 to "1.21.2+build.1:v2",
+            MinecraftVersions.VERSION_1_21_1 to "1.21.1+build.3:v2",
+            MinecraftVersions.VERSION_1_21 to "1.21+build.9:v2",
+            MinecraftVersions.VERSION_1_20_6 to "1.20.6+build.3:v2",
+            MinecraftVersions.VERSION_1_20_5 to "1.20.5+build.1:v2",
+            MinecraftVersions.VERSION_1_20_4 to "1.20.4+build.3:v2",
+            MinecraftVersions.VERSION_1_20_3 to "1.20.3+build.1:v2",
+            MinecraftVersions.VERSION_1_20_2 to "1.20.2+build.4:v2",
+            MinecraftVersions.VERSION_1_20_1 to "1.20.1+build.10:v2",
+            MinecraftVersions.VERSION_1_20 to "1.20+build.1:v2",
+
+            MinecraftVersions.VERSION_1_19_4 to "1.19.4+build.2:v2",
+            MinecraftVersions.VERSION_1_19_3 to "1.19.3+build.5:v2",
+            MinecraftVersions.VERSION_1_19_2 to "1.19.2+build.8:v2",
+            MinecraftVersions.VERSION_1_19_1 to "1.19.1+build.6:v2",
+            MinecraftVersions.VERSION_1_19 to "1.19+build.4:v2",
+
+            MinecraftVersions.VERSION_1_18_2 to "1.18.2+build.4:v2",
+            MinecraftVersions.VERSION_1_18_1 to "1.18.1+build.22:v2",
+            MinecraftVersions.VERSION_1_18 to "1.18+build.1:v2",
+
+            MinecraftVersions.VERSION_1_17_1 to "1.17.1+build.65:v2",
+            MinecraftVersions.VERSION_1_17 to "1.17+build.13:v2",
+
+            MinecraftVersions.VERSION_1_16_5 to "1.16.5+build.10:v2",
+            MinecraftVersions.VERSION_1_16_4 to "1.16.4+build.9:v2",
+            MinecraftVersions.VERSION_1_16_3 to "1.16.3+build.47:v2",
+            MinecraftVersions.VERSION_1_16_2 to "1.16.2+build.47:v2",
+            MinecraftVersions.VERSION_1_16_1 to "1.16.1+build.21:v2",
+            MinecraftVersions.VERSION_1_16 to "1.16+build.4:v2",
+
+            MinecraftVersions.VERSION_1_15_2 to "1.15.2+build.17:v2",
+            MinecraftVersions.VERSION_1_15_1 to "1.15.1+build.37:v2",
+            MinecraftVersions.VERSION_1_15 to "1.15+build.2:v2",
+
+            MinecraftVersions.VERSION_1_14_4 to "1.14.4+build.18:v2",
+            MinecraftVersions.VERSION_1_14_3 to "1.14.3+build.13",
+            MinecraftVersions.VERSION_1_14_2 to "1.14.2+build.7",
+            MinecraftVersions.VERSION_1_14_1 to "1.14.1+build.10",
+            MinecraftVersions.VERSION_1_14 to "1.14+build.21"
+        ))
+    }
+
+}
