@@ -15,6 +15,7 @@ sealed class MinecraftInfo {
             return when (revision) {
                 0 -> MinecraftInfoV0
                 1 -> MinecraftInfoV1
+                2 -> MinecraftInfoV2
                 else -> throw IllegalArgumentException(
                     "Unknown MinecraftInfo revision: $revision. " +
                             "Please update the toolkit to a newer version or check which revisions are available."
