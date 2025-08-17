@@ -49,11 +49,7 @@ object MinecraftInfoV2 : MinecraftInfo() {
             MinecraftVersions.VERSION_1_15_1 to "1.15.1+build.37:v2",
             MinecraftVersions.VERSION_1_15 to "1.15+build.2:v2",
 
-            MinecraftVersions.VERSION_1_14_4 to "1.14.4+build.18:v2",
-            MinecraftVersions.VERSION_1_14_3 to "1.14.3+build.13",
-            MinecraftVersions.VERSION_1_14_2 to "1.14.2+build.7",
-            MinecraftVersions.VERSION_1_14_1 to "1.14.1+build.10",
-            MinecraftVersions.VERSION_1_14 to "1.14+build.21"
+            MinecraftVersions.VERSION_1_14_4 to "1.14.4+build.18:v2"
         ))
     }
 
