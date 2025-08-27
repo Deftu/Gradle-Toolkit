@@ -43,7 +43,7 @@ dependencies {
 
     // Preprocessing/multi-versioning
     implementation("dev.deftu:preprocessor:0.15.0")
-    implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:${property("kotlin.version")}")
+    implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:${property("kotlin.version")}") // TODO remove when remap is fixed
 
     // Documentation
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:2.0.0")

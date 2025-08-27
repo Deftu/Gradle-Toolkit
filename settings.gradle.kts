@@ -25,7 +25,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-compiler-embeddable:2.2.10")
+        classpath("org.jetbrains.kotlin:kotlin-compiler-embeddable:2.2.10") // TODO remove once DGT in the build.gradle.kts is updated to 2.51.0
     }
 }
 
