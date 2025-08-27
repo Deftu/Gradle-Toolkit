@@ -1,8 +1,7 @@
-import org.jetbrains.kotlin.config.KotlinCompilerVersion
-
 plugins {
+    kotlin("jvm") version "2.2.10"
     `kotlin-dsl`
-    val dgtVersion = "2.35.0"
+    val dgtVersion = "2.50.0"
     id("dev.deftu.gradle.tools.repo") version(dgtVersion)
     id("dev.deftu.gradle.tools.configure") version(dgtVersion)
     id("dev.deftu.gradle.tools.publishing.maven") version(dgtVersion)
@@ -44,6 +43,7 @@ dependencies {
 
     // Preprocessing/multi-versioning
     implementation("dev.deftu:preprocessor:0.15.0")
+    implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:${property("kotlin.version")}")
 
     // Documentation
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:2.0.0")

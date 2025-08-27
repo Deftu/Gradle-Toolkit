@@ -19,4 +19,14 @@ pluginManagement {
     }
 }
 
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+
+    dependencies {
+        classpath("org.jetbrains.kotlin:kotlin-compiler-embeddable:2.2.10")
+    }
+}
+
 rootProject.name = extra["project.name"]!!.toString()
