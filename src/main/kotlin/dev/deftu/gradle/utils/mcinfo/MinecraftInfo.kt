@@ -9,17 +9,24 @@ sealed class MinecraftInfo {
 
     companion object {
 
+        private val revisions = listOf(
+            MinecraftInfoV0,
+            MinecraftInfoV1,
+            MinecraftInfoV2
+        )
+
         @JvmStatic
         fun get(project: Project): MinecraftInfo {
             val revision = project.propertyIntOr("minecraft.revision", default = 0, prefix = "dgt.")
-            return when (revision) {
-                0 -> MinecraftInfoV0
-                1 -> MinecraftInfoV1
-                else -> throw IllegalArgumentException(
-                    "Unknown MinecraftInfo revision: $revision. " +
+            if (revision < 0) {
+                throw IllegalArgumentException("MinecraftInfo revision cannot be negative: $revision")
+            } else if (revision >= revisions.size) {
+                throw IllegalArgumentException(
+                    "MinecraftInfo revision $revision is not available. (Latest is ${revisions.size - 1}). " +
                             "Please update the toolkit to a newer version or check which revisions are available."
                 )
-            }.also(MinecraftInfo::initialize)
+            }
+            return revisions[revision].also(MinecraftInfo::initialize)
         }
 
     }
