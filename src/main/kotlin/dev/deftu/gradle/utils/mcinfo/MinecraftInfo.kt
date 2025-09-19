@@ -62,6 +62,8 @@ sealed class MinecraftInfo {
 
     /** inherits all maps and/or versions from the given info */
     fun inherit(other: MinecraftInfo) {
+        other.initialize() // ensure the other is initialized
+
         this.fabricLoaderVersion = other.fabricLoaderVersion
         this.fabricLanguageKotlinVersion = other.fabricLanguageKotlinVersion
         this.fabricYarnVersions.putAll(other.fabricYarnVersions)
