@@ -7,18 +7,14 @@ import java.io.Serializable
 import java.time.OffsetDateTime
 
 sealed interface MinecraftVersion<T : MinecraftVersion<T>> : Comparable<MinecraftVersion<*>>, Serializable {
-
     companion object {
-
         @JvmStatic
         fun getRawVersion(project: Project): String {
             return project.propertyOr("minecraft.version", project.name, prefix = "")
         }
-
     }
 
     object Unknown : MinecraftVersion<Unknown> {
-
         override val releaseTime: OffsetDateTime = OffsetDateTime.MIN
 
         override val preprocessorKey: Int = 0
@@ -26,7 +22,6 @@ sealed interface MinecraftVersion<T : MinecraftVersion<T>> : Comparable<Minecraf
         override fun compareTo(other: MinecraftVersion<*>): Int {
             return 0
         }
-
     }
 
     val releaseTime: OffsetDateTime
@@ -48,5 +43,4 @@ sealed interface MinecraftVersion<T : MinecraftVersion<T>> : Comparable<Minecraf
     fun isOlderThan(other: T): Boolean {
         return compareTo(other) < 0
     }
-
 }

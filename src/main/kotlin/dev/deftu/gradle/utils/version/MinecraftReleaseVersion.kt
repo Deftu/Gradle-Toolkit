@@ -188,7 +188,45 @@ class MinecraftReleaseVersion private constructor(
     }
 
     override fun toString(): String {
-        return "$major.$minor" + if (patch != 0) ".$patch" else ""
+//        return "$major.$minor" + if (patch != 0) ".$patch" else ""
+        return buildString {
+            append(major).append('.').append(minor)
+            if (patch != 0) {
+                append('.').append(patch)
+            }
+
+            if (classifier != null) {
+                var spacedRevision = false
+
+                when (classifier) {
+                    Classifier.PRE_RELEASE -> {
+                        when (rawClassifier) {
+                            "pre" -> {
+                                append('-').append("pre")
+                            }
+
+                            "Pre-Release" -> {
+                                spacedRevision = true
+                                append(' ').append("Pre-Release")
+                            }
+                        }
+                    }
+
+                    else -> {
+                        append('-').append(classifier!!.identifier.first())
+                        revision?.let(::append)
+                    }
+                }
+
+                if (revision != null) {
+                    if (spacedRevision) {
+                        append(' ')
+                    }
+
+                    append(revision)
+                }
+            }
+        }
     }
 
 }
