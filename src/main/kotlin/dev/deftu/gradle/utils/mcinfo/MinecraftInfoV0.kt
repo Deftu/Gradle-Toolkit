@@ -2,10 +2,8 @@ package dev.deftu.gradle.utils.mcinfo
 
 import dev.deftu.gradle.utils.version.MinecraftVersions
 
-object MinecraftInfoV0 : MinecraftInfo() {
-
+class MinecraftInfoV0 : MinecraftInfo() {
     override var fabricLoaderVersion = "0.16.14"
-
     override var fabricLanguageKotlinVersion = "1.12.1+kotlin.2.0.20"
 
     override fun initialize() {
@@ -289,5 +287,4 @@ object MinecraftInfoV0 : MinecraftInfo() {
             MinecraftVersions.VERSION_1_16_5 to "1.16.5:2022.03.06"
         ))
     }
-
 }

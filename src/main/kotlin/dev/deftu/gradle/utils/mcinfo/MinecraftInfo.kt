@@ -6,13 +6,12 @@ import dev.deftu.gradle.utils.version.MinecraftVersionMap
 import org.gradle.api.Project
 
 sealed class MinecraftInfo {
-
     companion object {
-
         private val revisions = listOf(
-            MinecraftInfoV0,
-            MinecraftInfoV1,
-            MinecraftInfoV2
+            { MinecraftInfoV0() },
+            { MinecraftInfoV1() },
+            { MinecraftInfoV2() },
+            { MinecraftInfoV3() },
         )
 
         @JvmStatic
@@ -26,7 +25,8 @@ sealed class MinecraftInfo {
                             "Please update the toolkit to a newer version or check which revisions are available."
                 )
             }
-            return revisions[revision].also(MinecraftInfo::initialize)
+
+            return revisions[revision]().also(MinecraftInfo::initialize)
         }
 
     }
@@ -38,23 +38,14 @@ sealed class MinecraftInfo {
         protected set
 
     val fabricYarnVersions: MinecraftVersionMap<String> = MinecraftVersionMap()
-
     val fabricApiVersions: MinecraftVersionMap<String> = MinecraftVersionMap()
-
     val fabricModMenuDefinitions: MinecraftVersionMap<Pair<String, String>> = MinecraftVersionMap()
-
     val legacyFabricYarnVersions: MinecraftVersionMap<String> = MinecraftVersionMap()
-
     val legacyFabricApiVersions: MinecraftVersionMap<String> = MinecraftVersionMap()
-
     val kotlinForForgeVersions: MinecraftVersionMap<String> = MinecraftVersionMap()
-
     val forgeVersions: MinecraftVersionMap<String> = MinecraftVersionMap()
-
     val mcpDefinitions: MinecraftVersionMap<String> = MinecraftVersionMap()
-
     val neoForgeVersions: MinecraftVersionMap<String> = MinecraftVersionMap()
-
     val parchmentVersions: MinecraftVersionMap<String> = MinecraftVersionMap()
 
     /** updates versions as needed and/or inherits if needed */
@@ -134,5 +125,4 @@ sealed class MinecraftInfo {
         return parchmentVersions[version]
             ?: throw IllegalArgumentException("No Parchment version found for $version")
     }
-
 }

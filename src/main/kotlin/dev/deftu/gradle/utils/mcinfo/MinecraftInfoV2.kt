@@ -2,10 +2,9 @@ package dev.deftu.gradle.utils.mcinfo
 
 import dev.deftu.gradle.utils.version.MinecraftVersions
 
-object MinecraftInfoV2 : MinecraftInfo() {
-
+class MinecraftInfoV2 : MinecraftInfo() {
     override fun initialize() {
-        inherit(MinecraftInfoV1)
+        inherit(MinecraftInfoV1())
 
         fabricYarnVersions.putAll(listOf(
             MinecraftVersions.VERSION_1_21_8 to "1.21.8+build.1:v2",
@@ -52,5 +51,4 @@ object MinecraftInfoV2 : MinecraftInfo() {
             MinecraftVersions.VERSION_1_14_4 to "1.14.4+build.18:v2"
         ))
     }
-
 }
