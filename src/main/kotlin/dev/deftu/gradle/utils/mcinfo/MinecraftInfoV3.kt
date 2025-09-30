@@ -10,6 +10,7 @@ class MinecraftInfoV3 : MinecraftInfo() {
         this.fabricLanguageKotlinVersion = "1.13.5+kotlin.2.2.10"
 
         this.fabricYarnVersions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_9 to "1.21.9+build.1:v2",
             MinecraftVersions.VERSION_1_21_7 to "1.21.7+build.8:v2",
             MinecraftVersions.VERSION_1_19_2 to "1.19.2+build.28:v2",
         ))
