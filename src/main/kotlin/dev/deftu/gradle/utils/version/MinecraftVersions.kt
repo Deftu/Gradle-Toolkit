@@ -11,7 +11,6 @@ import java.time.OffsetDateTime
 internal typealias MinecraftVersionParser = Pair<String, ((Project?, String) -> VersionParseResult)>
 
 object MinecraftVersions {
-
     private const val MOJANG_VERSION_MANIFEST = "https://launchermeta.mojang.com/mc/game/version_manifest_v2.json"
 
     private val parsers: Set<MinecraftVersionParser>
@@ -43,184 +42,187 @@ object MinecraftVersions {
         file
     }
 
-    @JvmStatic
+    @JvmField
     val UNKNOWN = MinecraftVersion.Unknown
 
-    @JvmStatic
+    @JvmField
+    val VERSION_1_21_9 = MinecraftReleaseVersion.from(1_21_09)
+
+    @JvmField
     val VERSION_1_21_8 = MinecraftReleaseVersion.from(1_21_08)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_21_7 = MinecraftReleaseVersion.from(1_21_07)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_21_6 = MinecraftReleaseVersion.from(1_21_06)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_21_5 = MinecraftReleaseVersion.from(1_21_05)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_21_4 = MinecraftReleaseVersion.from(1_21_04)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_21_3 = MinecraftReleaseVersion.from(1_21_03)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_21_2 = MinecraftReleaseVersion.from(1_21_02)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_21_1 = MinecraftReleaseVersion.from(1_21_01)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_21 = MinecraftReleaseVersion.from(1_21_00)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_20_6 = MinecraftReleaseVersion.from(1_20_06)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_20_5 = MinecraftReleaseVersion.from(1_20_05)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_20_4 = MinecraftReleaseVersion.from(1_20_04)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_20_3 = MinecraftReleaseVersion.from(1_20_03)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_20_2 = MinecraftReleaseVersion.from(1_20_02)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_20_1 = MinecraftReleaseVersion.from(1_20_01)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_20 = MinecraftReleaseVersion.from(1_20_00)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_19_4 = MinecraftReleaseVersion.from(1_19_04)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_19_3 = MinecraftReleaseVersion.from(1_19_03)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_19_2 = MinecraftReleaseVersion.from(1_19_02)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_19_1 = MinecraftReleaseVersion.from(1_19_01)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_19 = MinecraftReleaseVersion.from(1_19_00)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_18_2 = MinecraftReleaseVersion.from(1_18_02)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_18_1 = MinecraftReleaseVersion.from(1_18_01)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_18 = MinecraftReleaseVersion.from(1_18_00)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_17_1 = MinecraftReleaseVersion.from(1_17_01)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_17 = MinecraftReleaseVersion.from(1_17_00)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_16_5 = MinecraftReleaseVersion.from(1_16_05)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_16_4 = MinecraftReleaseVersion.from(1_16_04)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_16_3 = MinecraftReleaseVersion.from(1_16_03)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_16_2 = MinecraftReleaseVersion.from(1_16_02)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_16_1 = MinecraftReleaseVersion.from(1_16_01)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_16 = MinecraftReleaseVersion.from(1_16_00)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_15_2 = MinecraftReleaseVersion.from(1_15_02)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_15_1 = MinecraftReleaseVersion.from(1_15_01)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_15 = MinecraftReleaseVersion.from(1_15_00)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_14_4 = MinecraftReleaseVersion.from(1_14_04)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_14_3 = MinecraftReleaseVersion.from(1_14_03)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_14_2 = MinecraftReleaseVersion.from(1_14_02)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_14_1 = MinecraftReleaseVersion.from(1_14_01)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_14 = MinecraftReleaseVersion.from(1_14_00)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_13_2 = MinecraftReleaseVersion.from(1_13_02)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_13_1 = MinecraftReleaseVersion.from(1_13_01)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_13 = MinecraftReleaseVersion.from(1_13_00)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_12_2 = MinecraftReleaseVersion.from(1_12_02)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_12_1 = MinecraftReleaseVersion.from(1_12_01)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_12 = MinecraftReleaseVersion.from(1_12_00)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_11_2 = MinecraftReleaseVersion.from(1_11_02)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_11_1 = MinecraftReleaseVersion.from(1_11_01)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_11 = MinecraftReleaseVersion.from(1_11_00)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_10_2 = MinecraftReleaseVersion.from(1_10_02)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_10_1 = MinecraftReleaseVersion.from(1_10_01)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_10 = MinecraftReleaseVersion.from(1_10_00)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_9_4 = MinecraftReleaseVersion.from(1_09_04)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_9_3 = MinecraftReleaseVersion.from(1_09_03)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_9_2 = MinecraftReleaseVersion.from(1_09_02)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_9_1 = MinecraftReleaseVersion.from(1_09_01)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_9 = MinecraftReleaseVersion.from(1_09_00)
 
-    @JvmStatic
+    @JvmField
     val VERSION_1_8_9 = MinecraftReleaseVersion.from(1_08_09)
 
-    @JvmStatic
+    @JvmField
     val all = listOf(
         VERSION_1_21, VERSION_1_20_6, VERSION_1_20_5,
         VERSION_1_20_4, VERSION_1_20_3, VERSION_1_20_2,
@@ -314,5 +316,4 @@ object MinecraftVersions {
             cachedVersionReleaseTimes[id] = releaseTime
         }
     }
-
 }
