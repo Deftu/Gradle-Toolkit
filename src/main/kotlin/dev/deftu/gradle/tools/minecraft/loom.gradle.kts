@@ -198,7 +198,7 @@ if (propertyBoolOr("loom.appleSiliconFix", true) && mcData.version < MinecraftVe
             }
         }
 
-        val lwjglVersion = "2.9.4+legacyfabric.8"
+        val lwjglVersion = propertyOr("loom.appleSiliconFix.version", "2.9.4+legacyfabric.15")
 
         configurations.all {
             resolutionStrategy {
@@ -207,7 +207,6 @@ if (propertyBoolOr("loom.appleSiliconFix", true) && mcData.version < MinecraftVe
                         if (requested is ModuleComponentSelector) {
                             val module = (requested as ModuleComponentSelector)
                             if (module.group == "org.lwjgl.lwjgl") {
-                                logger.warn("Substituting ${module.group}:${module.module}:${module.version} with ${module.group}:${module.module}:$lwjglVersion")
                                 useTarget(module.group + ":" + module.module + ":" + lwjglVersion)
                             }
                         }
