@@ -165,6 +165,7 @@ class MinecraftInfoV0 : MinecraftInfo() {
         ))
 
         forgeVersions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_9 to "1.21.9-59.0.5",
             MinecraftVersions.VERSION_1_21_8 to "1.21.8-58.0.0",
             MinecraftVersions.VERSION_1_21_7 to "1.21.7-57.0.2",
             MinecraftVersions.VERSION_1_21_6 to "1.21.6-56.0.7",
