@@ -107,6 +107,7 @@ class MinecraftInfoV0 : MinecraftInfo() {
         ))
 
         fabricModMenuDefinitions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_9 to ("com.terraformersmc:modmenu:" to "16.0.0-rc.1"),
             MinecraftVersions.VERSION_1_21_8 to ("com.terraformersmc:modmenu:" to "15.0.0-beta.3"),
             MinecraftVersions.VERSION_1_21_7 to ("com.terraformersmc:modmenu:" to "15.0.0-beta.3"),
             MinecraftVersions.VERSION_1_21_6 to ("com.terraformersmc:modmenu:" to "15.0.0-beta.3"),
