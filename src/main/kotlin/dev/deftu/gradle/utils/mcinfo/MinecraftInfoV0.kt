@@ -8,6 +8,7 @@ class MinecraftInfoV0 : MinecraftInfo() {
 
     override fun initialize() {
         fabricYarnVersions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_10 to "1.21.10+build.1",
             MinecraftVersions.VERSION_1_21_9 to "1.21.9+build.1",
             MinecraftVersions.VERSION_1_21_8 to "1.21.8+build.1",
             MinecraftVersions.VERSION_1_21_7 to "1.21.7+build.2",
@@ -58,6 +59,8 @@ class MinecraftInfoV0 : MinecraftInfo() {
         ))
 
         fabricApiVersions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_10 to "0.134.1+1.21.10",
+            MinecraftVersions.VERSION_1_21_9 to "0.133.14+1.21.9",
             MinecraftVersions.VERSION_1_21_9 to "0.133.14+1.21.9",
             MinecraftVersions.VERSION_1_21_8 to "0.129.0+1.21.8",
             MinecraftVersions.VERSION_1_21_7 to "0.128.2+1.21.7",
@@ -107,6 +110,7 @@ class MinecraftInfoV0 : MinecraftInfo() {
         ))
 
         fabricModMenuDefinitions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_10 to ("com.terraformersmc:modmenu:" to "16.0.0-rc.1"),
             MinecraftVersions.VERSION_1_21_9 to ("com.terraformersmc:modmenu:" to "16.0.0-rc.1"),
             MinecraftVersions.VERSION_1_21_8 to ("com.terraformersmc:modmenu:" to "15.0.0-beta.3"),
             MinecraftVersions.VERSION_1_21_7 to ("com.terraformersmc:modmenu:" to "15.0.0-beta.3"),
@@ -254,6 +258,7 @@ class MinecraftInfoV0 : MinecraftInfo() {
         ))
 
         neoForgeVersions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_10 to "21.10.0-beta",
             MinecraftVersions.VERSION_1_21_9 to "21.9.0-beta",
             MinecraftVersions.VERSION_1_21_8 to "21.8.2-beta",
             MinecraftVersions.VERSION_1_21_7 to "21.7.1-beta",
