@@ -64,7 +64,7 @@ dependencies {
          * The first value is the mappings string, and the second value is whether these should be forced despite the requested configuration.
          */
         val defaultMappings: Pair<String, Boolean> = when {
-            mcData.isLegacyFabric -> "net.legacyfabric:yarn:${mcData.dependencies.legacyFabric.legacyYarnVersion}" to true
+            mcData.isLegacyFabric -> "net.legacyfabric:yarn:${mcData.dependencies.legacyFabric.legacyYarnVersion}" to false
             mcData.isFabric -> "net.fabricmc:yarn:${mcData.dependencies.fabric.yarnVersion}" to false
             mcData.isForge && mcData.version <= MinecraftVersions.VERSION_1_15_2 -> mcData.dependencies.forge.mcpDependency to true
             else -> "official" to false
