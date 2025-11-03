@@ -50,7 +50,13 @@ class MinecraftInfoV3 : MinecraftInfo() {
             MinecraftVersions.VERSION_1_8_9 to "1.13.1+1.8.9"
         ))
 
+        this.forgeVersions.putAll(listOf(
+            MinecraftVersions.VERSION_1_20_4 to "1.20.4-49.2.2"
+        ))
+
         this.neoForgeVersions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_10 to "21.10.5-beta",
+            MinecraftVersions.VERSION_1_21_9 to "21.9.16-beta",
             MinecraftVersions.VERSION_1_21_8 to "21.8.47",
             MinecraftVersions.VERSION_1_21_7 to "21.7.25-beta",
             MinecraftVersions.VERSION_1_21_6 to "21.6.20-beta",
