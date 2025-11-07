@@ -43,11 +43,11 @@ class MinecraftInfoV3 : MinecraftInfo() {
         ))
 
         this.legacyFabricApiVersions.putAll(listOf(
-            MinecraftVersions.VERSION_1_12_2 to "1.13.1+1.12.2",
-            MinecraftVersions.VERSION_1_11_2 to "1.13.1+1.11.2",
-            MinecraftVersions.VERSION_1_10_2 to "1.13.1+1.10.2",
-            MinecraftVersions.VERSION_1_9_4 to "1.13.1+1.9.4",
-            MinecraftVersions.VERSION_1_8_9 to "1.13.1+1.8.9"
+            MinecraftVersions.VERSION_1_12_2 to "1.13.2+1.12.2",
+            MinecraftVersions.VERSION_1_11_2 to "1.13.2+1.11.2",
+            MinecraftVersions.VERSION_1_10_2 to "1.13.2+1.10.2",
+            MinecraftVersions.VERSION_1_9_4 to "1.13.2+1.9.4",
+            MinecraftVersions.VERSION_1_8_9 to "1.13.2+1.8.9"
         ))
 
         this.forgeVersions.putAll(listOf(
