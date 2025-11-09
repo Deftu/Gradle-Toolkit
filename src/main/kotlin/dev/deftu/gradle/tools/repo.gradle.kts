@@ -38,7 +38,7 @@ fun RepositoryHandler.optionalMaven(
     url: String,
     block: ArtifactRepository.() -> Unit = {  }
 ) {
-    if (project.propertyBoolOr(propertyName, false)) {
+    if (!project.propertyBoolOr(propertyName, true)) {
         return
     }
 
