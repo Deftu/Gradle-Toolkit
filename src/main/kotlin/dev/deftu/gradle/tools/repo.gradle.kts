@@ -7,15 +7,15 @@ repositories {
     mavenLocal()
 
     // General
-    optionalMaven("repo.deftu.releases", "Deftu Releases", "https://maven.deftu.dev/releases/")
-    optionalMaven("repo.jitpack", "JitPack", "https://jitpack.io/")
-    optionalMaven("repo.deftu.snapshots", "Deftu Snapshots", "https://maven.deftu.dev/snapshots/")
+    optionalMaven("repo.deftu.releases", "https://maven.deftu.dev/releases/", "Deftu Releases")
+    optionalMaven("repo.jitpack", "https://jitpack.io/", "JitPack")
+    optionalMaven("repo.deftu.snapshots", "https://maven.deftu.dev/snapshots/", "Deftu Snapshots")
 
     // Minecraft
-    optionalMaven("repo.essential", "Essential", "https://repo.essential.gg/repository/maven-public/")
-    optionalMaven("repo.kff", "KotlinForForge", "https://thedarkcolour.github.io/KotlinForForge/")
+    optionalMaven("repo.essential", "https://repo.essential.gg/repository/maven-public/", "Essential")
+    optionalMaven("repo.kff", "https://thedarkcolour.github.io/KotlinForForge/", "KotlinForForge")
 
-    optionalMaven("repo.deftu.mirror", "Deftu Mirror", "https://maven.deftu.dev/mirror") {
+    optionalMaven("repo.deftu.mirror", "https://maven.deftu.dev/mirror", "Deftu Mirror") {
         exclusiveContent {
             filter {
                 includeGroup("com.terraformersmc") // Mod Menu
@@ -23,7 +23,7 @@ repositories {
         }
     }
 
-    optionalMaven("repo.sponge", "SpongePowered", "https://repo.spongepowered.org/maven/") {
+    optionalMaven("repo.sponge", "https://repo.spongepowered.org/maven/", "SpongePowered") {
         exclusiveContent {
             filter {
                 includeGroup("org.spongepowered")
@@ -34,8 +34,8 @@ repositories {
 
 fun RepositoryHandler.optionalMaven(
     propertyName: String,
-    name: String? = null,
     url: String,
+    name: String? = null,
     block: ArtifactRepository.() -> Unit = {  }
 ) {
     if (!project.propertyBoolOr(propertyName, true)) {
