@@ -16,18 +16,14 @@ repositories {
     optionalMaven("repo.kff", "https://thedarkcolour.github.io/KotlinForForge/", "KotlinForForge")
 
     optionalMaven("repo.deftu.mirror", "https://maven.deftu.dev/mirror", "Deftu Mirror") {
-        exclusiveContent {
-            filter {
-                includeGroup("com.terraformersmc") // Mod Menu
-            }
+        content {
+            includeGroup("com.terraformersmc") // Mod Menu
         }
     }
 
     optionalMaven("repo.sponge", "https://repo.spongepowered.org/maven/", "SpongePowered") {
-        exclusiveContent {
-            filter {
-                includeGroup("org.spongepowered")
-            }
+        content {
+            includeGroup("org.spongepowered")
         }
     }
 }
