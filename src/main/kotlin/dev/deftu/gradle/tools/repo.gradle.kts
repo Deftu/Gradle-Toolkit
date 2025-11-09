@@ -15,14 +15,14 @@ repositories {
     optionalMaven("repo.essential", "Essential", "https://repo.essential.gg/repository/maven-public/")
     optionalMaven("repo.kff", "KotlinForForge", "https://thedarkcolour.github.io/KotlinForForge/")
 
-    optionalMaven("https://maven.deftu.dev/mirror") {
+    optionalMaven("repo.deftu.mirror", "Deftu Mirror", "https://maven.deftu.dev/mirror") {
         exclusiveContent {
             filter {
                 includeGroup("com.terraformersmc") // Mod Menu
             }
         }
     }
-    
+
     optionalMaven("repo.sponge", "SpongePowered", "https://repo.spongepowered.org/maven/") {
         exclusiveContent {
             filter {
@@ -38,7 +38,10 @@ fun RepositoryHandler.optionalMaven(
     url: String,
     block: ArtifactRepository.() -> Unit = {  }
 ) {
-    if (project.propertyBoolOr(propertyName, false)) return
+    if (project.propertyBoolOr(propertyName, false)) {
+        return
+    }
+
     maven(url) {
         name?.let { name ->
             setName(name)
