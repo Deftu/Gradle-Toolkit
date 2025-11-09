@@ -14,10 +14,20 @@ repositories {
     // Minecraft
     optionalMaven("repo.essential", "Essential", "https://repo.essential.gg/repository/maven-public/")
     optionalMaven("repo.kff", "KotlinForForge", "https://thedarkcolour.github.io/KotlinForForge/")
-    optionalMaven("repo.terraformers", "Terraformers", "https://maven.terraformersmc.com/releases/")
+
+    optionalMaven("https://maven.deftu.dev/mirror") {
+        exclusiveContent {
+            filter {
+                includeGroup("com.terraformersmc") // Mod Menu
+            }
+        }
+    }
+    
     optionalMaven("repo.sponge", "SpongePowered", "https://repo.spongepowered.org/maven/") {
-        content {
-            includeGroup("org.spongepowered")
+        exclusiveContent {
+            filter {
+                includeGroup("org.spongepowered")
+            }
         }
     }
 }
