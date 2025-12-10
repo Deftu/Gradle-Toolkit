@@ -285,6 +285,11 @@ class MinecraftInfoV0 : MinecraftInfo() {
         ))
 
         parchmentVersions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_10 to "1.21.10:2025.10.12",
+            MinecraftVersions.VERSION_1_21_9 to "1.21.9:2025.10.05",
+            MinecraftVersions.VERSION_1_21_8 to "1.21.8:2025.09.14",
+            MinecraftVersions.VERSION_1_21_7 to "1.21.7:2025.07.18",
+            MinecraftVersions.VERSION_1_21_6 to "1.21.6:2025.06.29",
             MinecraftVersions.VERSION_1_21_5 to "1.21.5:2025.06.15",
             MinecraftVersions.VERSION_1_21_4 to "1.21.4:2025.03.23",
             MinecraftVersions.VERSION_1_21_3 to "1.21.3:2024.12.07",
