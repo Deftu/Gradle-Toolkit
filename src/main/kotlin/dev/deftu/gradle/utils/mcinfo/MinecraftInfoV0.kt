@@ -8,6 +8,7 @@ class MinecraftInfoV0 : MinecraftInfo() {
 
     override fun initialize() {
         fabricYarnVersions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_11 to "1.21.11+build.2",
             MinecraftVersions.VERSION_1_21_10 to "1.21.10+build.1",
             MinecraftVersions.VERSION_1_21_9 to "1.21.9+build.1",
             MinecraftVersions.VERSION_1_21_8 to "1.21.8+build.1",
@@ -59,6 +60,7 @@ class MinecraftInfoV0 : MinecraftInfo() {
         ))
 
         fabricApiVersions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_11 to "0.139.4+1.21.11",
             MinecraftVersions.VERSION_1_21_10 to "0.134.1+1.21.10",
             MinecraftVersions.VERSION_1_21_9 to "0.133.14+1.21.9",
             MinecraftVersions.VERSION_1_21_9 to "0.133.14+1.21.9",
@@ -110,6 +112,7 @@ class MinecraftInfoV0 : MinecraftInfo() {
         ))
 
         fabricModMenuDefinitions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_11 to ("com.terraformersmc:modmenu:" to "17.0.0-alpha.1"),
             MinecraftVersions.VERSION_1_21_10 to ("com.terraformersmc:modmenu:" to "16.0.0-rc.1"),
             MinecraftVersions.VERSION_1_21_9 to ("com.terraformersmc:modmenu:" to "16.0.0-rc.1"),
             MinecraftVersions.VERSION_1_21_8 to ("com.terraformersmc:modmenu:" to "15.0.0-beta.3"),
@@ -161,6 +164,7 @@ class MinecraftInfoV0 : MinecraftInfo() {
         ))
 
         kotlinForForgeVersions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_9 to "6.0.0",
             MinecraftVersions.VERSION_1_20_6 to "5.9.0",
             MinecraftVersions.VERSION_1_20_5 to "5.0.2",
             MinecraftVersions.VERSION_1_19_3 to "4.11.0",
@@ -170,6 +174,8 @@ class MinecraftInfoV0 : MinecraftInfo() {
         ))
 
         forgeVersions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_11 to "1.21.11-61.0.1",
+            MinecraftVersions.VERSION_1_21_10 to "1.21.10-60.1.5",
             MinecraftVersions.VERSION_1_21_9 to "1.21.9-59.0.5",
             MinecraftVersions.VERSION_1_21_8 to "1.21.8-58.0.0",
             MinecraftVersions.VERSION_1_21_7 to "1.21.7-57.0.2",
@@ -258,6 +264,7 @@ class MinecraftInfoV0 : MinecraftInfo() {
         ))
 
         neoForgeVersions.putAll(listOf(
+            MinecraftVersions.VERSION_1_21_11 to "21.11.0-beta",
             MinecraftVersions.VERSION_1_21_10 to "21.10.0-beta",
             MinecraftVersions.VERSION_1_21_9 to "21.9.0-beta",
             MinecraftVersions.VERSION_1_21_8 to "21.8.2-beta",
