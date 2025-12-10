@@ -12,6 +12,7 @@ sealed class MinecraftInfo {
             { MinecraftInfoV1() },
             { MinecraftInfoV2() },
             { MinecraftInfoV3() },
+            { MinecraftInfoV4() },
         )
 
         @JvmStatic
@@ -28,7 +29,6 @@ sealed class MinecraftInfo {
 
             return revisions[revision]().also(MinecraftInfo::initialize)
         }
-
     }
 
     open var fabricLoaderVersion: String = "" // Default until we inherit or decide on our own
