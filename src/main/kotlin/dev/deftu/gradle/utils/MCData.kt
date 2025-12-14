@@ -6,6 +6,8 @@ import dev.deftu.gradle.utils.mcinfo.MinecraftInfo
 import dev.deftu.gradle.utils.version.MinecraftVersion
 import dev.deftu.gradle.utils.version.MinecraftVersions
 import org.gradle.api.Project
+import org.gradle.api.artifacts.MinimalExternalModuleDependency
+import org.gradle.api.provider.Provider
 
 class MCDependencies(
     val mcData: MCData
@@ -96,6 +98,26 @@ class MCDependencies(
                 val (group, version) = MinecraftInfo.get(mcData.project).getFabricModMenuDefinition(mcData.version)
                 return "$group$version"
             }
+
+        fun fillFabricLoader(provider: Provider<MinimalExternalModuleDependency>): String {
+            return provider.withProvidedVersion(fabricLoaderVersion)
+        }
+
+        fun fillYarn(provider: Provider<MinimalExternalModuleDependency>): String {
+            return provider.withProvidedVersion(yarnVersion)
+        }
+
+        fun fillFabricApi(provider: Provider<MinimalExternalModuleDependency>): String {
+            return provider.withProvidedVersion(fabricApiVersion)
+        }
+
+        fun fillFabricLanguageKotlin(provider: Provider<MinimalExternalModuleDependency>): String {
+            return provider.withProvidedVersion(fabricLanguageKotlinVersion)
+        }
+
+        fun fillModMenu(provider: Provider<MinimalExternalModuleDependency>): String {
+            return provider.withProvidedVersion(modMenuVersion)
+        }
     }
 
     inner class LegacyFabric {
@@ -126,6 +148,14 @@ class MCDependencies(
 
                 return MinecraftInfo.get(mcData.project).getLegacyFabricApiVersion(mcData.version)
             }
+
+        fun fillLegacyYarn(provider: Provider<MinimalExternalModuleDependency>): String {
+            return provider.withProvidedVersion(legacyYarnVersion)
+        }
+
+        fun fillLegacyFabricApi(provider: Provider<MinimalExternalModuleDependency>): String {
+            return provider.withProvidedVersion(legacyFabricApiVersion)
+        }
     }
 
     inner class ForgeLike {
@@ -142,6 +172,10 @@ class MCDependencies(
 
                 return MinecraftInfo.get(mcData.project).getKotlinForForgeVersion(mcData.version)
             }
+
+        fun fillKotlinForForge(provider: Provider<MinimalExternalModuleDependency>): String {
+            return provider.withProvidedVersion(kotlinForForgeVersion)
+        }
     }
 
     inner class Forge {
@@ -172,6 +206,10 @@ class MCDependencies(
 
                 return MinecraftInfo.get(mcData.project).getMcpDefinition(mcData.version)
             }
+
+        fun fillForge(provider: Provider<MinimalExternalModuleDependency>): String {
+            return provider.withProvidedVersion(forgeVersion)
+        }
     }
 
     inner class NeoForged {
@@ -188,6 +226,10 @@ class MCDependencies(
 
                 return MinecraftInfo.get(mcData.project).getNeoForgeVersion(mcData.version)
             }
+
+        fun fillNeoForge(provider: Provider<MinimalExternalModuleDependency>): String {
+            return provider.withProvidedVersion(neoForgeVersion)
+        }
     }
 
     val fabric = Fabric()
@@ -195,6 +237,12 @@ class MCDependencies(
     val forgeLike = ForgeLike()
     val forge = Forge()
     val neoForged = NeoForged()
+
+    private fun Provider<MinimalExternalModuleDependency>.withProvidedVersion(version: String): String {
+        return this.map { dep ->
+            "${dep.module.group}:${dep.module.name}:$version"
+        }.get()
+    }
 }
 
 data class MCData(
