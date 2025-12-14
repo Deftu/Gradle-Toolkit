@@ -11,18 +11,19 @@ data class ModData(
     override val group: String,
     val description: String
 ) : ProjectInfo {
-
     companion object {
-
-        @JvmStatic
-        val EMPTY = ModData(false, "", "", "", "", "")
+        @JvmStatic val EMPTY = ModData(false, "", "", "", "", "")
 
         @JvmStatic
         fun from(project: Project): ModData {
             val extension = project.extensions.findByName("modData") as ModData?
-            if (extension != null) return extension
+            if (extension != null) {
+                return extension
+            }
 
-            if (!project.hasProperty("mod.id")) return EMPTY
+            if (!project.hasProperty("mod.id")) {
+                return EMPTY
+            }
 
             val name = project.propertyOr("mod.name", project.name, prefix = "")
             val id = project.propertyOr("mod.id", name.lowercase(Locale.US).replace(" ", "_"), prefix = "")
@@ -45,12 +46,9 @@ data class ModData(
                 return
             }
 
-            project.logger.lifecycle("Populating ModData from ProjectData of ${projectData.name}")
             val id = project.propertyOr("mod.id", projectData.name.lowercase(Locale.US).replace(" ", "_"), prefix = "")
             val data = ModData(true, projectData.name, id, projectData.version, projectData.group, projectData.description)
             project.extensions.add("modData", data)
         }
-
     }
-
 }
