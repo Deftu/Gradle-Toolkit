@@ -151,6 +151,29 @@ dependencies {
     }
 }
 
+// Quick workaround to fix crashing with new Essential Loom
+listOf("modRuntimeOnly", "modCompileOnly", "modImplementation").forEach { cfg ->
+    configurations.named(cfg).configure {
+        val kotlin = "org.jetbrains.kotlin"
+        val kotlinstdlib = "kotlin-stdlib"
+        exclude(kotlin, kotlinstdlib)
+        exclude(kotlin, "$kotlinstdlib-jdk7")
+        exclude(kotlin, "$kotlinstdlib-jdk8")
+
+        val kotlinx = "org.jetbrains.kotlinx"
+        val kotlinxcoroutines = "kotlinx-coroutines"
+        val kotlinxserialization = "kotlinx-serialization"
+        exclude(kotlinx, "$kotlinxcoroutines-core")
+        exclude(kotlinx, "$kotlinxcoroutines-core-jvm")
+        exclude(kotlinx, "$kotlinxserialization-core")
+        exclude(kotlinx, "$kotlinxserialization-core-jvm")
+        exclude(kotlinx, "$kotlinxserialization-json")
+        exclude(kotlinx, "$kotlinxserialization-json-jvm")
+
+        exclude("org.jetbrains", "annotations")
+    }
+}
+
 // https://github.com/architectury/architectury-loom/pull/10
 if (mcData.isModLauncher) {
     (repositories.find { repo ->
