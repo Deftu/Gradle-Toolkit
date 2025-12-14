@@ -10,9 +10,7 @@ import org.gradle.api.Project
 class MCDependencies(
     val mcData: MCData
 ) {
-
     inner class Fabric {
-
         val fabricLoaderVersion: String
             get() {
                 if (!mcData.isFabric) {
@@ -98,11 +96,9 @@ class MCDependencies(
                 val (group, version) = MinecraftInfo.get(mcData.project).getFabricModMenuDefinition(mcData.version)
                 return "$group$version"
             }
-
     }
 
     inner class LegacyFabric {
-
         val legacyYarnVersion: String
             get() {
                 if (!mcData.isLegacyFabric) {
@@ -130,11 +126,9 @@ class MCDependencies(
 
                 return MinecraftInfo.get(mcData.project).getLegacyFabricApiVersion(mcData.version)
             }
-
     }
 
     inner class ForgeLike {
-
         val kotlinForForgeVersion: String
             get() {
                 if (!mcData.isForgeLike) {
@@ -148,11 +142,9 @@ class MCDependencies(
 
                 return MinecraftInfo.get(mcData.project).getKotlinForForgeVersion(mcData.version)
             }
-
     }
 
     inner class Forge {
-
         val forgeVersion: String
             get() {
                 if (!mcData.isForgeLike) {
@@ -180,11 +172,9 @@ class MCDependencies(
 
                 return MinecraftInfo.get(mcData.project).getMcpDefinition(mcData.version)
             }
-
     }
 
     inner class NeoForged {
-
         val neoForgeVersion: String
             get() {
                 if (!mcData.isNeoForge) {
@@ -198,7 +188,6 @@ class MCDependencies(
 
                 return MinecraftInfo.get(mcData.project).getNeoForgeVersion(mcData.version)
             }
-
     }
 
     val fabric = Fabric()
@@ -206,7 +195,6 @@ class MCDependencies(
     val forgeLike = ForgeLike()
     val forge = Forge()
     val neoForged = NeoForged()
-
 }
 
 data class MCData(
@@ -215,27 +203,13 @@ data class MCData(
     val version: MinecraftVersion<*>,
     val loader: ModLoader
 ) {
-
-    val isFabric: Boolean
-        get() = loader == ModLoader.FABRIC
-
-    val isLegacyFabric: Boolean
-        get() = loader == ModLoader.FABRIC && version < MinecraftVersions.VERSION_1_13_2
-
-    val isForge: Boolean
-        get() = loader == ModLoader.FORGE
-
-    val isNeoForge: Boolean
-        get() = loader == ModLoader.NEOFORGE
-
-    val isForgeLike: Boolean
-        get() = isForge || isNeoForge
-
-    val isModLauncher: Boolean
-        get() = loader == ModLoader.FORGE && version >= MinecraftVersions.VERSION_1_14
-
-    val isLegacyForge: Boolean
-        get() = loader == ModLoader.FORGE && version < MinecraftVersions.VERSION_1_14
+    val isFabric: Boolean get() = loader == ModLoader.FABRIC
+    val isLegacyFabric: Boolean get() = loader == ModLoader.FABRIC && version < MinecraftVersions.VERSION_1_13_2
+    val isForge: Boolean get() = loader == ModLoader.FORGE
+    val isNeoForge: Boolean get() = loader == ModLoader.NEOFORGE
+    val isForgeLike: Boolean get() = isForge || isNeoForge
+    val isModLauncher: Boolean get() = loader == ModLoader.FORGE && version >= MinecraftVersions.VERSION_1_14
+    val isLegacyForge: Boolean get() = loader == ModLoader.FORGE && version < MinecraftVersions.VERSION_1_14
 
     val dependencies = MCDependencies(this)
 
@@ -244,7 +218,6 @@ data class MCData(
     }
 
     companion object {
-
         /**
          * Gets the project's Minecraft version, either by the property or by inferring it from the project's name.
          */
@@ -279,6 +252,5 @@ data class MCData(
             project.extensions.add("mcData", data)
             return data
         }
-
     }
 }
