@@ -12,7 +12,7 @@ import java.io.File
 
 private val loomIds = listOf(
     "fabric-loom",
-    "gg.essential.loom",
+    "dev.deftu.gradle.loom",
     "dev.architectury.loom"
 )
 
