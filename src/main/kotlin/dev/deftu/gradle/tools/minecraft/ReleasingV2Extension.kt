@@ -22,43 +22,40 @@ import java.nio.charset.StandardCharsets
 import javax.inject.Inject
 
 abstract class ReleasingV2Extension @Inject constructor(private val project: Project, private val objects: ObjectFactory) {
-
     abstract val debugMode: Property<Boolean>
-
     abstract val releaseName: Property<String>
-
     abstract val releaseVersion: Property<String>
-
     abstract val gameVersions: ListProperty<MinecraftVersion<*>>
-
     abstract val loaders: ListProperty<ModLoader>
 
     val versionType: Property<VersionType> = this.objects.property()
-
     val file: Property<Zip> = this.objects.property()
-
     val detectVersionType: Property<Boolean> = this.objects.property()
-
     val changelog: ChangelogExtension = this.objects.newInstance()
-
     val tokens: TokenExtension = this.objects.newInstance()
-
     val jars: JarsExtension = this.objects.newInstance()
-
     val projectIds: ProjectIdExtension = this.objects.newInstance()
-
     val dependencies = this.objects.domainObjectContainer(ModDependency::class) { name ->
         this.objects.newInstance(ModDependency::class, name)
     }
 
     init {
+        val mcData = MCData.from(project)
+
         this.debugMode.convention(false)
         this.releaseName.convention(defaultReleaseName())
         this.releaseVersion.convention(defaultReleaseVersion())
         this.gameVersions.convention(defaultGameVersions())
         this.loaders.convention(defaultLoaders())
         this.versionType.convention(VersionType.RELEASE)
-        this.file.convention(project.tasks.named<RemapJarTask>("remapJar").get())
+        this.file.convention(if (mcData.version.isDrop) {
+            project.tasks.findByName("fatJar")?.let { task ->
+                task as Jar
+            } ?: project.tasks.named<Jar>("jar").get()
+        } else {
+            project.tasks.named<RemapJarTask>("remapJar").get()
+        })
+
         this.detectVersionType.convention(false)
     }
 

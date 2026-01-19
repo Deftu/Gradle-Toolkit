@@ -7,19 +7,16 @@ import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.*
 import dev.deftu.gradle.utils.withLoom
-import gradle.kotlin.dsl.accessors._2c95f20277cbe6143532f6e8d67e36cc.sourceSets
+import gradle.kotlin.dsl.accessors._1c8e4fbff5f160d1f2e62cb24fe4a9db.sourceSets
 import org.gradle.api.tasks.SourceSet
 
 abstract class ApiExtension(
     val project: Project
 ) {
-
     companion object {
-
         const val SOURCE_SET_NAME = "testMod"
         const val CLIENT_RUN_NAME = "testClient"
         const val SERVER_RUN_NAME = "testServer"
-
     }
 
     private inline val mcData: MCData
@@ -65,17 +62,23 @@ abstract class ApiExtension(
             from(project.sourceSets[SOURCE_SET_NAME].output)
         }.get()
 
-        val remapTestJar = project.tasks.register("remapTestJar", RemapJarTask::class.java) {
-            group = ToolkitConstants.TASK_GROUP
+        if (!mcData.version.isDrop) {
+            val remapTestJar = project.tasks.register("remapTestJar", RemapJarTask::class.java) {
+                group = ToolkitConstants.TASK_GROUP
 
-            archiveClassifier.set("test-mod")
-            destinationDirectory.set(devLibsDir)
-            inputFile.set(testJar.archiveFile)
-            classpath.setFrom(currentSourceSet.compileClasspath)
-        }.get()
+                archiveClassifier.set("test-mod")
+                destinationDirectory.set(devLibsDir)
+                inputFile.set(testJar.archiveFile)
+                classpath.setFrom(currentSourceSet.compileClasspath)
+            }.get()
 
-        project.tasks.named("build").configure {
-            dependsOn(remapTestJar)
+            project.tasks.named("build").configure {
+                dependsOn(remapTestJar)
+            }
+        } else {
+            project.tasks.named("build").configure {
+                dependsOn(testJar)
+            }
         }
     }
 
@@ -131,5 +134,4 @@ abstract class ApiExtension(
         setupTestClient()
         setupTestServer()
     }
-
 }

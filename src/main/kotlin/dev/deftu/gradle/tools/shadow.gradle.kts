@@ -2,11 +2,12 @@ package dev.deftu.gradle.tools
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import dev.deftu.gradle.ToolkitConstants
+import dev.deftu.gradle.utils.MCData
 import dev.deftu.gradle.utils.ModData
 import org.gradle.jvm.tasks.Jar
 import dev.deftu.gradle.utils.withLoom
 import dev.deftu.gradle.utils.withLoomPlugin
-import gradle.kotlin.dsl.accessors._1169d4f1d0026c4f82c35d8cb5959f57.remapJar
+import gradle.kotlin.dsl.accessors._1c8e4fbff5f160d1f2e62cb24fe4a9db.remapJar
 
 plugins {
     java
@@ -77,17 +78,33 @@ tasks {
 }
 
 withLoom {
+    val mcData = MCData.from(project)
+
     tasks {
-        fatJar {
-            archiveClassifier.set("dev")
-        }
+        if (mcData.version.isDrop) {
+            // Unlike below, we no longer need to remap, so our fatJar is our final JAR.
 
-        remapJar {
-            inputFile.set(fatJar.get().archiveFile)
-            archiveClassifier.set("")
+            fatJar {
+                archiveClassifier.set("")
 
-            val modData = ModData.from(project)
-            archiveBaseName.set(modData.name)
+                val modData = ModData.from(project)
+                archiveBaseName.set(modData.name)
+            }
+        } else {
+            // We need to make the fatJar first, that being our new deobfuscated "dev" JAR with all dependencies shaded in.
+            // Then, we input THAT into the remapJar task to get the final mod JAR with all of our dependencies.
+
+            fatJar {
+                archiveClassifier.set("dev")
+            }
+
+            remapJar {
+                inputFile.set(fatJar.get().archiveFile)
+                archiveClassifier.set("")
+
+                val modData = ModData.from(project)
+                archiveBaseName.set(modData.name)
+            }
         }
     }
 }

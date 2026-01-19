@@ -6,6 +6,7 @@ import dev.deftu.gradle.ToolkitConstants
 import org.gradle.kotlin.dsl.dependencies
 import dev.deftu.gradle.utils.*
 import dev.deftu.gradle.utils.mcinfo.MinecraftInfo
+import dev.deftu.gradle.utils.version.MinecraftDropVersion
 import dev.deftu.gradle.utils.version.MinecraftVersions
 
 // Set XML parsers so Gradle stops complaining.
@@ -24,10 +25,50 @@ setupLoom(mcData) {
 }
 
 plugins {
-    id("dev.deftu.gradle.loom")
+    id("gg.essential.loom")
 }
 
 val extension = extensions.create("toolkitLoomHelper", LoomHelperExtension::class)
+
+val maybeModImplementation by configurations.creating {
+    (if (mcData.version.isDrop) {
+        configurations["implementation"]
+    } else {
+        configurations["modImplementation"]
+    }).extendsFrom(this)
+}
+
+val maybeModApi by configurations.creating {
+    (if (mcData.version.isDrop) {
+        configurations["api"]
+    } else {
+        configurations["modApi"]
+    }).extendsFrom(this)
+}
+
+val maybeModCompileOnly by configurations.creating {
+    (if (mcData.version.isDrop) {
+        configurations["compileOnly"]
+    } else {
+        configurations["modCompileOnly"]
+    }).extendsFrom(this)
+}
+
+val maybeModRuntimeOnly by configurations.creating {
+    (if (mcData.version.isDrop) {
+        configurations["runtimeOnly"]
+    } else {
+        configurations["modRuntimeOnly"]
+    }).extendsFrom(this)
+}
+
+val maybeModLocalRuntime by configurations.creating {
+    (if (mcData.version.isDrop) {
+        configurations["runtimeOnly"]
+    } else {
+        configurations["modLocalRuntime"]
+    }).extendsFrom(this)
+}
 
 loom {
     runConfigs {
@@ -64,6 +105,7 @@ dependencies {
          * The first value is the mappings string, and the second value is whether these should be forced despite the requested configuration.
          */
         val defaultMappings: Pair<String, Boolean> = when {
+            mcData.version is MinecraftDropVersion -> "official" to false
             mcData.isLegacyFabric -> "net.legacyfabric:yarn:${mcData.dependencies.legacyFabric.legacyYarnVersion}" to false
             mcData.isFabric -> "net.fabricmc:yarn:${mcData.dependencies.fabric.yarnVersion}" to false
             mcData.isForge && mcData.version <= MinecraftVersions.VERSION_1_15_2 -> mcData.dependencies.forge.mcpDependency to true
@@ -145,7 +187,7 @@ dependencies {
                 loom.forge.pack200Provider.set(Pack200Adapter())
             }
 
-            mcData.isFabric -> modImplementation("net.fabricmc:fabric-loader:${mcData.dependencies.fabric.fabricLoaderVersion}")
+            mcData.isFabric -> maybeModImplementation("net.fabricmc:fabric-loader:${mcData.dependencies.fabric.fabricLoaderVersion}")
             mcData.isNeoForge -> "neoForge"("net.neoforged:neoforge:${mcData.dependencies.neoForged.neoForgeVersion}")
         }
     }

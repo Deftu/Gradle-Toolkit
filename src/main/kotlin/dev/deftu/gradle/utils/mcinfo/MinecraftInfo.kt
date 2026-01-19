@@ -13,6 +13,7 @@ sealed class MinecraftInfo {
             { MinecraftInfoV2() },
             { MinecraftInfoV3() },
             { MinecraftInfoV4() },
+            { MinecraftInfoV5() },
         )
 
         @JvmStatic

@@ -37,22 +37,10 @@ data class GitData(
             return data
         }
 
-        private fun setupExecute(project: Project, vararg command: String): ByteArrayOutputStream {
-            val output = ByteArrayOutputStream()
-            project.exec {
-                commandLine(*command)
-                isIgnoreExitValue = true
-                standardOutput = output
-                errorOutput = Companion.errorOutput
-            }
-
-            return output
-        }
-
         @JvmStatic
         fun fetchCurrentBranch(project: Project): String {
             return try {
-                val output = setupExecute(project, "git", "rev-parse", "--abbrev-ref", "HEAD")
+                val output = project.execIgnorable("git", "rev-parse", "--abbrev-ref", "HEAD")
                 val string = output.toString().trim()
                 if (string.isEmpty() || string.startsWith("fatal")) "" else string
             } catch (e: Exception) {
@@ -65,7 +53,7 @@ data class GitData(
         @JvmStatic
         fun fetchCurrentCommit(project: Project): String {
             return try {
-                val output = setupExecute(project, "git", "rev-parse", "HEAD")
+                val output = project.execIgnorable("git", "rev-parse", "HEAD")
                 val string = output.toString().trim()
                 if (string.isEmpty() || string.startsWith("fatal")) "" else string.substring(0, 7)
             } catch (e: Exception) {
@@ -78,7 +66,7 @@ data class GitData(
         @JvmStatic
         fun fetchCurrentUrl(project: Project): String? {
             return try {
-                val output = setupExecute(project, "git", "config", "--get", "remote.origin.url")
+                val output = project.execIgnorable("git", "config", "--get", "remote.origin.url")
                 val string = output.toString().trim()
                 if (string.isEmpty() || string.startsWith("fatal")) "" else string
             } catch (e: Exception) {

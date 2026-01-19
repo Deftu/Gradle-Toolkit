@@ -56,12 +56,16 @@ class MinecraftSnapshotVersion private constructor(
     }
 
     override val releaseTime: OffsetDateTime by lazy {
-        MinecraftVersions.getReleaseTimeFor(toString())
+        MinecraftVersions.getReleaseTimeForVersion(toString())
     }
 
     override val preprocessorKey: Int by lazy {
         (year * 10000) + (week * 100) + revisionToNumber()
     }
+
+    override val isRelease: Boolean = false
+
+    override val isSnapshot: Boolean = true
 
     /**
      * Alphabetical indexing approach

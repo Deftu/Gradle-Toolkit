@@ -1,7 +1,7 @@
 plugins {
-    kotlin("jvm") version "2.2.10"
+    kotlin("jvm") version("2.3.0")
     `kotlin-dsl`
-    val dgtVersion = "2.50.0"
+    val dgtVersion = "2.70.0"
     id("dev.deftu.gradle.tools.repo") version(dgtVersion)
     id("dev.deftu.gradle.tools.configure") version(dgtVersion)
     id("dev.deftu.gradle.tools.publishing.maven") version(dgtVersion)
@@ -38,12 +38,11 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${property("kotlin.version")}")
 
     // Architectury Loom
-    implementation("dev.deftu:architectury-loom:1.11.3")
+    implementation("gg.essential:architectury-loom:1.13.44")
     implementation("dev.architectury:architectury-pack200:0.1.3")
 
     // Preprocessing/multi-versioning
-    implementation("dev.deftu:preprocessor:0.15.0")
-    implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:${property("kotlin.version")}") // TODO remove when remap is fixed
+    implementation("dev.deftu:preprocessor:0.16.0")
 
     // Documentation
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:2.0.0")
@@ -56,7 +55,7 @@ dependencies {
 
     // Other
     implementation("com.gradleup.shadow:com.gradleup.shadow.gradle.plugin:8.3.8")
-    implementation("dev.deftu:Bloom:0.1.2")
+    implementation("dev.deftu:Bloom:0.2.0")
 }
 
 tasks {

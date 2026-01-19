@@ -52,8 +52,9 @@ afterEvaluate {
 
         if (mcData.isPresent) {
             inputs.property("mc_version", mcData.version.toString())
-            inputs.property("patchless_mc_version", mcData.version.patchless)
-            inputs.property("padded_mc_version", mcData.version.rawVersionString)
+            inputs.property("fabric_mc_version", mcData.version.fabricId)
+            inputs.property("minor_mc_version", mcData.version.patchless)
+            inputs.property("format_mc_version", mcData.version.rawVersionString)
             inputs.property("java_version", mcData.version.javaVersion.minecraftJavaVersion)
         }
 
@@ -88,6 +89,7 @@ afterEvaluate {
             expand(mutableMapOf<String, String>().apply {
                 if (mcData.isPresent) {
                     put("mc_version", mcData.version.toString())
+                    put("fabric_mc_version", mcData.version.fabricId)
                     put("minor_mc_version", mcData.version.patchless)
                     put("format_mc_version", mcData.version.rawVersionString)
                     put("java_version", mcData.version.javaVersion.minecraftJavaVersion)

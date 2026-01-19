@@ -14,7 +14,7 @@ object MinecraftVersions {
     private const val MOJANG_VERSION_MANIFEST = "https://launchermeta.mojang.com/mc/game/version_manifest_v2.json"
 
     private val parsers: Set<MinecraftVersionParser>
-        get() = setOf(MinecraftReleaseVersion.parser, MinecraftSnapshotVersion.parser)
+        get() = setOf(MinecraftDropVersion.parser, MinecraftReleaseVersion.parser, MinecraftSnapshotVersion.parser)
 
     private val httpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
@@ -44,6 +44,7 @@ object MinecraftVersions {
 
     @JvmField val UNKNOWN = MinecraftVersion.Unknown
 
+    @JvmField val VERSION_26_1 = MinecraftDropVersion.from(26_01_00)
     @JvmField val VERSION_1_21_11 = MinecraftReleaseVersion.from(1_21_11)
     @JvmField val VERSION_1_21_10 = MinecraftReleaseVersion.from(1_21_10)
     @JvmField val VERSION_1_21_9 = MinecraftReleaseVersion.from(1_21_09)
@@ -149,12 +150,17 @@ object MinecraftVersions {
     }
 
     @JvmStatic
-    fun getReleaseTimeFor(identifier: String): OffsetDateTime {
+    fun getReleaseTimeForVersionOptionally(identifier: String): OffsetDateTime? {
         if (cachedVersionReleaseTimes.isEmpty()) {
             populateReleaseTimes() // Block thread until we populate it
         }
 
-        return cachedVersionReleaseTimes[identifier] ?: OffsetDateTime.MIN
+        return cachedVersionReleaseTimes[identifier]
+    }
+
+    @JvmStatic
+    fun getReleaseTimeForVersion(identifier: String): OffsetDateTime {
+        return getReleaseTimeForVersionOptionally(identifier) ?: OffsetDateTime.MIN
     }
 
     private fun populateReleaseTimes() {

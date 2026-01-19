@@ -37,7 +37,7 @@ afterEvaluate {
                 destinationDirectory.set(newBuildDestinationDirectory)
             }
 
-            if (isLoomPluginPresent) {
+            if (isLoomPluginPresent && !mcData.version.isDrop) {
                 named<RemapJarTask>("remapJar") {
                     destinationDirectory.set(newBuildDestinationDirectory)
                 }

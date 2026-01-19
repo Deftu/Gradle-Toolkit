@@ -1,7 +1,7 @@
 package dev.deftu.gradle.tools
 
 import dev.deftu.gradle.utils.*
-import gradle.kotlin.dsl.accessors._2c95f20277cbe6143532f6e8d67e36cc.base
+import gradle.kotlin.dsl.accessors._1c8e4fbff5f160d1f2e62cb24fe4a9db.base
 
 val gitData = GitData.from(project)
 val mcData = MCData.from(project)
@@ -23,7 +23,7 @@ if (projectData.isPresent) {
 if (modData.isPresent) {
     applyProjectInfo(modData, "mod") {
         tasks {
-            if (isLoomPresent()) {
+            if (isLoomPresent() && !mcData.version.isDrop) {
                 named<org.gradle.jvm.tasks.Jar>("remapJar") {
                     archiveBaseName.set(modData.name)
                 }

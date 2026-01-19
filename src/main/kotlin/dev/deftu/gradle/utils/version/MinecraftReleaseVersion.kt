@@ -126,10 +126,14 @@ class MinecraftReleaseVersion private constructor(
             }
         }
 
-        MinecraftVersions.getReleaseTimeFor(identifier)
+        MinecraftVersions.getReleaseTimeForVersion(identifier)
     }
 
     override val preprocessorKey: Int = rawVersion
+
+    override val isRelease: Boolean = true
+
+    override val isSnapshot: Boolean = false
 
     /**
      * Goes the whole way and compares the Minecraft version itself, the classifier and the revision.
