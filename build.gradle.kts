@@ -54,7 +54,7 @@ dependencies {
     implementation("com.github.breadmoirai:github-release:2.5.2")
 
     // Other
-    implementation("com.gradleup.shadow:com.gradleup.shadow.gradle.plugin:8.3.8")
+    implementation("com.gradleup.shadow:com.gradleup.shadow.gradle.plugin:9.4.0")
     implementation("dev.deftu:Bloom:0.2.0")
 }
 

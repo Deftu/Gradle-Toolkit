@@ -6,10 +6,8 @@ class MinecraftReleaseVersion private constructor(
     val rawVersion: Int,
     val rawClassifier: String? = null,
     val revision: Int? = null,
-) : MinecraftVersion<MinecraftReleaseVersion> {
-
+) : MinecraftVersion {
     companion object {
-
         @JvmStatic
         internal val regex = "(?<major>\\d+)\\.(?<minor>\\d+)(?:\\.(?<patch>\\d+))?(?:[- ](?<classifier>pre|rc|Pre-Release)[ ]?(?:(?<revision>\\d+))?)?".toRegex()
 
@@ -51,7 +49,6 @@ class MinecraftReleaseVersion private constructor(
         fun from(version: String): MinecraftReleaseVersion {
             return parser.second(null, version).getOrThrow()
         }
-
     }
 
     enum class Classifier(vararg val identifier: String) {
@@ -59,7 +56,6 @@ class MinecraftReleaseVersion private constructor(
         PRE_RELEASE("pre", "Pre-Release"); // Newer than snapshots
 
         companion object {
-
             fun from(identifier: String): Classifier? {
                 return values().firstOrNull { classifier ->
                     classifier.identifier.contains(identifier)
@@ -67,7 +63,6 @@ class MinecraftReleaseVersion private constructor(
             }
 
         }
-
     }
 
     val major: Int
@@ -138,7 +133,7 @@ class MinecraftReleaseVersion private constructor(
     /**
      * Goes the whole way and compares the Minecraft version itself, the classifier and the revision.
      */
-    override operator fun compareTo(other: MinecraftVersion<*>): Int {
+    override operator fun compareTo(other: MinecraftVersion): Int {
         if (other !is MinecraftReleaseVersion) {
             return releaseTime.compareTo(other.releaseTime)
         }
@@ -232,5 +227,4 @@ class MinecraftReleaseVersion private constructor(
             }
         }
     }
-
 }

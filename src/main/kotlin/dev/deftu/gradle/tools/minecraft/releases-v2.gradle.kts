@@ -71,7 +71,7 @@ fun setupModrinth(token: String) {
         if (extension.jars.isUsingSourcesJar) this.additionalFiles.add(extension.jars.uploadedSourcesJar)
         if (extension.jars.isUsingJavadocJar) this.additionalFiles.add(extension.jars.uploadedJavadocJar)
 
-        this.gameVersions.addAll(extension.gameVersions.get().map(MinecraftVersion<*>::toString))
+        this.gameVersions.addAll(extension.gameVersions.get().map(MinecraftVersion::toString))
         this.loaders.addAll(extension.loaders.get().map(ModLoader::toString))
 
         this.dependencies.addAll(extension.dependencies.map { dependency ->
@@ -116,7 +116,7 @@ fun setupCurseForge(token: String) {
             if (extension.jars.isUsingSourcesJar) withAdditionalFile(extension.jars.uploadedSourcesJar)
             if (extension.jars.isUsingJavadocJar) withAdditionalFile(extension.jars.uploadedJavadocJar)
 
-            extension.gameVersions.get().map(MinecraftVersion<*>::toString).forEach(this::addGameVersion)
+            extension.gameVersions.get().map(MinecraftVersion::toString).forEach(this::addGameVersion)
             extension.loaders.get().map(ModLoader::toString).forEach(this::addModLoader)
 
             extension.dependencies.forEach { dependency ->

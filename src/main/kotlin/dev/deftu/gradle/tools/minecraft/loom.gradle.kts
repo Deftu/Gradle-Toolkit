@@ -8,6 +8,7 @@ import dev.deftu.gradle.utils.*
 import dev.deftu.gradle.utils.mcinfo.MinecraftInfo
 import dev.deftu.gradle.utils.version.MinecraftDropVersion
 import dev.deftu.gradle.utils.version.MinecraftVersions
+import org.gradle.kotlin.dsl.version
 
 // Set XML parsers so Gradle stops complaining.
 extra.set("systemProp.javax.xml.parsers.DocumentBuilderFactory", "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl")
@@ -190,6 +191,14 @@ dependencies {
             mcData.isFabric -> maybeModImplementation("net.fabricmc:fabric-loader:${mcData.dependencies.fabric.fabricLoaderVersion}")
             mcData.isNeoForge -> "neoForge"("net.neoforged:neoforge:${mcData.dependencies.neoForged.neoForgeVersion}")
         }
+    }
+
+    if (mcData.version.isDrop) {
+        // These aren't on the classpath for some reason? So we'll just add them manually for now
+        implementation("net.fabricmc:sponge-mixin:0.17.0+mixin.0.8.7")
+        implementation("io.github.llamalad7:mixinextras-fabric:0.5.0")
+        implementation("org.ow2.asm:asm:9.9")
+        implementation("org.ow2.asm:asm-tree:9.9")
     }
 }
 

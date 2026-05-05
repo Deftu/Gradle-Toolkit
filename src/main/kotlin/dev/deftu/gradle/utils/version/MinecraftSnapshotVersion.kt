@@ -10,10 +10,8 @@ class MinecraftSnapshotVersion private constructor(
     val year: Int,
     val week: Int,
     val revision: String,
-) : MinecraftVersion<MinecraftSnapshotVersion> {
-
+) : MinecraftVersion {
     companion object {
-
         @JvmStatic
         internal val regex = "(?<year>\\d+)w(?<week>\\d+)(?<revision>.+)".toRegex()
 
@@ -52,7 +50,6 @@ class MinecraftSnapshotVersion private constructor(
         fun from(project: Project, version: String): MinecraftSnapshotVersion {
             return parser.second(project, version).getOrThrow()
         }
-
     }
 
     override val releaseTime: OffsetDateTime by lazy {
@@ -74,7 +71,7 @@ class MinecraftSnapshotVersion private constructor(
         return revision.fold(0) { acc, char -> acc + char.code }
     }
 
-    override fun compareTo(other: MinecraftVersion<*>): Int {
+    override fun compareTo(other: MinecraftVersion): Int {
         if (other !is MinecraftSnapshotVersion) {
             return releaseTime.compareTo(other.releaseTime)
         }
@@ -112,5 +109,4 @@ class MinecraftSnapshotVersion private constructor(
             append(revision)
         }
     }
-
 }

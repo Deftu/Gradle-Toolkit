@@ -25,7 +25,7 @@ abstract class ReleasingV2Extension @Inject constructor(private val project: Pro
     abstract val debugMode: Property<Boolean>
     abstract val releaseName: Property<String>
     abstract val releaseVersion: Property<String>
-    abstract val gameVersions: ListProperty<MinecraftVersion<*>>
+    abstract val gameVersions: ListProperty<MinecraftVersion>
     abstract val loaders: ListProperty<ModLoader>
 
     val versionType: Property<VersionType> = this.objects.property()
@@ -138,7 +138,7 @@ abstract class ReleasingV2Extension @Inject constructor(private val project: Pro
         return "${version}${suffix}"
     }
 
-    private fun defaultGameVersions(): List<MinecraftVersion<*>> {
+    private fun defaultGameVersions(): List<MinecraftVersion> {
         val mcData = MCData.from(project)
         return listOf(mcData.version)
     }

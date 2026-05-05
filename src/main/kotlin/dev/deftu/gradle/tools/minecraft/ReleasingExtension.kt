@@ -20,7 +20,7 @@ abstract class ReleasingExtension(
     abstract val version: Property<String>
     abstract val versionType: Property<VersionType>
     abstract val detectVersionType: Property<Boolean>
-    abstract val gameVersions: ListProperty<MinecraftVersion<*>>
+    abstract val gameVersions: ListProperty<MinecraftVersion>
     abstract val loaders: ListProperty<ModLoader>
     abstract val file: Property<Zip>
 

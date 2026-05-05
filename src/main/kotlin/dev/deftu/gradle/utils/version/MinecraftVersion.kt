@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.Serializable
 import java.time.OffsetDateTime
 
-sealed interface MinecraftVersion<T : MinecraftVersion<T>> : Comparable<MinecraftVersion<*>>, Serializable {
+sealed interface MinecraftVersion : Comparable<MinecraftVersion>, Serializable {
     companion object {
         @JvmStatic
         fun getRawVersion(project: Project): String {
@@ -15,7 +15,7 @@ sealed interface MinecraftVersion<T : MinecraftVersion<T>> : Comparable<Minecraf
         }
     }
 
-    object Unknown : MinecraftVersion<Unknown> {
+    object Unknown : MinecraftVersion {
         override val releaseTime: OffsetDateTime = OffsetDateTime.MIN
 
         override val preprocessorKey: Int = 0
@@ -24,7 +24,7 @@ sealed interface MinecraftVersion<T : MinecraftVersion<T>> : Comparable<Minecraf
 
         override val isSnapshot: Boolean = false
 
-        override fun compareTo(other: MinecraftVersion<*>): Int {
+        override fun compareTo(other: MinecraftVersion): Int {
             return 0
         }
     }
@@ -55,7 +55,7 @@ sealed interface MinecraftVersion<T : MinecraftVersion<T>> : Comparable<Minecraf
      * The ID used for the "minecraft" dependency in your fabric.mod.json
      */
     val fabricId: String
-        get() = patchless
+        get() = "~$patchless"
 
     val isRelease: Boolean
     val isSnapshot: Boolean
@@ -63,11 +63,11 @@ sealed interface MinecraftVersion<T : MinecraftVersion<T>> : Comparable<Minecraf
     val isDrop: Boolean
         get() = this is MinecraftDropVersion
 
-    fun isNewerThan(other: T): Boolean {
+    fun isNewerThan(other: MinecraftVersion): Boolean {
         return compareTo(other) > 0
     }
 
-    fun isOlderThan(other: T): Boolean {
+    fun isOlderThan(other: MinecraftVersion): Boolean {
         return compareTo(other) < 0
     }
 }

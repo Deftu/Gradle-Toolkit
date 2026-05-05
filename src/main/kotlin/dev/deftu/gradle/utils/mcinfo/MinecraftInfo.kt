@@ -70,27 +70,27 @@ sealed class MinecraftInfo {
         this.parchmentVersions.putAll(other.parchmentVersions)
     }
 
-    fun getFabricYarnVersion(version: MinecraftVersion<*>): String {
+    fun getFabricYarnVersion(version: MinecraftVersion): String {
         return fabricYarnVersions[version]
             ?: throw IllegalArgumentException("No Fabric Yarn version found for $version")
     }
 
-    fun getFabricApiVersion(version: MinecraftVersion<*>): String {
+    fun getFabricApiVersion(version: MinecraftVersion): String {
         return fabricApiVersions[version]
             ?: throw IllegalArgumentException("No Fabric API version found for $version")
     }
 
-    fun getFabricModMenuDefinition(version: MinecraftVersion<*>): Pair<String, String> {
+    fun getFabricModMenuDefinition(version: MinecraftVersion): Pair<String, String> {
         return fabricModMenuDefinitions[version]
             ?: throw IllegalArgumentException("No Fabric Mod Menu definition found for $version")
     }
 
-    fun getLegacyFabricYarnVersion(version: MinecraftVersion<*>): String {
+    fun getLegacyFabricYarnVersion(version: MinecraftVersion): String {
         return legacyFabricYarnVersions[version]
             ?: throw IllegalArgumentException("No Legacy Fabric Yarn version found for $version")
     }
 
-    fun getLegacyFabricApiVersion(version: MinecraftVersion<*>): String {
+    fun getLegacyFabricApiVersion(version: MinecraftVersion): String {
         return legacyFabricApiVersions[version]
             ?: throw IllegalArgumentException("No Legacy Fabric API version found for $version")
     }
@@ -99,30 +99,30 @@ sealed class MinecraftInfo {
      * we need to do a comparison here as we don't expect all versions to be filled out. rather,
      * it's a range, where we just match the closest version that is less than or equal to the given version.
      */
-    fun getKotlinForForgeVersion(version: MinecraftVersion<*>): String {
+    fun getKotlinForForgeVersion(version: MinecraftVersion): String {
         return kotlinForForgeVersions
             .filter { it.key <= version }
             .maxByOrNull { it.key }?.value
             ?: throw IllegalArgumentException("No Kotlin for Forge version found for $version")
     }
 
-    fun getForgeVersion(version: MinecraftVersion<*>): String {
+    fun getForgeVersion(version: MinecraftVersion): String {
         return forgeVersions[version]
             ?: throw IllegalArgumentException("No Forge version found for $version")
     }
 
-    fun getMcpDefinition(version: MinecraftVersion<*>): String {
+    fun getMcpDefinition(version: MinecraftVersion): String {
         val definition = mcpDefinitions[version]
             ?: throw IllegalArgumentException("No MCP definition found for $version")
         return "de.oceanlabs.mcp:mcp_$definition"
     }
 
-    fun getNeoForgeVersion(version: MinecraftVersion<*>): String {
+    fun getNeoForgeVersion(version: MinecraftVersion): String {
         return neoForgeVersions[version]
             ?: throw IllegalArgumentException("No NeoForge version found for $version")
     }
 
-    fun getParchmentVersion(version: MinecraftVersion<*>): String {
+    fun getParchmentVersion(version: MinecraftVersion): String {
         return parchmentVersions[version]
             ?: throw IllegalArgumentException("No Parchment version found for $version")
     }

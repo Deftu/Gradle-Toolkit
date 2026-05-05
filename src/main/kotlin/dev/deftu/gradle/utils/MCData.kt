@@ -248,7 +248,7 @@ class MCDependencies(
 data class MCData(
     val project: Project,
     val isPresent: Boolean,
-    val version: MinecraftVersion<*>,
+    val version: MinecraftVersion,
     val loader: ModLoader
 ) {
     val isFabric: Boolean get() = loader == ModLoader.FABRIC
@@ -296,6 +296,7 @@ data class MCData(
             }
 
             val version = MinecraftVersions.get(project, project.minecraftVersion)
+            project.logger.debug("Determined Minecraft version for project {} as {} [{}]", project.name, version, version::class.java)
             val data = MCData(project, true, version, project.modLoader)
             project.extensions.add("mcData", data)
             return data

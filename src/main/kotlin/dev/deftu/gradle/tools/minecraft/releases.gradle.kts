@@ -164,7 +164,7 @@ fun setupModrinth(token: String) {
         }
 
         changelog.set(extension.changelog.get())
-        gameVersions.addAll(extension.getGameVersions().map(MinecraftVersion<*>::toString))
+        gameVersions.addAll(extension.getGameVersions().map(MinecraftVersion::toString))
         loaders.addAll(extension.getLoaders().map(ModLoader::toString))
         if (mcData.isFabric && extension.describeFabricWithQuilt.getOrElse(false)) {
             loaders.add("quilt")

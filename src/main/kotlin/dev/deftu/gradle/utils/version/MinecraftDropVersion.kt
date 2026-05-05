@@ -10,22 +10,22 @@ class MinecraftDropVersion private constructor(
     val rawVersion: Int,
     val rawClassifier: String? = null,
     val build: Int? = null,
-) : MinecraftVersion<MinecraftDropVersion> {
+) : MinecraftVersion {
     companion object {
         @JvmStatic
         internal val regex = "(?<year>\\d+)\\.(?<drop>\\d+)(?:\\.(?<hotfix>\\d+))?(?:-(?<classifier>snapshot|pre|rc)-(?<build>\\d+))?".toRegex()
 
         @JvmStatic
         internal val parser: MinecraftVersionParser = "drop" to { _, version: String ->
-            if (version.startsWith("1.")) {
-                return@to VersionParseError("Legacy '1.x' versions are not supported by MinecraftDropVersion parser: $version")
-            }
-
             try {
                 val match = regex.find(version) ?: throw IllegalArgumentException("Invalid version format, could not match to regex: $version")
                 val groups = match.groups
 
                 val year = groups["year"]?.value?.toInt() ?: throw IllegalArgumentException("Invalid version format, missing major version: $version")
+                if (year == 1) {
+                    return@to VersionParseError("Legacy '1.x' versions are not supported by MinecraftDropVersion parser: $version")
+                }
+
                 val drop = groups["drop"]?.value?.toInt() ?: throw IllegalArgumentException("Invalid version format, missing minor version: $version")
                 val hotfix = groups["hotfix"]?.value?.toInt() ?: 0
                 val classifier = groups["classifier"]?.value
@@ -129,7 +129,7 @@ class MinecraftDropVersion private constructor(
             }
         }
 
-    override fun compareTo(other: MinecraftVersion<*>): Int {
+    override fun compareTo(other: MinecraftVersion): Int {
         if (other !is MinecraftDropVersion) {
             return releaseTime.compareTo(other.releaseTime)
         }

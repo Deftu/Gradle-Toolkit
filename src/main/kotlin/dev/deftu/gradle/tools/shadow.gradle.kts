@@ -20,7 +20,7 @@ val fatJar = tasks.register<ShadowJar>("fatJar") {
     description = "Builds a fat JAR with all dependencies shaded in"
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    configurations = mutableListOf(shade) as List<FileCollection>? // Complains about useless cast but also complains about not being a compatible type... Okay...
+    configurations.add(shade)
     archiveVersion.set(project.version.toString())
     archiveClassifier.set("all")
 

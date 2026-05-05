@@ -129,7 +129,7 @@ object MinecraftVersions {
     )
 
     @JvmStatic
-    fun get(project: Project, version: String): MinecraftVersion<*> {
+    fun get(project: Project, version: String): MinecraftVersion {
         val collectedErrors = mutableMapOf<String, VersionParseError>()
         for ((type, parser) in parsers) {
             val result = parser(project, version)
