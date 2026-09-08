@@ -16,11 +16,19 @@ extra.set("systemProp.javax.xml.transform.TransformerFactory", "com.sun.org.apac
 extra.set("systemProp.javax.xml.parsers.SAXParserFactory", "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl")
 
 val mcData = MCData.from(project)
-extensions.create("toolkitLegacyFabric", LegacyFabricExtension::class)
+val legacyFabricExtension = extensions.create("toolkitLegacyFabric", LegacyFabricExtension::class)
+
+val requestedMappings = propertyOr("loom.mappings", if (mcData.isOrnithe) "feather" else "")
+val isUsingCalamus = requestedMappings == "feather" || requestedMappings == "legacy-yarn"
+
 setupLoom(mcData) {
-    if (mcData.isLegacyFabric) {
-        setIntermediateMappingsProvider(LegacyFabricIntermediaryMappingsProvider::class.java) {
-            configure(project)
+    if (isUsingCalamus) {
+        setIntermediateMappingsProvider(ToolkitIntermediaryMappingsProvider::class.java) {
+            configure(project, provider { IntermediarySource.CALAMUS_GEN2 })
+        }
+    } else if (mcData.isLegacyFabric) {
+        setIntermediateMappingsProvider(ToolkitIntermediaryMappingsProvider::class.java) {
+            configure(project, legacyFabricExtension.intermediaryVersion.map(IntermediarySource::fromLegacyFabricVersion))
         }
     }
 }
@@ -84,8 +92,12 @@ repositories {
         maven("https://maven.neoforged.net/releases")
     }
 
-    if (mcData.isLegacyFabric) {
-        maven("https://maven.legacyfabric.net/")
+    if (mcData.isLegacyFabric || isUsingCalamus) {
+        maven(LEGACY_FABRIC_MAVEN)
+    }
+
+    if (isUsingCalamus) {
+        maven(ORNITHE_MAVEN)
     }
 }
 
@@ -107,6 +119,7 @@ dependencies {
          */
         val defaultMappings: Pair<String, Boolean> = when {
             mcData.version is MinecraftDropVersion -> "official" to false
+            mcData.isOrnithe -> "feather" to false
             mcData.isLegacyFabric -> "net.legacyfabric:yarn:${mcData.dependencies.legacyFabric.legacyYarnVersion}" to false
             mcData.isFabric -> "net.fabricmc:yarn:${mcData.dependencies.fabric.yarnVersion}" to false
             mcData.isForge && mcData.version <= MinecraftVersions.VERSION_1_15_2 -> mcData.dependencies.forge.mcpDependency to true
@@ -128,6 +141,10 @@ dependencies {
             mappings(loom.layered {
                 when(mappingsNotation) {
                     "official", "mojang", "mojmap" -> officialMojangMappings()
+
+                    "feather" -> mappings(mcData.dependencies.ornithe.featherDependency)
+
+                    "legacy-yarn" -> mappings(mcData.dependencies.ornithe.legacyYarnDependency)
 
                     "official-like" -> {
                         if (mcData.version <= MinecraftVersions.VERSION_1_12_2) {
@@ -161,6 +178,10 @@ dependencies {
         } else {
             mappings(when(mappingsNotation) {
                 "official", "mojang", "mojmap" -> loom.officialMojangMappings()
+
+                "feather" -> mcData.dependencies.ornithe.featherDependency
+
+                "legacy-yarn" -> mcData.dependencies.ornithe.legacyYarnDependency
 
                 "official-like" -> {
                     if (mcData.version <= MinecraftVersions.VERSION_1_12_2) {

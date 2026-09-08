@@ -14,6 +14,7 @@ sealed class MinecraftInfo {
             { MinecraftInfoV3() },
             { MinecraftInfoV4() },
             { MinecraftInfoV5() },
+            { MinecraftInfoV6() },
         )
 
         @JvmStatic
@@ -43,6 +44,8 @@ sealed class MinecraftInfo {
     val fabricModMenuDefinitions: MinecraftVersionMap<Pair<String, String>> = MinecraftVersionMap()
     val legacyFabricYarnVersions: MinecraftVersionMap<String> = MinecraftVersionMap()
     val legacyFabricApiVersions: MinecraftVersionMap<String> = MinecraftVersionMap()
+    val featherVersions: MinecraftVersionMap<String> = MinecraftVersionMap()
+    val legacyYarnVersions: MinecraftVersionMap<String> = MinecraftVersionMap()
     val kotlinForForgeVersions: MinecraftVersionMap<String> = MinecraftVersionMap()
     val forgeVersions: MinecraftVersionMap<String> = MinecraftVersionMap()
     val mcpDefinitions: MinecraftVersionMap<String> = MinecraftVersionMap()
@@ -63,6 +66,8 @@ sealed class MinecraftInfo {
         this.fabricModMenuDefinitions.putAll(other.fabricModMenuDefinitions)
         this.legacyFabricYarnVersions.putAll(other.legacyFabricYarnVersions)
         this.legacyFabricApiVersions.putAll(other.legacyFabricApiVersions)
+        this.featherVersions.putAll(other.featherVersions)
+        this.legacyYarnVersions.putAll(other.legacyYarnVersions)
         this.kotlinForForgeVersions.putAll(other.kotlinForForgeVersions)
         this.forgeVersions.putAll(other.forgeVersions)
         this.mcpDefinitions.putAll(other.mcpDefinitions)
@@ -93,6 +98,16 @@ sealed class MinecraftInfo {
     fun getLegacyFabricApiVersion(version: MinecraftVersion): String {
         return legacyFabricApiVersions[version]
             ?: throw IllegalArgumentException("No Legacy Fabric API version found for $version")
+    }
+
+    fun getFeatherVersion(version: MinecraftVersion): String {
+        return featherVersions[version]
+            ?: throw IllegalArgumentException("No Feather version found for $version")
+    }
+
+    fun getLegacyYarnVersion(version: MinecraftVersion): String {
+        return legacyYarnVersions[version]
+            ?: throw IllegalArgumentException("No Legacy Yarn version found for $version")
     }
 
     /**

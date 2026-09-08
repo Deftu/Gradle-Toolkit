@@ -113,11 +113,7 @@ afterEvaluate {
                 group = ToolkitConstants.TASK_GROUP
                 description = "Publish all versions of the mod to $repo"
 
-                project.subprojects.map(Project::getName).filter { name ->
-                    ModLoader.values().any { loader ->
-                        name.endsWith("-${loader.name}", true)
-                    }
-                }.forEach { version ->
+                project.subprojects.map(Project::getName).filter { name -> ModLoader.isLoaderProjectName(name) }.forEach { version ->
                     dependsOn(":$version:publishAllPublicationsTo$repo")
                 }
             }

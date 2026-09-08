@@ -20,6 +20,7 @@ apply<PreprocessPlugin>()
 extensions.configure<PreprocessExtension> {
     vars.put("MC", mcData.version.preprocessorKey)
     vars.put("FABRIC", if (mcData.isFabric) 1 else 0)
+    vars.put("ORNITHE", if (mcData.isOrnithe) 1 else 0)
     vars.put("FORGE-LIKE", if (mcData.isForge || mcData.isNeoForge) 1 else 0)
     vars.put("FORGE", if (mcData.isForge) 1 else 0)
     vars.put("NEOFORGE", if (mcData.isNeoForge) 1 else 0)
@@ -55,11 +56,7 @@ if (rootProject.tasks.none { task ->
         group = ToolkitConstants.TASK_GROUP
         description = "Build all versions"
 
-        rootProject.subprojects.map(Project::getName).filter { name ->
-            ModLoader.values().any { loader ->
-                name.endsWith("-${loader.name}", true)
-            }
-        }.forEach { version ->
+        rootProject.subprojects.map(Project::getName).filter { name -> ModLoader.isLoaderProjectName(name) }.forEach { version ->
             dependsOn(":$version:build")
         }
     }

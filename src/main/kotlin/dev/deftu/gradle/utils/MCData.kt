@@ -158,6 +158,50 @@ class MCDependencies(
         }
     }
 
+    inner class Ornithe {
+        val featherVersion: String
+            get() {
+                if (!mcData.isFabric) {
+                    throw LoaderSpecificException(mcData.loader, ModLoader.FABRIC)
+                }
+
+                val featherVersionOverride = mcData.project.propertyOr("ornithe.feather.version", "")
+                if (featherVersionOverride.isNotEmpty()) {
+                    return featherVersionOverride
+                }
+
+                return MinecraftInfo.get(mcData.project).getFeatherVersion(mcData.version)
+            }
+
+        val featherDependency: String
+            get() = "net.ornithemc:feather-gen2:$featherVersion:v2"
+
+        val legacyYarnVersion: String
+            get() {
+                if (!mcData.isFabric) {
+                    throw LoaderSpecificException(mcData.loader, ModLoader.FABRIC)
+                }
+
+                val legacyYarnVersionOverride = mcData.project.propertyOr("ornithe.legacy-yarn.version", "")
+                if (legacyYarnVersionOverride.isNotEmpty()) {
+                    return legacyYarnVersionOverride
+                }
+
+                return MinecraftInfo.get(mcData.project).getLegacyYarnVersion(mcData.version)
+            }
+
+        val legacyYarnDependency: String
+            get() = "net.legacyfabric:legacy-yarn:$legacyYarnVersion"
+
+        fun fillFeather(provider: Provider<MinimalExternalModuleDependency>): String {
+            return provider.withProvidedVersion(featherVersion)
+        }
+
+        fun fillLegacyYarn(provider: Provider<MinimalExternalModuleDependency>): String {
+            return provider.withProvidedVersion(legacyYarnVersion)
+        }
+    }
+
     inner class ForgeLike {
         val kotlinForForgeVersion: String
             get() {
@@ -234,6 +278,7 @@ class MCDependencies(
 
     val fabric = Fabric()
     val legacyFabric = LegacyFabric()
+    val ornithe = Ornithe()
     val forgeLike = ForgeLike()
     val forge = Forge()
     val neoForged = NeoForged()
@@ -249,7 +294,8 @@ data class MCData(
     val project: Project,
     val isPresent: Boolean,
     val version: MinecraftVersion,
-    val loader: ModLoader
+    val loader: ModLoader,
+    val isOrnithe: Boolean = false
 ) {
     val isFabric: Boolean get() = loader == ModLoader.FABRIC
     val isLegacyFabric: Boolean get() = loader == ModLoader.FABRIC && version < MinecraftVersions.VERSION_1_13_2
@@ -272,12 +318,22 @@ data class MCData(
         private val Project.minecraftVersion: String
             get() = propertyOr("minecraft.version", name, prefix = "")
 
-        private val Project.modLoader: ModLoader
-            get() = ModLoader.from(propertyOr(
+        private val Project.rawModLoader: String
+            get() = propertyOr(
                 "loom.platform",
                 name,
                 prefix = ""
-            ))
+            )
+
+        private val Project.modLoader: ModLoader
+            get() = ModLoader.from(rawModLoader)
+
+        private val Project.isOrnitheProject: Boolean
+            get() = propertyBoolOr(
+                "loom.ornithe",
+                rawModLoader.contains("ornithe", ignoreCase = true),
+                prefix = ""
+            )
 
         @JvmStatic
         fun from(project: Project): MCData {
@@ -297,7 +353,8 @@ data class MCData(
 
             val version = MinecraftVersions.get(project, project.minecraftVersion)
             project.logger.debug("Determined Minecraft version for project {} as {} [{}]", project.name, version, version::class.java)
-            val data = MCData(project, true, version, project.modLoader)
+            val loader = project.modLoader
+            val data = MCData(project, true, version, loader, loader == ModLoader.FABRIC && project.isOrnitheProject)
             project.extensions.add("mcData", data)
             return data
         }
