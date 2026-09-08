@@ -7,7 +7,7 @@ import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.*
 import dev.deftu.gradle.utils.withLoom
-import gradle.kotlin.dsl.accessors._1c8e4fbff5f160d1f2e62cb24fe4a9db.sourceSets
+import gradle.kotlin.dsl.accessors._f3108da4a4abff062bb715b70c2940a4.sourceSets
 import org.gradle.api.tasks.SourceSet
 
 abstract class ApiExtension(
@@ -86,17 +86,19 @@ abstract class ApiExtension(
         setupTestSourceSet()
         setupTestJar()
 
+        val testSourceSet = sourceSet ?: throw IllegalStateException("Test source set not found")
+
         project.withLoom {
             runs {
                 create(CLIENT_RUN_NAME) {
                     client()
-                    source(sourceSet)
+                    source(testSourceSet)
 
                     val configuration = project.configurations.create(CLIENT_RUN_NAME)
                     if (!mcData.isFabric) {
                         mods {
                             create(SOURCE_SET_NAME) {
-                                source(sourceSet)
+                                source(testSourceSet)
                                 configuration(configuration)
                             }
                         }
@@ -110,17 +112,19 @@ abstract class ApiExtension(
         setupTestSourceSet()
         setupTestJar()
 
+        val testSourceSet = sourceSet ?: throw IllegalStateException("Test source set not found")
+
         project.withLoom {
             runs {
                 create(SERVER_RUN_NAME) {
                     server()
-                    source(sourceSet)
+                    source(testSourceSet)
 
                     val configuration = project.configurations.create(SERVER_RUN_NAME)
                     if (!mcData.isFabric) {
                         mods {
                             create(SOURCE_SET_NAME) {
-                                source(sourceSet)
+                                source(testSourceSet)
                                 configuration(configuration)
                             }
                         }

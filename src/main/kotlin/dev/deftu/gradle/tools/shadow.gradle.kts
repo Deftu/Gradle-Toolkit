@@ -7,7 +7,7 @@ import dev.deftu.gradle.utils.ModData
 import org.gradle.jvm.tasks.Jar
 import dev.deftu.gradle.utils.withLoom
 import dev.deftu.gradle.utils.withLoomPlugin
-import gradle.kotlin.dsl.accessors._1c8e4fbff5f160d1f2e62cb24fe4a9db.remapJar
+import gradle.kotlin.dsl.accessors._f3108da4a4abff062bb715b70c2940a4.remapJar
 
 plugins {
     java
