@@ -44,6 +44,8 @@ object MinecraftVersions {
 
     @JvmField val UNKNOWN = MinecraftVersion.Unknown
 
+    @JvmField val VERSION_26_2 = MinecraftDropVersion.from(26_02_00)
+    @JvmField val VERSION_26_1_2 = MinecraftDropVersion.from(26_01_02)
     @JvmField val VERSION_26_1 = MinecraftDropVersion.from(26_01_00)
     @JvmField val VERSION_1_21_11 = MinecraftReleaseVersion.from(1_21_11)
     @JvmField val VERSION_1_21_10 = MinecraftReleaseVersion.from(1_21_10)

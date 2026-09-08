@@ -35,7 +35,7 @@ sealed interface MinecraftVersion : Comparable<MinecraftVersion>, Serializable {
 
     val javaVersion: JavaVersion
         get() = when {
-            this >= MinecraftVersions.VERSION_26_1 -> JavaVersion.VERSION_24
+            this >= MinecraftVersions.VERSION_26_1 -> JavaVersion.VERSION_25
             this >= MinecraftVersions.VERSION_1_20_5 -> JavaVersion.VERSION_21
             this >= MinecraftVersions.VERSION_1_18 -> JavaVersion.VERSION_17
             this >= MinecraftVersions.VERSION_1_17 -> JavaVersion.VERSION_16
@@ -44,7 +44,7 @@ sealed interface MinecraftVersion : Comparable<MinecraftVersion>, Serializable {
 
     val kotlinVersion: JvmTarget
         get() = when {
-            this >= MinecraftVersions.VERSION_26_1 -> JvmTarget.JVM_24
+            this >= MinecraftVersions.VERSION_26_1 -> JvmTarget.JVM_25
             this >= MinecraftVersions.VERSION_1_20_5 -> JvmTarget.JVM_21
             this >= MinecraftVersions.VERSION_1_18 -> JvmTarget.JVM_17
             this >= MinecraftVersions.VERSION_1_17 -> JvmTarget.JVM_16
