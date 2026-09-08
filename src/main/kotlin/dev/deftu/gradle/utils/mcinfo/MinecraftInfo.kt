@@ -15,6 +15,7 @@ sealed class MinecraftInfo {
             { MinecraftInfoV4() },
             { MinecraftInfoV5() },
             { MinecraftInfoV6() },
+            { MinecraftInfoV7() },
         )
 
         @JvmStatic
