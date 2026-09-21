@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm") version("2.3.0")
     `kotlin-dsl`
-    val dgtVersion = "2.76.0"
+    val dgtVersion = "2.81.0"
     id("dev.deftu.gradle.tools.repo") version(dgtVersion)
     id("dev.deftu.gradle.tools.configure") version(dgtVersion)
     id("dev.deftu.gradle.tools.publishing.maven") version(dgtVersion)
@@ -42,7 +42,7 @@ dependencies {
     implementation("dev.architectury:architectury-pack200:0.1.3")
 
     // Preprocessing/multi-versioning
-    implementation("dev.deftu:preprocessor:0.17.0")
+    implementation("dev.deftu:preprocessor:0.18.0")
 
     // Documentation
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:2.0.0")
